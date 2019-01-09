@@ -1,4 +1,4 @@
-package;
+package display;
 
 import haxe.ds.StringMap;
 import openfl.display.Tileset;

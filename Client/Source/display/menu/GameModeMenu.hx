@@ -1,4 +1,4 @@
-package menu;
+package display.menu;
 
 import openfl.display.Sprite;
 

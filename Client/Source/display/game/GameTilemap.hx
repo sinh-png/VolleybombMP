@@ -1,6 +1,6 @@
-package game;
+package display.game;
 
-import game.Player;
+import display.game.Player;
 import openfl.display.Tile;
 import openfl.display.TileContainer;
 import openfl.display.Tilemap;

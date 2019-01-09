@@ -1,4 +1,4 @@
-package menu;
+package display.menu;
 
 import GameMode;
 import motion.Actuate;

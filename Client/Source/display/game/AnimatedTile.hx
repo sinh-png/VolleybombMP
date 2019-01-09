@@ -1,4 +1,4 @@
-package game;
+package display.game;
 
 import openfl.display.Tile;
 
@@ -35,7 +35,7 @@ class AnimatedTile extends Tile {
 			updateAnimation(delta);
 	}
 	
-	public function updateAnimation(delta:Float):Void {
+	inline function updateAnimation(delta:Float):Void {
 		frameDelay -= delta;
 		if (frameDelay <= 0) {
 			if (frame < frameIDs.length - 1) {

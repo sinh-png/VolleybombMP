@@ -1,4 +1,4 @@
-package;
+package display;
 
 import openfl.display.DisplayObjectContainer;
 

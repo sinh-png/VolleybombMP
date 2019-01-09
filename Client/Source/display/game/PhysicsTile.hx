@@ -1,4 +1,4 @@
-package game;
+package display.game;
 
 import nape.phys.Body;
 

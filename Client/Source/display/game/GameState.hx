@@ -1,4 +1,4 @@
-package game;
+package display.game;
 
 import motion.Actuate;
 import openfl.display.Bitmap;

@@ -1,4 +1,4 @@
-package game;
+package display.game;
 
 class Fence extends PhysicsTile {
 	

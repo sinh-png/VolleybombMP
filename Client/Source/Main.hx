@@ -1,8 +1,9 @@
 package;
 
-import game.GameState;
+import display.StateBase;
+import display.game.GameState;
 import haxe.Timer;
-import menu.MenuState;
+import display.menu.MenuState;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
@@ -47,7 +48,7 @@ class Main extends Sprite {
 		state.onStageResize(stage.stageWidth, stage.stage.stageHeight);
 	}
 	
-	function set_state(value):StateBase {
+	function set_state(value):display.StateBase {
 		if (state == value)
 			return state;
 		
