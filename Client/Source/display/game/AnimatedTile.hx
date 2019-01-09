@@ -15,7 +15,10 @@ class AnimatedTile extends Tile {
 		super();
 	}
 	
-	public function play(frames:Array<Int>, duration:Float, loops:Bool = true, ?onComplete:Void->Void):Void {
+	public function play(frames:Array<Int>, duration:Float, loops:Bool = true, forcesRestart:Bool = false, ?onComplete:Void->Void):Void {
+		if (frames == frameIDs && !forcesRestart)
+			return;
+		
 		frameIDs = frames;
 		id = frameIDs[frame = 0];
 		frameDuration = frameDelay = duration / frames.length;

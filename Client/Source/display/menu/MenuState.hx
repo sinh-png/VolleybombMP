@@ -72,8 +72,10 @@ class MenuState extends StateBase {
 	function onModeRequest(mode:String):Void {
 		switch(mode) {
 			case GameModeButton.VS_COMP:
+				Main.instance.gameState.activate(GameMode.OFFLINE(true));
+				
 			case GameModeButton.VS_LOCAL:
-				Main.instance.gameState.activate();
+				Main.instance.gameState.activate(GameMode.OFFLINE(false));
 			
 			case GameModeButton.HOST:
 			case GameModeButton.JOIN:

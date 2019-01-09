@@ -1,12 +1,16 @@
 package display.game;
 
+import control.GameControllerBase;
 import motion.Actuate;
 import openfl.display.Bitmap;
 
+@:access(control.GameControllerBase)
 class GameState extends StateBase {
 	
+	public var controller(default, set):GameControllerBase;
+	
+	public var tilemap(default, null):GameTilemap;
 	var transitionOverlay:Bitmap;
-	var tilemap:GameTilemap;
 	
 	public function new() {
 		super();
@@ -21,7 +25,7 @@ class GameState extends StateBase {
 		transitionOverlay = new Bitmap(overlayBitmapData, null, true);
 	}
 	
-	public function activate():Void {
+	public function activate(mode:GameMode):Void {
 		Main.instance.state = this;
 	}
 	
@@ -33,9 +37,20 @@ class GameState extends StateBase {
 		Actuate.tween(transitionOverlay, 1, { alpha: 0 } ).onComplete(removeChild, [ transitionOverlay ]);
 	}
 	
-	override public function onEnterFrame(delta:Float):Void {
-		super.onEnterFrame(delta);
+	override public function update(delta:Float):Void {
+		super.update(delta);
+		controller.update(delta);
 		tilemap.update(delta);
+	}
+	
+	function set_controller(value:GameControllerBase):GameControllerBase {
+		if (controller != null)
+			controller.onDeactivated();
+		
+		controller = value;
+		controller.onActivated();
+		
+		return controller;
 	}
 	
 }

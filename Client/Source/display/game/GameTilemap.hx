@@ -1,15 +1,14 @@
 package display.game;
 
-import display.game.Player;
+import display.game.PlayerDisplay;
 import openfl.display.Tile;
 import openfl.display.TileContainer;
 import openfl.display.Tilemap;
 
 class GameTilemap extends Tilemap {
 	
-	static inline var GROUND_Y = 445; 
-	
-	//
+	public var leftPlayer(default, null):PlayerDisplay;
+	public var rightPlayer(default, null):PlayerDisplay;
 	
 	var atlas:Atlas;
 
@@ -21,10 +20,7 @@ class GameTilemap extends Tilemap {
 	var clouds:Array<Tile> = [];
 	var cloudsPool:Array<Tile> = [];
 	
-	var leftPlayer:Player;
-	var rightPlayer:Player;
-	
-	var fence:Fence;
+	var fence:FenceDisplay;
 	
 	public function new(width:Int, height:Int, atlas:Atlas) {
 		super(width, height, this.atlas = atlas);
@@ -39,10 +35,10 @@ class GameTilemap extends Tilemap {
 		
 		initPlayers();
 		
-		fence = new Fence(atlas);
+		fence = new FenceDisplay(atlas);
 		fence.x = (width - fence.width) / 2;
-		fence.y = GROUND_Y - fence.height;
-		addTile(fence);
+		//fence.y = GROUND_Y - fence.height;
+		//addTile(fence);
 		
 		foreground = new Tile(atlas.getID('Foreground.png'));
 		addTile(foreground);
@@ -56,14 +52,14 @@ class GameTilemap extends Tilemap {
 	}
 	
 	inline function initPlayers():Void {
-		leftPlayer = new Player(true, atlas);
-		leftPlayer.x = 100;
-		leftPlayer.y = GROUND_Y - leftPlayer.height;
+		leftPlayer = new PlayerDisplay(true, atlas);
+		//leftPlayer.x = 100;
+		//leftPlayer.y = GROUND_Y - leftPlayer.height;
 		addTile(leftPlayer);
 		
-		rightPlayer = new Player(false, atlas);
-		rightPlayer.x = width - leftPlayer.x - rightPlayer.width;
-		rightPlayer.y = leftPlayer.y;
+		rightPlayer = new PlayerDisplay(false, atlas);
+		//rightPlayer.x = width - leftPlayer.x - rightPlayer.width;
+		//rightPlayer.y = leftPlayer.y;
 		addTile(rightPlayer);
 	}
 	

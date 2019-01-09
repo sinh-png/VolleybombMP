@@ -11,21 +11,21 @@ class StateBase extends DisplayObjectContainer {
 		super();
 	}
 	
-	public function onActivated():Void {
+	function onActivated():Void {
 		
 	}
 	
-	public function onDeactivated():Void {
+	function onDeactivated():Void {
 		
 	}
 	
-	public function onStageResize(stageWidth:Float, stageHeight:Float):Void {
+	function onStageResize(stageWidth:Float, stageHeight:Float):Void {
 		scaleX = scaleY = Math.min(stageWidth / baseWidth, stageHeight / baseHeight);
 		x = (stageWidth - width) / 2;
 		y = (stageHeight - height) / 2;
 	}
 	
-	public function onEnterFrame(delta:Float):Void {
+	function update(delta:Float):Void {
 		
 	}
 	

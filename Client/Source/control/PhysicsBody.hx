@@ -1,12 +1,13 @@
-package physics;
+package control;
 
+import control.BodyState;
 import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
 
-class PhysicsBody extends Body {
+class PhysicsBody {
 
-	public var id(default, null):String;
+	/*public var id(default, null):String;
 	
 	public function new(id:String, type:BodyType=null, position:Vec2=null) {
 		super(type, position);
@@ -29,6 +30,6 @@ class PhysicsBody extends Body {
 		velocity.x = state.velocityX;
 		velocity.y = state.velocityY;
 		angularVel = state.angularVel;
-	}
+	}*/
 	
 }

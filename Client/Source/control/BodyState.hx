@@ -1,4 +1,4 @@
-package physics;
+package control;
 
 typedef BodyState = {
 

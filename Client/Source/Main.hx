@@ -1,5 +1,6 @@
 package;
 
+import control.LocalController;
 import display.StateBase;
 import display.game.GameState;
 import haxe.Timer;
@@ -7,6 +8,7 @@ import display.menu.MenuState;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
+@:access(display.StateBase)
 class Main extends Sprite {
 	
 	public static var instance(default, null):Main;
@@ -14,7 +16,6 @@ class Main extends Sprite {
 	//
 	
 	public var state(default, set):StateBase;
-	
 	public var menuState(default, null):MenuState;
 	public var gameState(default, null):GameState;
 	
@@ -28,9 +29,13 @@ class Main extends Sprite {
 		
 		R.init();
 		prvFrameTime = Timer.stamp();
+		
 		menuState = new MenuState();
 		gameState = new GameState();
-		state = menuState;
+		state = gameState;
+		
+		var localController = new LocalController();
+		gameState.controller = localController;
 		
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		stage.addEventListener(Event.RESIZE, onStageResized);
@@ -40,18 +45,14 @@ class Main extends Sprite {
 		var crFrameTime = Timer.stamp();
 		deltaTime = crFrameTime - prvFrameTime;
 		prvFrameTime = crFrameTime;
-		
-		state.onEnterFrame(deltaTime);
+		state.update(deltaTime);
 	}
 	
 	function onStageResized(event:Event):Void {
 		state.onStageResize(stage.stageWidth, stage.stage.stageHeight);
 	}
 	
-	function set_state(value):display.StateBase {
-		if (state == value)
-			return state;
-		
+	function set_state(value:StateBase):StateBase {
 		if (state != null) {
 			removeChild(state);
 			state.onDeactivated();
