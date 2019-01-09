@@ -1,6 +1,5 @@
 package game;
 
-import display.Atlas;
 import openfl.display.Tilemap;
 
 class GameState extends StateBase {

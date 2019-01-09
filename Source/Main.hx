@@ -21,12 +21,12 @@ class Main extends Sprite {
 		instance = this;
 		
 		prvFrameTime = Timer.stamp();
+		R.init();
 		
 		state = new MenuState();
 		
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		stage.addEventListener(Event.RESIZE, onStageResized);
-		//onStageResized(null);
 	}
 	
 	function onEnterFrame(event:Event):Void {
