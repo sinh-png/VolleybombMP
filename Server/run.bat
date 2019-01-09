@@ -1,4 +1,4 @@
 @echo off
 cd bin
-node VolleybombServer.js
+heroku local web
 pause
