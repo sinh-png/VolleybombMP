@@ -24,6 +24,8 @@ class GameTilemap extends Tilemap {
 	var leftPlayer:Player;
 	var rightPlayer:Player;
 	
+	var fence:Fence;
+	
 	public function new(width:Int, height:Int, atlas:Atlas) {
 		super(width, height, this.atlas = atlas);
 		
@@ -36,6 +38,11 @@ class GameTilemap extends Tilemap {
 		addTile(backgroundB);
 		
 		initPlayers();
+		
+		fence = new Fence(atlas);
+		fence.x = (width - fence.width) / 2;
+		fence.y = GROUND_Y - fence.height;
+		addTile(fence);
 		
 		foreground = new Tile(atlas.getID('Foreground.png'));
 		addTile(foreground);
@@ -64,6 +71,7 @@ class GameTilemap extends Tilemap {
 		updateClouds(delta);
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
+		fence.update(delta);
 	}
 	
 	inline function updateClouds(delta:Float):Void {

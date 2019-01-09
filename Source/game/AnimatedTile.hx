@@ -23,7 +23,19 @@ class AnimatedTile extends Tile {
 		onAnimCompleteCB = onComplete;
 	}
 	
+	public function stop(completeAnim:Bool = false):Void {
+		if (completeAnim && frameIDs != null && onAnimCompleteCB != null)
+			onAnimCompleteCB();
+		frameIDs = null;
+		onAnimCompleteCB = null;
+	}
+	
 	public function update(delta:Float):Void {
+		if (frameIDs != null)
+			updateAnimation(delta);
+	}
+	
+	public function updateAnimation(delta:Float):Void {
 		frameDelay -= delta;
 		if (frameDelay <= 0) {
 			if (frame < frameIDs.length - 1) {
