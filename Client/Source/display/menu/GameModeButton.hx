@@ -1,6 +1,5 @@
 package display.menu;
 
-import GameMode;
 import motion.Actuate;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -9,13 +8,18 @@ import openfl.ui.MouseCursor;
 
 class GameModeButton extends TextField {
 	
+	public static inline var VS_COMP = "Vs Computer";
+	public static inline var VS_LOCAL = "Vs Local";
+	public static inline var HOST = "Host Game";
+	public static inline var JOIN = "Join Game";
+	
 	static inline var outAlpha = 0.6;
 	
 	public static var focusedButton(default, null):GameModeButton;
 	
 	//
 	
-	public var onClickCB:GameMode-> Void;
+	public var onClickCB:String-> Void;
 	public var focused(get, never):Bool;
 	
 	public function new(text:String) {
@@ -47,7 +51,7 @@ class GameModeButton extends TextField {
 	
 	public function onClick():Void {
 		if (onClickCB != null)
-			onClickCB(cast text);
+			onClickCB(text);
 	}
 	
 	inline function get_focused():Bool return focusedButton == this;

@@ -7,7 +7,7 @@ import openfl.events.MouseEvent;
 class MenuState extends StateBase {
 	
 	var background:Bitmap;
-	var modeButtonContainer:Sprite;
+	var modeMenu:Sprite;
 
 	public function new() {
 		super();
@@ -23,33 +23,33 @@ class MenuState extends StateBase {
 	
 	
 	function initModeButtons():Void {
-		modeButtonContainer = new Sprite();
-		addChild(modeButtonContainer);
+		modeMenu = new Sprite();
+		addChild(modeMenu);
 		
 		var bgWidth = 200;
 		var paddingY = 10;
 		var buttonSpacing = 5;
-		var buttonTexts = [ GameMode.VS_COMP, GameMode.VS_LOCAL, GameMode.HOST, GameMode.JOIN ];
+		var buttonTexts = [ GameModeButton.VS_COMP, GameModeButton.VS_LOCAL, GameModeButton.HOST, GameModeButton.JOIN ];
 		var button:GameModeButton = null;
 		for (i in 0...buttonTexts.length) {
 			button = new GameModeButton(buttonTexts[i]);
 			button.x = (bgWidth - button.width) / 2;
 			button.y = paddingY + (button.height + buttonSpacing) * i;
 			button.onClickCB = onModeRequest;
-			modeButtonContainer.addChild(button);
+			modeMenu.addChild(button);
 		}
 		
 		var bgHeight = button.y + button.height + paddingY;
-		var g = modeButtonContainer.graphics;
+		var g = modeMenu.graphics;
 		g.beginFill(0x0, 0.9);
 		g.drawRoundRect(0, 0, bgWidth, bgHeight, 8, 8);
 		g.endFill();
-		modeButtonContainer.x = (baseWidth - bgWidth) / 2;
-		modeButtonContainer.y = (baseHeight - modeButtonContainer.height) / 2;
+		modeMenu.x = (baseWidth - bgWidth) / 2;
+		modeMenu.y = (baseHeight - modeMenu.height) / 2;
 		
-		modeButtonContainer.addEventListener(MouseEvent.MOUSE_MOVE, function(_) {
-			for (i in 0...modeButtonContainer.numChildren) {
-				var button:GameModeButton = cast modeButtonContainer.getChildAt(i);
+		modeMenu.addEventListener(MouseEvent.MOUSE_MOVE, function(_) {
+			for (i in 0...modeMenu.numChildren) {
+				var button:GameModeButton = cast modeMenu.getChildAt(i);
 				if (button.isHovered()) {
 					if (!button.focused)
 						button.onFocus();
@@ -59,24 +59,24 @@ class MenuState extends StateBase {
 				}
 			}
 		});
-		modeButtonContainer.addEventListener(MouseEvent.ROLL_OUT, function(_) {
-			for (i in 0...modeButtonContainer.numChildren)
-				cast(modeButtonContainer.getChildAt(i), GameModeButton).onOut();
+		modeMenu.addEventListener(MouseEvent.ROLL_OUT, function(_) {
+			for (i in 0...modeMenu.numChildren)
+				cast(modeMenu.getChildAt(i), GameModeButton).onOut();
 		});
-		modeButtonContainer.addEventListener(MouseEvent.CLICK, function(_) {
+		modeMenu.addEventListener(MouseEvent.CLICK, function(_) {
 			if (GameModeButton.focusedButton != null)
 				GameModeButton.focusedButton.onClick();
 		});
 	}
 	
-	function onModeRequest(mode:GameMode):Void {
+	function onModeRequest(mode:String):Void {
 		switch(mode) {
-			case GameMode.VS_COMP:
-			case GameMode.VS_LOCAL:
-				Main.instance.gameState.activate(mode);
+			case GameModeButton.VS_COMP:
+			case GameModeButton.VS_LOCAL:
+				Main.instance.gameState.activate();
 			
-			case GameMode.HOST:
-			case GameMode.JOIN:
+			case GameModeButton.HOST:
+			case GameModeButton.JOIN:
 		}
 	}
 	

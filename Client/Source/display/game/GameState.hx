@@ -5,8 +5,6 @@ import openfl.display.Bitmap;
 
 class GameState extends StateBase {
 	
-	var mode:GameMode;
-	
 	var transitionOverlay:Bitmap;
 	var tilemap:GameTilemap;
 	
@@ -23,8 +21,7 @@ class GameState extends StateBase {
 		transitionOverlay = new Bitmap(overlayBitmapData, null, true);
 	}
 	
-	public function activate(mode:GameMode):Void {
-		this.mode = mode;
+	public function activate():Void {
 		Main.instance.state = this;
 	}
 	
