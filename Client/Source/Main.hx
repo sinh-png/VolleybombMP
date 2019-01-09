@@ -29,7 +29,7 @@ class Main extends Sprite {
 		prvFrameTime = Timer.stamp();
 		menuState = new MenuState();
 		gameState = new GameState();
-		state = gameState;
+		state = menuState;
 		
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		stage.addEventListener(Event.RESIZE, onStageResized);
