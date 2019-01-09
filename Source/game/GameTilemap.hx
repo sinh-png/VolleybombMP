@@ -1,19 +1,28 @@
 package game;
 
+import game.Player;
 import openfl.display.Tile;
 import openfl.display.TileContainer;
 import openfl.display.Tilemap;
 
 class GameTilemap extends Tilemap {
 	
+	static inline var GROUND_Y = 445; 
+	
+	//
+	
 	var atlas:Atlas;
 
 	var backgroundA:Tile;
 	var backgroundB:Tile;
+	var foreground:Tile;
 	
 	var cloudsContainer:TileContainer;
 	var clouds:Array<Tile> = [];
 	var cloudsPool:Array<Tile> = [];
+	
+	var leftPlayer:Player;
+	var rightPlayer:Player;
 	
 	public function new(width:Int, height:Int, atlas:Atlas) {
 		super(width, height, this.atlas = atlas);
@@ -21,18 +30,40 @@ class GameTilemap extends Tilemap {
 		backgroundA = new Tile(atlas.getID('Backgrounds/A.jpg'));
 		addTile(backgroundA);
 		
-		cloudsContainer = new TileContainer();
-		addTile(cloudsContainer);
-		
-		for (i in 0...3)
-			createCloud().x = Math.random() * width;
+		initClouds();
 		
 		backgroundB = new Tile(atlas.getID('Backgrounds/B.png'));
 		addTile(backgroundB);
+		
+		initPlayers();
+		
+		foreground = new Tile(atlas.getID('Foreground.png'));
+		addTile(foreground);
+	}
+	
+	inline function initClouds():Void {
+		cloudsContainer = new TileContainer();
+		addTile(cloudsContainer);
+		for (i in 0...3)
+			createCloud().x = Math.random() * width;
+	}
+	
+	inline function initPlayers():Void {
+		leftPlayer = new Player(true, atlas);
+		leftPlayer.x = 100;
+		leftPlayer.y = GROUND_Y - leftPlayer.height;
+		addTile(leftPlayer);
+		
+		rightPlayer = new Player(false, atlas);
+		rightPlayer.x = width - leftPlayer.x - rightPlayer.width;
+		rightPlayer.y = leftPlayer.y;
+		addTile(rightPlayer);
 	}
 	
 	public function update(delta:Float):Void {
 		updateClouds(delta);
+		leftPlayer.update(delta);
+		rightPlayer.update(delta);
 	}
 	
 	inline function updateClouds(delta:Float):Void {
