@@ -24,7 +24,7 @@ class GameTilemap extends Tilemap {
 		cloudsContainer = new TileContainer();
 		addTile(cloudsContainer);
 		
-		for (i in 0...4)
+		for (i in 0...3)
 			createCloud().x = Math.random() * width;
 		
 		backgroundB = new Tile(atlas.getID('Backgrounds/B.png'));
@@ -46,7 +46,7 @@ class GameTilemap extends Tilemap {
 			}
 		}
 		
-		if (clouds.length <= 2 + Std.int(Math.random() * 3))
+		if (clouds.length <= 1 + Math.round(Math.random() * 2))
 			createCloud();
 	}
 	
@@ -64,8 +64,9 @@ class GameTilemap extends Tilemap {
 		cloud.x = width;
 		cloud.y = -100 + 270 * Math.random();
 		cloud.scaleX = cloud.scaleY = 0.5 + Math.random() / 2;
+		cloud.scaleY *= Math.random() < 0.5 ? 1 : -1;
 		cloud.data = {
-			speed: 0.25 + Math.random() / 4,
+			speed: 0.1 + 0.2 * Math.random(),
 			width: atlas.getRect(cloud.id).width * cloud.scaleX
 		}
 		return cloud;
