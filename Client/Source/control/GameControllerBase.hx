@@ -2,7 +2,9 @@ package control;
 
 import control.input.InputControllerBase;
 import control.input.KeyboardInput;
-import nape.callbacks.CbType;
+import nape.callbacks.InteractionType;
+import nape.callbacks.PreFlag;
+import nape.callbacks.PreListener;
 import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
@@ -11,15 +13,6 @@ import nape.space.Space;
 
 @:access(control.input.InputControllerBase)
 class GameControllerBase {
-	
-	public static inline var WORLD_WIDTH = 640;
-	public static inline var WORLD_HEIGHT = 480;
-	public static inline var GROUND_Y = 445; 
-	
-	static var CBTYPE_WALL:CbType = new CbType();
-	static var CBTYPE_PASSTHROUGH:CbType = new CbType();
-	
-	//
 	
 	public var mode(default, null):GameMode;
 	var input(default, set):InputControllerBase;
@@ -32,6 +25,15 @@ class GameControllerBase {
 		input = new KeyboardInput();
 		
         space = new Space(Vec2.weak(0, 400));
+		space.listeners.add(new PreListener(
+			InteractionType.COLLISION,
+			WorldValue.CBTYPE_WALL,
+			WorldValue.CBTYPE_PASSTHROUGH,
+			function(_) return PreFlag.IGNORE, 
+			0,
+			true
+		));
+		
 		leftPlayer = new PlayerController(space, Main.instance.gameState.tilemap.leftPlayer, input.left);
 		rightPlayer = new PlayerController(space, Main.instance.gameState.tilemap.rightPlayer, input.right);
 		
@@ -39,19 +41,19 @@ class GameControllerBase {
 	}
 	
 	function initWalls():Void {
-		var wall = new Body(BodyType.STATIC, Vec2.weak( -1, WORLD_HEIGHT / 2));
-		wall.shapes.push(new Polygon(Polygon.box(1, WORLD_HEIGHT)));
-		//wall.cbTypes.add(CBTYPE_WALL);
+		var wall = new Body(BodyType.STATIC, Vec2.weak( -1, WorldValue.HEIGHT / 2));
+		wall.shapes.push(new Polygon(Polygon.box(1, WorldValue.HEIGHT)));
+		wall.cbTypes.add(WorldValue.CBTYPE_WALL);
 		wall.space = space;
 		
-		wall = new Body(BodyType.STATIC, Vec2.weak(641, WORLD_HEIGHT / 2));
-		wall.shapes.push(new Polygon(Polygon.box(1, WORLD_HEIGHT)));
-		//wall.cbTypes.add(CBTYPE_WALL);
+		wall = new Body(BodyType.STATIC, Vec2.weak(WorldValue.WIDTH + 1, WorldValue.HEIGHT / 2));
+		wall.shapes.push(new Polygon(Polygon.box(1, WorldValue.HEIGHT)));
+		wall.cbTypes.add(WorldValue.CBTYPE_WALL);
 		wall.space = space;
 		
-		wall = new Body(BodyType.STATIC, Vec2.weak(WORLD_WIDTH / 2, -1));
-		wall.shapes.push(new Polygon(Polygon.box(WORLD_WIDTH, 1)));
-		//wall.cbTypes.add(CBTYPE_WALL);
+		wall = new Body(BodyType.STATIC, Vec2.weak(WorldValue.WIDTH / 2, -1));
+		wall.shapes.push(new Polygon(Polygon.box(WorldValue.WIDTH, 1)));
+		wall.cbTypes.add(WorldValue.CBTYPE_WALL);
 		wall.space = space;
 	}
 	
