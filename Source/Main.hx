@@ -1,5 +1,6 @@
 package;
 
+import game.GameState;
 import haxe.Timer;
 import menu.MenuState;
 import openfl.display.Sprite;
@@ -12,6 +13,10 @@ class Main extends Sprite {
 	//
 	
 	public var state(default, set):StateBase;
+	
+	public var menuState(default, null):MenuState;
+	public var gameState(default, null):GameState;
+	
 	var prvFrameTime:Float;
 	var deltaTime:Float;
 	
@@ -20,10 +25,11 @@ class Main extends Sprite {
 		
 		instance = this;
 		
-		prvFrameTime = Timer.stamp();
 		R.init();
-		
-		state = new MenuState();
+		prvFrameTime = Timer.stamp();
+		menuState = new MenuState();
+		gameState = new GameState();
+		state = gameState;
 		
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		stage.addEventListener(Event.RESIZE, onStageResized);

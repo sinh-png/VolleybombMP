@@ -1,6 +1,5 @@
 package menu;
 
-import GameMode;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
@@ -13,7 +12,7 @@ class MenuState extends StateBase {
 	public function new() {
 		super();
 		
-		background = new Bitmap(R.getBitmapData('Menu/Background.jpg'), null, true);
+		background = new Bitmap(R.getBitmapData('BlurBackground.jpg'), null, true);
 		addChild(background);
 		
 		baseWidth = background.width;
@@ -21,6 +20,7 @@ class MenuState extends StateBase {
 		
 		initModeButtons();
 	}
+	
 	
 	function initModeButtons():Void {
 		modeButtonContainer = new Sprite();
@@ -60,8 +60,8 @@ class MenuState extends StateBase {
 			}
 		});
 		modeButtonContainer.addEventListener(MouseEvent.ROLL_OUT, function(_) {
-			if (GameModeButton.focusedButton != null)
-				GameModeButton.focusedButton.onOut();
+			for (i in 0...modeButtonContainer.numChildren)
+				cast(modeButtonContainer.getChildAt(i), GameModeButton).onOut();
 		});
 		modeButtonContainer.addEventListener(MouseEvent.CLICK, function(_) {
 			if (GameModeButton.focusedButton != null)
@@ -73,6 +73,8 @@ class MenuState extends StateBase {
 		switch(mode) {
 			case GameMode.VS_COMP:
 			case GameMode.VS_LOCAL:
+				Main.instance.gameState.activate(mode);
+			
 			case GameMode.HOST:
 			case GameMode.JOIN:
 		}

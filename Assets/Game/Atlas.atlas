@@ -2,8 +2,8 @@ textures: Atlas.png
 Backgrounds/B.png	2	2	640	480	0	0	640	480	
 Foreground.png	646	2	640	480	0	0	640	480	
 Backgrounds/A.jpg	1290	2	640	480	0	0	640	480	
-Cloud/B.png	2	486	302	177	0	0	302	177	
-Cloud/A.png	308	486	272	120	0	0	272	120	
+Clouds/B.png	2	486	302	177	0	0	302	177	
+Clouds/A.png	308	486	272	120	0	0	272	120	
 Fence.png	584	486	136	218	0	0	136	218	
 Players/Right/Stand/1.png	1934	2	74	89	0	0	74	89	
 Players/Right/Forward/0.png	1934	95	74	89	0	0	74	89	
