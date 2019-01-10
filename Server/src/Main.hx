@@ -16,9 +16,9 @@ class Main  {
 		}));
 		//express.use(Lib.require('body-parser').urlencoded( { extended: false } ));
 		
-		express.get('/iceServers', handlers.IceHandler.handler);
-		express.post('/createRoom', RoomHandler.create);
-		express.post('/joinRoom', RoomHandler.join);
+		express.get('/iceServers', IceHandler.handler);
+		express.post('/room/create', RoomHandler.create);
+		express.post('/room/join', RoomHandler.join);
 		
 		var port = Node.process.env.exists('PORT') ? Std.parseInt(Node.process.env.get('PORT')) : 3000;
 		express.listen(port, function (err) trace(err == true ? 'Failed to start web server: ' + err : 'Started web server on port: ' + port));

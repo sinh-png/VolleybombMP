@@ -21,16 +21,15 @@ class MatchMaker {
 		}
 		Connection.fetchIceTokens(onIceFetched, onFailed != null ? onFailed : null);
 	}
-	
-	static function postRoomRequest(signal:ConnectionSignal, onSuccess:String->Void, ?onFailed:String->Void):Void {
-		var http = new Http(Resource.getString('ServerURL') + '/createRoom');
+	static inline function postRoomRequest(signal:ConnectionSignal, onSuccess:String->Void, ?onFailed:String->Void):Void {
+		var http = new Http(Resource.getString('ServerURL') + '/room/create');
 		http.setParameter('signal', Json.stringify(signal));
 		http.onData = function(code:String) onSuccess(code);
 		http.onError = function(error:String) onFailed != null ? onFailed(error) : trace(error);
 		http.request(true);
 	}
 	
-	public function new() {
+	public static function joinRoom(roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
 		
 	}
 	
