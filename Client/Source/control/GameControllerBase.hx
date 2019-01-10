@@ -20,9 +20,9 @@ class GameControllerBase {
 	var rightPlayer:PlayerController;
 	var space:Space;
 	
-	public function new(mode:GameMode) {
+	public function new(mode:GameMode, input:InputControllerBase) {
 		this.mode = mode;
-		input = new KeyboardInput();
+		this.input = input;
 		
         space = new Space(Vec2.weak(0, 400));
 		space.listeners.add(new PreListener(
@@ -34,8 +34,9 @@ class GameControllerBase {
 			true
 		));
 		
-		leftPlayer = new PlayerController(space, Main.instance.gameState.tilemap.leftPlayer, input.left);
-		rightPlayer = new PlayerController(space, Main.instance.gameState.tilemap.rightPlayer, input.right);
+		var tilemap = Main.instance.gameState.tilemap;
+		leftPlayer = new PlayerController(space, tilemap.leftPlayer, input.left);
+		rightPlayer = new PlayerController(space, tilemap.rightPlayer, input.right);
 		
 		initWalls();
 	}

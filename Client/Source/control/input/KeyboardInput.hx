@@ -31,68 +31,85 @@ class KeyboardInput extends InputControllerBase {
 	override function onDeactivated():Void {
 		super.onDeactivated();
 		
-		keyAPressed = keyDPressed = leftPressed = rightPressed = false;
+		keyWPressed = keyAPressed = keyDPressed =
+		upPressed = leftPressed = rightPressed = false;
 		
 		stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 	}
 	
 	function onKeyDown(event:KeyboardEvent):Void {
-		switch(event.keyCode) {
-			case Keyboard.W:
-				if (!keyWPressed) {
-					left.jumpRequested = true;
-					keyWPressed = true;
-				}
-			case Keyboard.A:
-				keyAPressed = true;
-			case Keyboard.D:
-				keyDPressed = true;
-			
-			case Keyboard.UP:
-				if (!upPressed) {
-					right.jumpRequested = true;
-					upPressed = true;
-				}
-			case Keyboard.LEFT:
-				leftPressed = true;
-			case Keyboard.RIGHT:
-				rightPressed = true;
+		if (left.manuallyControlled) {
+			switch(event.keyCode) {
+				case Keyboard.W:
+					if (!keyWPressed) {
+						left.jumpRequested = true;
+						keyWPressed = true;
+					}
+				case Keyboard.A:
+					keyAPressed = true;
+				case Keyboard.D:
+					keyDPressed = true;
+			}
+		}
+		
+		if (right.manuallyControlled) {
+			switch(event.keyCode) {
+				case Keyboard.UP:
+					if (!upPressed) {
+						right.jumpRequested = true;
+						upPressed = true;
+					}
+				case Keyboard.LEFT:
+					leftPressed = true;
+				case Keyboard.RIGHT:
+					rightPressed = true;
+			}
 		}
 	}
 	
 	function onKeyUp(event:KeyboardEvent):Void {
-		switch(event.keyCode) {
-			case Keyboard.W:
-				keyWPressed = false;
-			case Keyboard.A:
-				keyAPressed = false;
-			case Keyboard.D:
-				keyDPressed = false;
-			
-			case Keyboard.UP:
-				upPressed = false;
-			case Keyboard.LEFT:
-				leftPressed = false;
-			case Keyboard.RIGHT:
-				rightPressed = false;
+		if (left.manuallyControlled) {
+			switch(event.keyCode) {
+				case Keyboard.W:
+					keyWPressed = false;
+				case Keyboard.A:
+					keyAPressed = false;
+				case Keyboard.D:
+					keyDPressed = false;
+			}
+		}
+		
+		if (right.manuallyControlled) {
+			switch(event.keyCode) {
+				case Keyboard.UP:
+					upPressed = false;
+				case Keyboard.LEFT:
+					leftPressed = false;
+				case Keyboard.RIGHT:
+					rightPressed = false;
+			}
 		}
 	}
 	
 	override function update(delta:Float):Void {
 		super.update(delta);
 		
-		left.direction =
-			if (keyAPressed && keyDPressed) Direction.NONE;
-			else if (keyAPressed) 			Direction.BACKWARD;
-			else if (keyDPressed) 			Direction.FORWARD;
-			else 							Direction.NONE;
+		if (left.manuallyControlled) {
+			left.direction =
+				if (keyAPressed && keyDPressed) Direction.NONE;
+				else if (keyAPressed) 			Direction.BACKWARD;
+				else if (keyDPressed) 			Direction.FORWARD;
+				else 							Direction.NONE;
+		}
 		
-		right.direction =
-			if (leftPressed && rightPressed) Direction.NONE;
-			else if (rightPressed) 			 Direction.BACKWARD;
-			else if (leftPressed) 			 Direction.FORWARD;
-			else 							 Direction.NONE;
+		if (right.manuallyControlled) {
+			right.direction =
+				if (leftPressed && rightPressed) Direction.NONE;
+				else if (rightPressed) 			 Direction.BACKWARD;
+				else if (leftPressed) 			 Direction.FORWARD;
+				else 							 Direction.NONE;
+		}
 	}
 	
 }

@@ -1,6 +1,6 @@
 package;
 
-import control.LocalController;
+import control.LocalVsController;
 import display.StateBase;
 import display.game.GameState;
 import haxe.Timer;
@@ -34,7 +34,7 @@ class Main extends Sprite {
 		gameState = new GameState();
 		state = gameState;
 		
-		var localController = new LocalController();
+		var localController = new LocalVsController();
 		gameState.controller = localController;
 		
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
