@@ -11,8 +11,10 @@
 	<haxelib name="actuate" />
 	<haxelib name="nape" />
 	<haxelib name="simple-peer" />
+	<dependency path="W:/Projects/Mine/VolleybombMP/Client/Libs/simplepeer.min.js" />
+	<define name="standalone" />
 	
-	<haxeflag name="-resource" value="IceExpressUrl.txt@IceExpressUrl" />
+	<haxeflag name="-resource" value="ServerURL.txt@ServerURL" />
 	
 	<assets path="Assets" />
 	
