@@ -5,7 +5,7 @@ import control.input.KeyboardInput;
 class LocalVsController extends GameControllerBase {
 	
 	public function new() {
-		super(GameMode.OFFLINE(false), new KeyboardInput());
+		super(GameMode.LOCAL(false), new KeyboardInput());
 	}
 	
 }

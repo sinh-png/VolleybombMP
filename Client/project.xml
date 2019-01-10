@@ -12,6 +12,8 @@
 	<haxelib name="nape" />
 	<haxelib name="simple-peer" />
 	
+	<haxeflag name="-resource" value="IceExpressUrl.txt@IceExpressUrl" />
+	
 	<assets path="Assets" />
 	
 </project>

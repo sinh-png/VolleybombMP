@@ -32,7 +32,7 @@ class Main extends Sprite {
 		
 		menuState = new MenuState();
 		gameState = new GameState();
-		state = gameState;
+		state = menuState;
 		
 		var localController = new LocalVsController();
 		gameState.controller = localController;

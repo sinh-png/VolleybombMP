@@ -1,5 +1,6 @@
 package display.menu;
 
+import control.net.Connection;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
@@ -72,12 +73,13 @@ class MenuState extends StateBase {
 	function onModeRequest(mode:String):Void {
 		switch(mode) {
 			case GameModeButton.VS_COMP:
-				Main.instance.gameState.activate(GameMode.OFFLINE(true));
+				Main.instance.gameState.activate(GameMode.LOCAL(true));
 				
 			case GameModeButton.VS_LOCAL:
-				Main.instance.gameState.activate(GameMode.OFFLINE(false));
+				Main.instance.gameState.activate(GameMode.LOCAL(false));
 			
 			case GameModeButton.HOST:
+				
 			case GameModeButton.JOIN:
 		}
 	}

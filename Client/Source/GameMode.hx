@@ -2,8 +2,8 @@ package;
 
 enum GameMode {
 	
-	OFFLINE(vsAI:Bool);
-	HOST;
-	CLIENT;
+	LOCAL(vsAI:Bool);
+	NET_HOST;
+	NET_CLIENT;
 	
 }
