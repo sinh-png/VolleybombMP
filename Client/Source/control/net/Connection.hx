@@ -37,22 +37,23 @@ class Connection {
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
 	
-	public function new(offer:ConnectionSignal, iceTokens:Dynamic, onSignalReady:ConnectionSignal->Void, onChannelReady:Bool->Bool->Void) {
+	public function new(offer:ConnectionSignal, iceServers:Dynamic, onSignalReady:ConnectionSignal->Void, onChannelReady:Bool->Bool->Void) {
 		var baseOptions:PeerOptions = {
 			initiator: offer == null,
-			config: { iceServers: iceTokens }
+			trickle: false,
+			config: { iceServers: iceServers }
 		}
 		
 		var rOptions = Reflect.copy(baseOptions);
 		rOptions.channelName = 'reliable';
 		
-		var uConfigs = Reflect.copy(baseOptions);
-		uConfigs.channelName = 'unreliable';
-		uConfigs.channelConfig = { ordered: false, maxPacketLifeTime: null, maxRetransmits: 0 };
+		var uOptions = Reflect.copy(baseOptions);
+		uOptions.channelName = 'unreliable';
+		uOptions.channelConfig = { ordered: false, maxRetransmits: 0 };
 		
 		r = new Peer(rOptions);
 		r.on(PeerEvent.SIGNAL, function(rSignal) {
-			u = new Peer(uConfigs);
+			u = new Peer(uOptions);
 			u.on(PeerEvent.SIGNAL, function(uSignal) {
 				onSignalReady({ r: rSignal, u: uSignal });
 			});
