@@ -25,12 +25,14 @@ class Room {
 				function (rReady, uReady) {
 					if (rReady && uReady) {
 						socket.emit(RoomEvent.PEER_INITED, roomID);
+						socket = null;
+						roomID = null;
 						onConnection(con);
 					}
 				}
 			);
 		}
-		Connection.fetchIceTokens(onIceFetched);
+		Connection.fetchIceServers(onIceFetched);
 	}
 	
 	public static function join(roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
