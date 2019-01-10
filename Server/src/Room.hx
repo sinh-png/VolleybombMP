@@ -10,13 +10,11 @@ class Room {
 	
 	public static function init():Void {
 		var server = new Server();
-		server.origins(Main.ALLOWED_ORIGIN);
+		server.origins(Main.ALLOWED_ORIGIN == '*' ? '*:*' : Main.ALLOWED_ORIGIN);
 		server.listen(Port.SOCKET);
 		server.on('connection', function(socket:Socket) {
 			socket.on(RoomEvent.CREATE, function(offer) onCreate(socket, offer));
 			socket.on(RoomEvent.JOIN, function(roomID) onJoin(socket, roomID));
-			socket.on(RoomEvent.ANSWER, function(roomID) onJoin(socket, roomID));
-			socket.on(RoomEvent.PEER_INITED, onPeerConInited);
 		});
 	}
 	
@@ -29,6 +27,8 @@ class Room {
 		rooms.set(id, room);
 		
 		socket.emit(RoomEvent.ROOM, id);
+		socket.on(RoomEvent.ANSWER, function(roomID) onJoin(socket, roomID));
+		socket.on(RoomEvent.PEER_INITED, onPeerConInited);
 		socket.on('disconnect', function(reason:String) {
 			if (reason != 'io server disconnect')
 				room.destroy();
