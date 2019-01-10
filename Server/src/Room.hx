@@ -3,6 +3,8 @@ package;
 import haxe.ds.StringMap;
 import js.node.socketio.Server;
 import js.node.socketio.Socket;
+import room.RoomAnswer;
+import room.RoomEvent;
 
 class Room {
 	
@@ -18,7 +20,7 @@ class Room {
 		});
 	}
 	
-	static function onCreate(socket:Socket, offer:String):Void {
+	static function onCreate(socket:Socket, offer:Dynamic):Void {
 		var id = randomRoomID();
 		while (rooms.exists(id))
 			id = randomRoomID();
@@ -26,18 +28,15 @@ class Room {
 		var room = new Room(id, socket, offer);
 		rooms.set(id, room);
 		
-		socket.emit(RoomEvent.ROOM, id);
-		socket.on(RoomEvent.ANSWER, function(roomID) onJoin(socket, roomID));
-		socket.on(RoomEvent.PEER_INITED, onPeerConInited);
 		socket.on('disconnect', function(reason:String) {
-			if (reason != 'io server disconnect')
-				room.destroy();
+			room.destroy();
 		});
+		socket.emit(RoomEvent.ROOM, id);
 	}
 	static inline function randomRoomID():String {
 		var string = '';
 		for (i in 0...9)
-			string += String.fromCharCode(65 + Math.round(25 * Math.random()));
+			string += Math.round(Math.random() * 9);
 		return string;
 	}
 	
@@ -45,23 +44,17 @@ class Room {
 		if (rooms.exists(roomID)) {
 			var room = rooms.get(roomID);
 			room.guest = socket;
+			socket.on(RoomEvent.ANSWER, function(answer) onAnswer(socket, answer));
 			socket.emit(RoomEvent.OFFER, room.offer);
+		} else {
+			socket.emit(RoomEvent.NOT_EXIST);
 		}
 	}
 	
-	static function onAnswer(socket:Socket, answer:Dynamic):Void {
-		var roomID = answer.roomID;
-		if (rooms.exists(roomID)) {
-			var room = rooms.get(roomID);
+	static function onAnswer(socket:Socket, answer:RoomAnswer):Void {
+		if (rooms.exists(answer.roomID)) {
+			var room = rooms.get(answer.roomID);
 			room.host.emit(RoomEvent.ANSWER, answer.signal);
-		}
-	}
-	
-	static function onPeerConInited(socket:Socket, roomID:String):Void {
-		if (rooms.exists(roomID)) {
-			var room = rooms.get(roomID);
-			if (room.host == socket)
-				room.destroy();
 		}
 	}
 	
@@ -70,20 +63,27 @@ class Room {
 	var id:String;
 	var host:Socket;
 	var guest:Socket;
-	var offer:String;
+	var offer:Dynamic;
+	var destroyed:Bool = false;
 	
-	private function new(id:String, host:Socket, offer:String) {
+	private function new(id:String, host:Socket, offer:Dynamic) {
 		this.id = id;
 		this.host = host;
 		this.offer = offer;
 	}
 	
 	function destroy():Void {
+		if (destroyed)
+			return;
+		
 		rooms.remove(id);
 		host.disconnect();
-		guest.disconnect();
+		if (guest != null)
+			guest.disconnect();
 		host = guest = null;
 		offer = null;
+		
+		destroyed = true;
 	}
 	
 }

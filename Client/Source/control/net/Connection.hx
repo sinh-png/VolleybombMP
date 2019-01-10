@@ -40,9 +40,10 @@ class Connection {
 	public function new(offer:ConnectionSignal, iceServers:Dynamic, onSignalReady:ConnectionSignal->Void, onChannelReady:Bool->Bool->Void) {
 		var baseOptions:PeerOptions = {
 			initiator: offer == null,
-			trickle: false,
-			config: { iceServers: iceServers }
+			trickle: false
 		}
+		if (iceServers != null)
+			baseOptions.config = { iceServers: iceServers };
 		
 		var rOptions = Reflect.copy(baseOptions);
 		rOptions.channelName = 'reliable';
@@ -72,6 +73,11 @@ class Connection {
 		r.on(PeerEvent.CLOSE, onRClosed);
 		if (offer != null)
 			r.signal(offer.r);
+	}
+	
+	public function signal(data:ConnectionSignal):Void {
+		r.signal(data.r);
+		u.signal(data.u);
 	}
 	
 	function onRClosed():Void {

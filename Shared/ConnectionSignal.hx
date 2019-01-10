@@ -1,4 +1,4 @@
-package control.net;
+package;
 
 typedef ConnectionSignal = {
 
