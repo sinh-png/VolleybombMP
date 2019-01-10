@@ -3,8 +3,8 @@ package;
 import control.LocalVsController;
 import display.StateBase;
 import display.game.GameState;
-import haxe.Timer;
 import display.menu.MenuState;
+import haxe.Timer;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
