@@ -16,6 +16,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\Shared" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -29,6 +30,7 @@
   <!-- haxelib libraries -->
   <haxelib>
     <library name="hxnodejs" />
+    <library name="hxsocketio" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

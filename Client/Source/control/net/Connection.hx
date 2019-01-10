@@ -10,7 +10,7 @@ import peer.PeerOptions;
 class Connection {
 	
 	public static function fetchIceTokens(onSuccess:Dynamic->Void, ?onFailed:String->Void):Void {
-		var http = new Http(Resource.getString('ServerURL') + '/iceServers');
+		var http = new Http(Resource.getString('ServerURL') +':${Port.EXPRESS}/iceServers');
 		http.onData = function(data:String) {
 			onSuccess(Json.parse(data));
 		};

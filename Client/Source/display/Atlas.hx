@@ -24,9 +24,9 @@ class Atlas extends Tileset {
 		var lines = R.getText(id).split('\n');
 		var path = id.substring(0, id.lastIndexOf('/'));
 		if (path.length == 0)
-			this.bitmapData = R.getBitmapData(lines[0].substr(10).trim());
+			bitmapData = R.getBitmapData(lines[0].substr(10).trim());
 		else
-			this.bitmapData = R.getBitmapData(path + '/' + lines[0].substr(10).trim());
+			bitmapData = R.getBitmapData(path + '/' + lines[0].substr(10).trim());
 		
 		lines.sort(function(a:String, b:String):Int {
 			if (a < b) return -1;

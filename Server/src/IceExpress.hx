@@ -1,9 +1,9 @@
-package handlers;
+package;
 
 import js.Lib;
 import js.Node;
 
-class IceHandler {
+class IceExpress {
 	
 	static inline var TOKEN_LIFETIME = 7200;
 	

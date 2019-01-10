@@ -6,12 +6,16 @@
 	<window background="#000000" fps="60" />
 	
 	<source path="Source" />
+	<source path="../Shared" />
 	
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<haxelib name="nape" />
+	<haxelib name="hxsocketio" />
 	<haxelib name="simple-peer" />
-	<dependency path="W:/Projects/Mine/VolleybombMP/Client/Libs/simplepeer.min.js" />
+	
+	<dependency path="../Server/bin/node_modules/socket.io-client/dist/socket.io.js" />
+	<dependency path="Libs/simplepeer.min.js" />
 	<define name="standalone" />
 	
 	<haxeflag name="-resource" value="ServerURL.txt@ServerURL" />

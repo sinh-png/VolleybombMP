@@ -1,7 +1,7 @@
 package display.menu;
 
 import control.net.Connection;
-import control.net.MatchMaker;
+import control.net.Room;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
@@ -80,8 +80,9 @@ class MenuState extends StateBase {
 				Main.instance.gameState.activate(GameMode.LOCAL(false));
 			
 			case GameModeButton.HOST:
-				MatchMaker.requestRoom(
+				Room.create(
 					function(roomID) trace(roomID),
+					function (answer) trace(answer),
 					function(con) trace("other player joined!") 
 				);
 				
