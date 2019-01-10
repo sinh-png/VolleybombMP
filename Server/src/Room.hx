@@ -10,6 +10,7 @@ class Room {
 	
 	public static function init():Void {
 		var server = new Server();
+		server.origins(Main.ALLOWED_ORIGIN);
 		server.listen(Port.SOCKET);
 		server.on('connection', function(socket:Socket) {
 			socket.on(RoomEvent.CREATE, function(offer) onCreate(socket, offer));

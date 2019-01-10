@@ -5,6 +5,8 @@ import js.Node;
 
 class Main  {
 	
+	public static var ALLOWED_ORIGIN(default, never):String = Node.process.env.get('ALLOWED_ORIGIN');
+	
 	static function main() {
 		initExpress();
 		Room.init();
@@ -14,7 +16,7 @@ class Main  {
 		var express = Lib.require('express')();
 		
 		express.use(Lib.require('cors')({
-			origin: Node.process.env.get('ALLOWED_ORIGIN'),
+			origin: ALLOWED_ORIGIN,
 			optionsSuccessStatus: 200
 		}));
 		
