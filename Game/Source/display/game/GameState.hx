@@ -19,7 +19,7 @@ class GameState extends StateBase {
 		baseWidth = overlayBitmapData.width;
 		baseHeight = overlayBitmapData.height;
 		
-		tilemap = new GameTilemap(Std.int(baseWidth), Std.int(baseHeight), new Atlas('Game/Atlas.atlas'));
+		tilemap = new GameTilemap(Std.int(baseWidth), Std.int(baseHeight), new Atlas('Atlas.atlas'));
 		addChild(tilemap);
 		
 		transitionOverlay = new Bitmap(overlayBitmapData, null, true);

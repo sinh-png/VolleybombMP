@@ -1,13 +1,13 @@
 package;
 
-import control.LocalVsController;
+import control.LocalController;
+import control.Physics;
 import display.PerfDisplay;
 import display.StateBase;
 import display.game.GameState;
 import display.menu.MenuState;
 import haxe.Timer;
 import js.Browser;
-import net.Connection;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
@@ -39,7 +39,9 @@ class Main extends Sprite {
 		gameState = new GameState();
 		state = menuState;
 		
-		var localController = new LocalVsController();
+		Physics.init();
+		
+		var localController = new LocalController();
 		gameState.controller = localController;
 		
 		perfDisplay = new PerfDisplay();

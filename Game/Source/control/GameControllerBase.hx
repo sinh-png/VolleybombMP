@@ -1,87 +1,34 @@
 package control;
 
-import control.input.InputControllerBase;
-import control.input.KeyboardInput;
-import nape.callbacks.InteractionType;
-import nape.callbacks.PreFlag;
-import nape.callbacks.PreListener;
-import nape.geom.Vec2;
-import nape.phys.Body;
-import nape.phys.BodyType;
-import nape.shape.Polygon;
-import nape.space.Space;
+import control.player.PlayerControllerBase;
 
 @:access(control.input.InputControllerBase)
 class GameControllerBase {
 	
 	public var mode(default, null):GameMode;
-	var input(default, set):InputControllerBase;
-	var leftPlayer:PlayerController;
-	var rightPlayer:PlayerController;
-	var space:Space;
+	var leftController:PlayerControllerBase;
+	var rightController:PlayerControllerBase;
 	
-	public function new(mode:GameMode, input:InputControllerBase) {
+	public function new(mode:GameMode, leftController:PlayerControllerBase, rightController:PlayerControllerBase) {
 		this.mode = mode;
-		this.input = input;
-		
-        space = new Space(Vec2.weak(0, 400));
-		space.listeners.add(new PreListener(
-			InteractionType.COLLISION,
-			WorldValue.CBTYPE_WALL,
-			WorldValue.CBTYPE_PASSTHROUGH,
-			function(_) return PreFlag.IGNORE, 
-			0,
-			true
-		));
-		
-		var tilemap = Main.instance.gameState.tilemap;
-		leftPlayer = new PlayerController(space, tilemap.leftPlayer, input.left);
-		rightPlayer = new PlayerController(space, tilemap.rightPlayer, input.right);
-		
-		initWalls();
-	}
-	
-	function initWalls():Void {
-		var wall = new Body(BodyType.STATIC, Vec2.weak( -1, WorldValue.HEIGHT / 2));
-		wall.shapes.push(new Polygon(Polygon.box(1, WorldValue.HEIGHT)));
-		wall.cbTypes.add(WorldValue.CBTYPE_WALL);
-		wall.space = space;
-		
-		wall = new Body(BodyType.STATIC, Vec2.weak(WorldValue.WIDTH + 1, WorldValue.HEIGHT / 2));
-		wall.shapes.push(new Polygon(Polygon.box(1, WorldValue.HEIGHT)));
-		wall.cbTypes.add(WorldValue.CBTYPE_WALL);
-		wall.space = space;
-		
-		wall = new Body(BodyType.STATIC, Vec2.weak(WorldValue.WIDTH / 2, -1));
-		wall.shapes.push(new Polygon(Polygon.box(WorldValue.WIDTH, 1)));
-		wall.cbTypes.add(WorldValue.CBTYPE_WALL);
-		wall.space = space;
+		this.leftController = leftController;
+		this.rightController = rightController;
 	}
 	
 	function onActivated():Void {
-		leftPlayer.reset();
-		rightPlayer.reset();
+		leftController.activate();
+		rightController.activate();
 	}
 	
 	function onDeactivated():Void {
-		
+		leftController.deactivate();
+		rightController.deactivate();
 	}
 	
 	function update(delta:Float):Void {
-		input.update(delta);
-		leftPlayer.update(delta);
-		rightPlayer.update(delta);
-		space.step(delta);
-	}
-	
-	function set_input(value:InputControllerBase):InputControllerBase {
-		if (input != null)
-			input.onDeactivated();
-		
-		input = value;
-		input.onActivated();
-		
-		return input;
+		Physics.step(delta);
+		leftController.update(delta);
+		rightController.update(delta);
 	}
 	
 }

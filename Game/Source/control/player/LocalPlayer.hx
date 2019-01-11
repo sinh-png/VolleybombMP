@@ -1,12 +1,10 @@
-package control.input;
+package control.player;
 
-import openfl.display.Stage;
+import control.player.PlayerControllerBase;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
 
-class KeyboardInput extends InputControllerBase {
-
-	var stage:Stage;
+class LocalPlayer extends PlayerControllerBase {
 	
 	var keyWPressed:Bool;
 	var keyAPressed:Bool;
@@ -15,35 +13,34 @@ class KeyboardInput extends InputControllerBase {
 	var upPressed:Bool;
 	var leftPressed:Bool;
 	var rightPressed:Bool;
-	
-	public function new() {
-		super();
-		stage = Main.instance.stage;
+
+	public function new(left:Bool) {
+		super(left);
 	}
 	
-	override function onActivated():Void {
-		super.onActivated();
-		
-		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-	}
-	
-	override function onDeactivated():Void {
-		super.onDeactivated();
+	override public function activate():Void {
+		super.activate();
 		
 		keyWPressed = keyAPressed = keyDPressed =
 		upPressed = leftPressed = rightPressed = false;
 		
-		stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		Main.instance.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		Main.instance.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+	}
+	
+	override public function deactivate():Void {
+		super.deactivate();
+		
+		Main.instance.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		Main.instance.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 	}
 	
 	function onKeyDown(event:KeyboardEvent):Void {
-		if (left.manuallyControlled) {
+		if (left) {
 			switch(event.keyCode) {
 				case Keyboard.W:
 					if (!keyWPressed) {
-						left.jumpRequested = true;
+						jumpRequested = true;
 						keyWPressed = true;
 					}
 				case Keyboard.A:
@@ -51,13 +48,11 @@ class KeyboardInput extends InputControllerBase {
 				case Keyboard.D:
 					keyDPressed = true;
 			}
-		}
-		
-		if (right.manuallyControlled) {
+		} else {
 			switch(event.keyCode) {
 				case Keyboard.UP:
 					if (!upPressed) {
-						right.jumpRequested = true;
+						jumpRequested = true;
 						upPressed = true;
 					}
 				case Keyboard.LEFT:
@@ -66,10 +61,11 @@ class KeyboardInput extends InputControllerBase {
 					rightPressed = true;
 			}
 		}
+		
 	}
 	
 	function onKeyUp(event:KeyboardEvent):Void {
-		if (left.manuallyControlled) {
+		if (left) {
 			switch(event.keyCode) {
 				case Keyboard.W:
 					keyWPressed = false;
@@ -78,9 +74,7 @@ class KeyboardInput extends InputControllerBase {
 				case Keyboard.D:
 					keyDPressed = false;
 			}
-		}
-		
-		if (right.manuallyControlled) {
+		} else {
 			switch(event.keyCode) {
 				case Keyboard.UP:
 					upPressed = false;
@@ -95,20 +89,18 @@ class KeyboardInput extends InputControllerBase {
 	override function update(delta:Float):Void {
 		super.update(delta);
 		
-		if (left.manuallyControlled) {
-			left.direction =
-				if (keyAPressed && keyDPressed) Direction.NONE;
-				else if (keyAPressed) 			Direction.BACKWARD;
-				else if (keyDPressed) 			Direction.FORWARD;
-				else 							Direction.NONE;
-		}
-		
-		if (right.manuallyControlled) {
-			right.direction =
+		direction = {
+			if (left) {
+				if (keyAPressed && keyDPressed)  Direction.NONE;
+				else if (keyAPressed) 			 Direction.BACKWARD;
+				else if (keyDPressed) 			 Direction.FORWARD;
+				else 							 Direction.NONE;
+			} else {
 				if (leftPressed && rightPressed) Direction.NONE;
 				else if (rightPressed) 			 Direction.BACKWARD;
 				else if (leftPressed) 			 Direction.FORWARD;
 				else 							 Direction.NONE;
+			}
 		}
 	}
 	

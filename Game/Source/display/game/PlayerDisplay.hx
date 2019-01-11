@@ -31,6 +31,8 @@ class PlayerDisplay extends AnimatedTile {
 		
 		originX = width / 2;
 		originY = height / 2;
+		
+		playStanding();
 	}
 	
 	public inline function playStanding() play(standingFrames, 0.6);
