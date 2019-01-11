@@ -1,5 +1,6 @@
 package display.menu;
 
+import haxe.Timer;
 import net.Connection;
 import net.Room;
 import display.common.CommonButton;
@@ -119,6 +120,7 @@ class HostDialog extends NetPlayDialog {
 class CopyButton extends CommonButton {
 	
 	var target:TextField;
+	var timer:Timer;
 	
 	public function new(target:TextField) {
 		super(new TextFormat(R.defaultFont, 16, 0xFFFFFF, true), "COPY", 60, 34, 0x4684F1);
@@ -128,6 +130,10 @@ class CopyButton extends CommonButton {
 	override function onClick(event:MouseEvent):Void {
 		super.onClick(event);
 		System.setClipboard(target.text);
+		text = "COPIED";
+		if (timer != null)
+			timer.stop();
+		timer = Timer.delay(function() text = "COPY", 2000);
 	}
 	
 }
