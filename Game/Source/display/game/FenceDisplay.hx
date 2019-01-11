@@ -1,6 +1,6 @@
 package display.game;
 
-class FenceDisplay extends PhysicsTile {
+class FenceDisplay extends AnimatedTile {
 	
 	public var width(default, null):Float;
 	public var height(default, null):Float;
