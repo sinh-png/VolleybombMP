@@ -31,13 +31,11 @@ class Room {
 					});
 					socket.emit(RoomEvent.CREATE, offer);
 				},
-				function (rReady, uReady) {
-					if (rReady && uReady) {
-						socket.disconnect();
-						socket = null;
-						roomID = null;
-						onOtherJoined(con);
-					}
+				function () {
+					socket.disconnect();
+					socket = null;
+					roomID = null;
+					onOtherJoined(con);
 				}
 			);
 		}
@@ -59,12 +57,10 @@ class Room {
 					var answer:RoomAnswer = { roomID: roomID, signal: signal };
 					socket.emit(RoomEvent.ANSWER, answer);
 				},
-				function(rReady, uReady) {
-					if (rReady && uReady) {
-						socket.disconnect();
-						socket = null;
-						onSuccess(con);
-					}
+				function() {
+					socket.disconnect();
+					socket = null;
+					onSuccess(con);
 				}
 			);
 		});
