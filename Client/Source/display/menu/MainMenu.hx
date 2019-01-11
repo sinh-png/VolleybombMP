@@ -71,6 +71,7 @@ class MainMenu extends Sprite {
 				Main.instance.gameState.activate(GameMode.LOCAL(false));
 			
 			case HOST:
+				Main.instance.menuState.hostDialog.host();
 				
 			case JOIN:
 				

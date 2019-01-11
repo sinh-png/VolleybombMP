@@ -4,9 +4,10 @@ import openfl.display.Bitmap;
 
 class MenuState extends StateBase {
 	
+	public var menu(default, null):MainMenu;
+	public var hostDialog(default, null):HostDialog;
 	var background:Bitmap;
-	var menu:MainMenu;
-
+	
 	public function new() {
 		super();
 		
@@ -20,6 +21,10 @@ class MenuState extends StateBase {
 		menu.x = (baseWidth - menu.width) / 2;
 		menu.y = (baseHeight - menu.height) / 2;
 		addChild(menu);
+		
+		hostDialog = new HostDialog();
+		hostDialog.visible = false;
+		addChild(hostDialog);
 	}
 	
 }

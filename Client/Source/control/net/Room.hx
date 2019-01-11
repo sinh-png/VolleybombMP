@@ -1,5 +1,6 @@
 package control.net;
 
+import haxe.Http;
 import haxe.Resource;
 import js.node.socketio.Client;
 import room.RoomAnswer;
@@ -7,14 +8,16 @@ import room.RoomEvent;
 
 class Room {
 	
+	static var http:Http;
 	static var socket:Client;
 	static var roomID:String;
 	
 	public static function create(onRoom:String->Void, onOtherJoined:Connection->Void):Void {
-		if (socket != null)
-			socket.disconnect();
+		cancel();
 		
 		var onIceFetched = function(iceServers):Void {
+			http = null;
+			
 			var con:Connection;
 			con = new Connection(null, iceServers,
 				function(offer) {
@@ -38,12 +41,11 @@ class Room {
 				}
 			);
 		}
-		Connection.fetchIceServers(onIceFetched);
+		http = Connection.fetchIceServers(onIceFetched);
 	}
 	
 	public static function join(roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
-		if (socket != null)
-			socket.disconnect();
+		cancel();
 		
 		socket = new Client(Resource.getString('ServerURL') + ':' + Port.SOCKET);
 		socket.on(RoomEvent.OFFER, function(offer) {
@@ -69,6 +71,18 @@ class Room {
 				trace('Room $roomID does not exist.');
 		});
 		socket.emit(RoomEvent.JOIN, roomID);
+	}
+	
+	public static function cancel():Void {
+		if (http != null) {
+			http.cancel();
+			http = null;
+		}
+		
+		if (socket != null) {
+			socket.disconnect();
+			socket = null;
+		}
 	}
 	
 }

@@ -4,8 +4,8 @@ import openfl.display.DisplayObjectContainer;
 
 class StateBase extends DisplayObjectContainer {
 	
-	var baseWidth:Float;
-	var baseHeight:Float;
+	public var baseWidth(default, null):Float;
+	public var baseHeight(default, null):Float;
 
 	public function new() {
 		super();

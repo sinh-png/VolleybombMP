@@ -9,7 +9,7 @@ import peer.PeerOptions;
 
 class Connection {
 	
-	public static function fetchIceServers(onSuccess:Dynamic->Void, ?onFailed:String->Void):Void {
+	public static function fetchIceServers(onSuccess:Dynamic->Void, ?onFailed:String->Void):Http {
 		var http = new Http(Resource.getString('ServerURL') +':${Port.EXPRESS}/iceServers');
 		http.onData = function(data:String) {
 			onSuccess(Json.parse(data));
@@ -21,6 +21,7 @@ class Connection {
 				onFailed(error);
 		};
 		http.request();
+		return http;
 	}
 	
 	//
@@ -36,6 +37,11 @@ class Connection {
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
+	
+	public var onDataCB:Dynamic->Void;
+	public var onRDataCB:Dynamic->Void;
+	public var onUDataCB:Dynamic->Void;
+	public var onChannelClosedCB:Bool->Void;
 	
 	public function new(offer:ConnectionSignal, iceServers:Dynamic, onSignalReady:ConnectionSignal->Void, onChannelReady:Bool->Bool->Void) {
 		var baseOptions:PeerOptions = {
@@ -62,6 +68,7 @@ class Connection {
 				uReady = true;
 				onChannelReady(rReady, uReady);
 			});
+			u.on(PeerEvent.DATA, onUData);
 			u.on(PeerEvent.CLOSE, onUClosed);
 			if (offer != null)
 				u.signal(offer.u);
@@ -70,6 +77,7 @@ class Connection {
 			rReady = true;
 			onChannelReady(rReady, uReady);
 		});
+		r.on(PeerEvent.DATA, onRData);
 		r.on(PeerEvent.CLOSE, onRClosed);
 		if (offer != null)
 			r.signal(offer.r);
@@ -80,12 +88,35 @@ class Connection {
 		u.signal(data.u);
 	}
 	
-	function onRClosed():Void {
+	public function destroy():Void {
+		r.destroy();
+		u.destroy();
+	}
+	
+	function onRData(data:Dynamic):Void {
+		if (onRDataCB != null)
+			onRDataCB(data);
 		
+		if (onDataCB != null)
+			onDataCB(data);
+	}
+	
+	function onUData(data:Dynamic):Void {
+		if (onUDataCB != null)
+			onUDataCB(data);
+		
+		if (onDataCB != null)
+			onDataCB(data);
+	}
+	
+	function onRClosed():Void {
+		if (onChannelClosedCB != null)
+			onChannelClosedCB(true);
 	}
 	
 	function onUClosed():Void {
-		
+		if (onChannelClosedCB != null)
+			onChannelClosedCB(false);
 	}
 	
 }
