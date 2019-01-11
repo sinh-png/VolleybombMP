@@ -1,11 +1,13 @@
 package;
 
 import control.LocalVsController;
+import display.PerfDisplay;
 import display.StateBase;
 import display.game.GameState;
 import display.menu.MenuState;
 import haxe.Timer;
 import js.Browser;
+import net.Connection;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
@@ -19,6 +21,8 @@ class Main extends Sprite {
 	public var state(default, set):StateBase;
 	public var menuState(default, null):MenuState;
 	public var gameState(default, null):GameState;
+	
+	var perfDisplay:PerfDisplay;
 	
 	var prvFrameTime:Float;
 	var deltaTime:Float;
@@ -37,6 +41,9 @@ class Main extends Sprite {
 		
 		var localController = new LocalVsController();
 		gameState.controller = localController;
+		
+		perfDisplay = new PerfDisplay();
+		stage.addChild(perfDisplay);
 		
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		stage.addEventListener(Event.RESIZE, onStageResized);
