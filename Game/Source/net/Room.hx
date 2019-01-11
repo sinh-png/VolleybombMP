@@ -12,10 +12,10 @@ class Room {
 	static var socket:Client;
 	static var roomID:String;
 	
-	public static function create(onRoom:String->Void, onOtherJoined:Connection->Void):Void {
+	public static function create(usesIce:Bool = true, onRoom:String->Void, onOtherJoined:Connection->Void, ?onFailed:String->Void):Void {
 		cancel();
 		
-		var onIceFetched = function(iceServers):Void {
+		var onIce = function(iceServers):Void {
 			http = null;
 			
 			var con:Connection;
@@ -41,7 +41,11 @@ class Room {
 				}
 			);
 		}
-		http = Connection.fetchIceServers(onIceFetched);
+		
+		if (usesIce)
+			http = Connection.fetchIceServers(onIce, onFailed);
+		else
+			onIce(null);
 	}
 	
 	public static function join(roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
