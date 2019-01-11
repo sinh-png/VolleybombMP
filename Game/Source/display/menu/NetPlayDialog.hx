@@ -1,6 +1,6 @@
 package display.menu;
 
-import control.net.Room;
+import net.Room;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.text.TextFormat;

@@ -1,4 +1,4 @@
-package control.net;
+package net;
 
 import control.GameControllerBase;
 import control.input.InputControllerBase;

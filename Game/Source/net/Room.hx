@@ -1,4 +1,4 @@
-package control.net;
+package net;
 
 import haxe.Http;
 import haxe.Resource;

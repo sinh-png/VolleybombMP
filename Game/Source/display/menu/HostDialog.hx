@@ -1,7 +1,7 @@
 package display.menu;
 
-import control.net.Connection;
-import control.net.Room;
+import net.Connection;
+import net.Room;
 import display.common.CommonButton;
 import js.Browser;
 import openfl.display.Sprite;
