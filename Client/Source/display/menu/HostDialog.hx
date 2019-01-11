@@ -10,10 +10,7 @@ import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 
-class HostDialog extends Sprite {
-	
-	var waitingFrame:Sprite;
-	var waitingText:TextField;
+class HostDialog extends NetPlayDialog {
 	
 	var infoFrame:Sprite;
 	var codeLabel:TextField;
@@ -27,31 +24,8 @@ class HostDialog extends Sprite {
 	public function new() {
 		super();
 		
-		var paddingX = 10;
-		var paddingY = 10;
-		
-		waitingFrame = new Sprite();
-		addChild(waitingFrame);
-		
-		waitingText = createText(new TextFormat(R.defaultFont, 30, 0xFFFFFF), "CREATING GAME... PLEASE WAIT...");
-		waitingText.x = paddingX;
-		waitingText.y = paddingY;
-		waitingText.mouseEnabled = false;
-		waitingFrame.addChild(waitingText);
-		
-		var bgWidth = waitingText.width + waitingText.x * 2;
-		var bgHeight = waitingText.height + waitingText.y * 2;
-		
-		var g = waitingFrame.graphics;
-		g.beginFill(0x0, 0.9);
-		g.drawRoundRect(0, 0, bgWidth, bgHeight, 8, 8); 
-		g.endFill();
-		
-		//
-		
 		var spacingSmall = 3;
 		var spacingBig = 24;
-		paddingX = paddingY = 20;
 		
 		infoFrame = new Sprite();
 		addChild(infoFrame);
@@ -90,17 +64,17 @@ class HostDialog extends Sprite {
 		urlCopyButton.y = urlField.y;
 		infoFrame.addChild(urlCopyButton);
 		
-		bgWidth = codeCopyButton.x + codeCopyButton.width + paddingX;
+		var bgWidth = codeCopyButton.x + codeCopyButton.width + paddingX;
 		
-		cancelButton = new CommonButton(new TextFormat(R.defaultFont, 18, 0xFFFFFF, true), "CANCEL", 70, 42, 0x4684F1);
+		cancelButton = new CommonButton(new TextFormat(R.defaultFont, 18, 0xFFFFFF, true), "CANCEL", 70, 40, 0x4684F1);
 		cancelButton.x = (bgWidth - cancelButton.width) / 2;
 		cancelButton.y = (urlCopyButton.y + urlCopyButton.height) + spacingBig;
 		cancelButton.onClickCB = function(_) close();
 		infoFrame.addChild(cancelButton);
 		
-		bgHeight = cancelButton.y + cancelButton.height + paddingY;
+		var bgHeight = cancelButton.y + cancelButton.height + paddingY;
 		
-		g = infoFrame.graphics;
+		var g = infoFrame.graphics;
 		g.beginFill(0x0, 0.9);
 		g.drawRoundRect(0, 0, bgWidth, bgHeight, 8, 8);
 		
@@ -124,12 +98,6 @@ class HostDialog extends Sprite {
 		Main.instance.menuState.menu.visible = false;
 	}
 	
-	function close():Void {
-		Room.cancel();
-		visible = false;
-		Main.instance.menuState.menu.visible = true;
-	}
-	
 	function onRoom(id:String):Void {
 		codeField.text = id;
 		var href = Browser.location.href;
@@ -142,22 +110,8 @@ class HostDialog extends Sprite {
 	}
 	
 	function onOtherJoined(con:Connection):Void {
-		
-	}
-	
-	function createText(format:TextFormat, text:String):TextField {
-		var textField = new TextField();
-		textField.defaultTextFormat = format;
-		textField.text = text;
-		textField.width = textField.textWidth + 4;
-		textField.height = textField.textHeight + 4;
-		return textField;
-	}
-	
-	function center(frame:Sprite):Void {
-		var state = Main.instance.menuState;
-		x = (state.baseWidth - frame.width) / 2;
-		y = (state.baseHeight - frame.height) / 2;
+		trace('joined');
+		close();
 	}
 	
 }

@@ -8,7 +8,7 @@ import openfl.text.TextFormat;
 import openfl.ui.Mouse;
 import openfl.ui.MouseCursor;
 
-class MainMenu extends Sprite {
+class MenuDialog extends Sprite {
 	
 	static inline var VS_COMP = "Vs Comp";
 	static inline var VS_LOCAL = "2 Players Local";
@@ -74,6 +74,7 @@ class MainMenu extends Sprite {
 				Main.instance.menuState.hostDialog.host();
 				
 			case JOIN:
+				Main.instance.menuState.guestDialog.show();
 				
 		}
 	}
