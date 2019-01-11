@@ -36,6 +36,8 @@ class Connection {
 	
 	//
 	
+	public var autoPing(default, null):Bool;
+	public var lastLatency(default, null):Int = -1;
 	public var onPing:Int->Void;
 	
 	public var rReady(default, null):Bool = false;
@@ -52,7 +54,7 @@ class Connection {
 	
 	var listeners:IntMap<ByteArray->Void> = new IntMap<ByteArray->Void>();
 	
-	public function new(offer:ConnectionSignal, iceServers:Dynamic, onSignalReady:ConnectionSignal->Void, onReady:Void->Void) {
+	public function new(offer:ConnectionSignal, iceServers:Dynamic, onSignalReady:ConnectionSignal->Void, onReady:Void->Void, autoPing:Bool = true) {
 		var baseOptions:PeerOptions = {
 			initiator: offer == null,
 			trickle: false
@@ -77,6 +79,7 @@ class Connection {
 				uReady = true;
 				if (rReady && uReady) {
 					instance = this;
+					this.onReady();
 					onReady();
 				}
 			});
@@ -91,15 +94,7 @@ class Connection {
 		if (offer != null)
 			r.signal(offer.r);
 		
-		//
-		
-		listen(PING_REQ_HEADER, function(_) {
-			Sendable.n(PING_RES_HEADER).send();
-		});
-		listen(PING_RES_HEADER, function(_) {
-			if (onPing != null)
-				onPing(Math.round((Timer.stamp() - _pingTimestamp) * 1000));
-		});
+		this.autoPing = autoPing;
 	}
 	
 	public function signal(data:ConnectionSignal):Void {
@@ -130,6 +125,22 @@ class Connection {
 	public function ping():Void {
 		_pingTimestamp = Timer.stamp();
 		Sendable.n(PING_REQ_HEADER).send();
+	}
+	
+	function onReady():Void {
+		listen(PING_REQ_HEADER, function(_) {
+			Sendable.n(PING_RES_HEADER).send();
+		});
+		listen(PING_RES_HEADER, function(_) {
+			lastLatency = Math.round((Timer.stamp() - _pingTimestamp) * 1000);
+			if (onPing != null)
+				onPing(lastLatency);
+			if (autoPing)
+				ping();
+		});
+		
+		if (autoPing)
+			ping();
 	}
 	
 	function onData(data:Dynamic):Void {
