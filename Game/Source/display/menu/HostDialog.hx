@@ -92,7 +92,7 @@ class HostDialog extends NetPlayDialog {
 	}
 
 	public function host():Void {
-		Room.create(onRoom, onOtherJoined);
+		Room.create(false, onRoom, onGuestJoined);
 		center(waitingFrame);
 		waitingFrame.visible = visible = true;
 		infoFrame.visible = false;
@@ -110,7 +110,7 @@ class HostDialog extends NetPlayDialog {
 		infoFrame.visible = true;
 	}
 	
-	function onOtherJoined(con:Connection):Void {
+	function onGuestJoined(con:Connection):Void {
 		trace('joined');
 		close();
 	}

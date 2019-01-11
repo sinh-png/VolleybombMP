@@ -12,7 +12,7 @@ class Room {
 	static var socket:Client;
 	static var roomID:String;
 	
-	public static function create(usesIce:Bool = true, onRoom:String->Void, onOtherJoined:Connection->Void, ?onFailed:String->Void):Void {
+	public static function create(usesIce:Bool = true, onRoom:String->Void, onGuestJoined:Connection->Void, ?onFailed:String->Void):Void {
 		cancel();
 		
 		var onIce = function(iceServers):Void {
@@ -35,7 +35,7 @@ class Room {
 					socket.disconnect();
 					socket = null;
 					roomID = null;
-					onOtherJoined(con);
+					onGuestJoined(con);
 				}
 			);
 		}

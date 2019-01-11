@@ -44,11 +44,11 @@ class Connection {
 	public var uReady(default, null):Bool = false;
 	
 	/**
-	   Reliable TCP-like channel.
+	   TCP-like channel.
 	**/
 	var r:Peer;
 	/**
-	   Unreliable UDP-like channel.
+	   UDP-like channel.
 	**/
 	var u:Peer;
 	
@@ -149,7 +149,7 @@ class Connection {
 		if (listeners.exists(header))
 			listeners.get(header)(bytes);
 		else
-			trace('received data with header $header with no listener.');
+			trace('Received data with header $header without listener.');
 	}
 	
 	function onRClosed():Void {
