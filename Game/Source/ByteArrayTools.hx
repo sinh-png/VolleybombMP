@@ -8,11 +8,11 @@ class ByteArrayTools {
 	
 	static var pool:Array<ByteArray> = [];
 
-	public static function get():ByteArray {
+	public static inline function get():ByteArray {
 		return pool.length > 0 ? pool.pop() : new ByteArray();
 	}
 	
-	public static function put(bytes:ByteArray):Void {
+	public static inline function put(bytes:ByteArray):Void {
 		bytes.clear();
 		pool.push(bytes);
 	}
