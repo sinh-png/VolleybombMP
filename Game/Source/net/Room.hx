@@ -30,6 +30,7 @@ class Room {
 						con.signal(answer);
 					});
 					socket.emit(RoomEvent.CREATE, offer);
+					handleSocketErrors(onFailed);
 				},
 				function () {
 					socket.disconnect();
@@ -71,6 +72,14 @@ class Room {
 				trace('Room $roomID does not exist.');
 		});
 		socket.emit(RoomEvent.JOIN, roomID);
+		handleSocketErrors(onFailed);
+	}
+	
+	static function handleSocketErrors(handler:String->Void):Void {
+		var onError = handler != null ? handler : function(error) trace(error);
+		socket.on('error', onError);
+		socket.on('connect_error', onError);
+		socket.on('connect_timeout', onError);
 	}
 	
 	public static function cancel():Void {
