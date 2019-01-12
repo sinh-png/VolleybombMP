@@ -20,7 +20,7 @@ class Connection {
 	static inline var PONG_HEADER = -121;
 	
 	public static function fetchIceServers(onSuccess:Dynamic->Void, ?onFailed:String->Void):Http {
-		var http = new Http(Resource.getString('ServerURL') +':${Port.EXPRESS}/iceServers');
+		var http = new Http(Resource.getString('LobbyURL') +':${Port.EXPRESS}/iceServers');
 		http.onData = function(data:String) {
 			onSuccess(Json.parse(data));
 		};

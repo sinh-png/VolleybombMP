@@ -21,7 +21,7 @@
 	<!--define name="forceRelay" /-->
 	<define name="localTest" /> <!-- Don't fetch ICEs & set connection.delay to 0.075 -->
 	
-	<haxeflag name="-resource" value="ServerURL.txt@ServerURL" />
+	<haxeflag name="-resource" value="LobbyURL.txt@LobbyURL" />
 	
 	<assets path="Assets" />
 	
