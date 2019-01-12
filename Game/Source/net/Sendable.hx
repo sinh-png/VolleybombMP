@@ -18,8 +18,26 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 		this.writeByte(header);
 	}
 	
+	public inline function bool(value:Bool):Sendable {
+		this.writeBoolean(value);
+		return this;
+	}
+	
+	public inline function bools(values:Array<Bool>):Sendable {
+		for (value in values)
+			this.writeBoolean(value);
+		return this;
+	}
+	
 	public inline function byte(value:Int):Sendable {
 		this.writeByte(value);
+		return this;
+		
+	}
+	
+	public inline function bytes(values:Array<Int>):Sendable {
+		for (value in values)
+			this.writeByte(value);
 		return this;
 	}
 	
@@ -28,8 +46,20 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 		return this;
 	}
 	
+	public inline function shorts(values:Array<Int>):Sendable {
+		for (value in values)
+			this.writeShort(value);
+		return this;
+	}
+	
 	public inline function int(value:Int):Sendable {
 		this.writeInt(value);
+		return this;
+	}
+	
+	public inline function ints(values:Array<Int>):Sendable {
+		for (value in values)
+			this.writeInt(value);
 		return this;
 	}
 	
@@ -38,8 +68,20 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 		return this;
 	}
 	
+	public inline function uints(values:Array<Int>):Sendable {
+		for (value in values)
+			this.writeUnsignedInt(value);
+		return this;
+	}
+	
 	public inline function float(value:Float):Sendable {
 		this.writeFloat(value);
+		return this;
+	}
+	
+	public inline function floats(values:Array<Float>):Sendable {
+		for (value in values)
+			this.writeFloat(value);
 		return this;
 	}
 	
@@ -48,8 +90,9 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 		return this;
 	}
 	
-	public inline function bool(value:Bool):Sendable {
-		this.writeBoolean(value);
+	public inline function doubles(values:Array<Float>):Sendable {
+		for (value in values)
+			this.writeDouble(value);
 		return this;
 	}
 	
@@ -58,8 +101,20 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 		return this;
 	}
 	
-	public inline function object(value:Dynamic):Sendable {
+	public inline function utfs(values:Array<String>):Sendable {
+		for (value in values)
+			this.writeUTF(value);
+		return this;
+	}
+	
+	public inline function obj(value:Dynamic):Sendable {
 		this.writeObject(value);
+		return this;
+	}
+	
+	public inline function objs(values:Array<Dynamic>):Sendable {
+		for (value in values)
+			this.writeObject(value);
 		return this;
 	}
 	
