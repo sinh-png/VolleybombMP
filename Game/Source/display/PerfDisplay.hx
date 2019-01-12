@@ -43,8 +43,9 @@ class PerfDisplay extends DisplayObjectContainer {
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 	
-	// copied from import openfl.display.FPS
 	function onEnterFrame(event:Event):Void {
+		// copied from openfl.display.FPS
+		
 		var currentTime = Timer.stamp();
 		times.push(currentTime);
 		
@@ -56,9 +57,12 @@ class PerfDisplay extends DisplayObjectContainer {
 		
 		if (currentCount != cacheCount)
 			fpsText.text = "FPS: " + currentFPS;
-		latencyText.text = "Latency: " + (Connection.instance == null || Connection.instance.lastLatency < 0 ? "---" : Connection.instance.lastLatency);
 		
 		cacheCount = currentCount;
+		
+		//
+		
+		latencyText.text = "Latency: " + (Connection.instance == null || Connection.instance.lastLatency < 0 ? "---" : Math.round(Connection.instance.lastLatency * 1000));
 	}
 	
 }

@@ -1,14 +1,17 @@
 package display.game;
 
-import display.game.PlayerDisplay;
+import control.Physics;
+import display.game.PlayerTile;
 import openfl.display.Tile;
 import openfl.display.TileContainer;
 import openfl.display.Tilemap;
 
 class GameTilemap extends Tilemap {
 	
-	public var leftPlayer(default, null):PlayerDisplay;
-	public var rightPlayer(default, null):PlayerDisplay;
+	public var leftPlayer(default, null):PlayerTile;
+	public var rightPlayer(default, null):PlayerTile;
+	public var ball(default, null):BombTile;
+	public var fence(default, null):Tile;
 	
 	var atlas:Atlas;
 
@@ -20,7 +23,6 @@ class GameTilemap extends Tilemap {
 	var clouds:Array<Tile> = [];
 	var cloudsPool:Array<Tile> = [];
 	
-	var fence:FenceDisplay;
 	
 	public function new(width:Int, height:Int, atlas:Atlas) {
 		super(width, height, this.atlas = atlas);
@@ -35,10 +37,16 @@ class GameTilemap extends Tilemap {
 		
 		initPlayers();
 		
-		fence = new FenceDisplay(atlas);
-		fence.x = (width - fence.width) / 2;
-		//fence.y = GROUND_Y - fence.height;
-		//addTile(fence);
+		ball = new BombTile(atlas);
+		addTile(ball);
+		
+		fence = new Tile(atlas.getID('Fence.png'));
+		var rect = atlas.getRect(fence.id);
+		fence.originX = rect.width / 2;
+		fence.originY = rect.height / 2;
+		fence.x = width / 2;
+		fence.y = Physics.GROUND_Y - fence.originY;
+		addTile(fence);
 		
 		foreground = new Tile(atlas.getID('Foreground.png'));
 		addTile(foreground);
@@ -52,14 +60,10 @@ class GameTilemap extends Tilemap {
 	}
 	
 	inline function initPlayers():Void {
-		leftPlayer = new PlayerDisplay(true, atlas);
-		//leftPlayer.x = 100;
-		//leftPlayer.y = GROUND_Y - leftPlayer.height;
+		leftPlayer = new PlayerTile(true, atlas);
 		addTile(leftPlayer);
 		
-		rightPlayer = new PlayerDisplay(false, atlas);
-		//rightPlayer.x = width - leftPlayer.x - rightPlayer.width;
-		//rightPlayer.y = leftPlayer.y;
+		rightPlayer = new PlayerTile(false, atlas);
 		addTile(rightPlayer);
 	}
 	
@@ -67,7 +71,7 @@ class GameTilemap extends Tilemap {
 		updateClouds(delta);
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
-		fence.update(delta);
+		ball.update(delta);
 	}
 	
 	inline function updateClouds(delta:Float):Void {

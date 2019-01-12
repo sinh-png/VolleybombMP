@@ -65,10 +65,10 @@ class MenuDialog extends Sprite {
 	function onButtonClicked(mode:String):Void {
 		switch(mode) {
 			case VS_COMP:
-				Main.instance.gameState.activate(GameMode.LOCAL(true));
+				//Main.instance.gameState.activate();
 				
 			case VS_LOCAL:
-				Main.instance.gameState.activate(GameMode.LOCAL(false));
+				Main.instance.gameState.activate(Main.instance.localController);
 			
 			case HOST:
 				Main.instance.menuState.hostDialog.host();

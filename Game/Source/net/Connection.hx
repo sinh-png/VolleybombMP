@@ -37,15 +37,18 @@ class Connection {
 	//
 	
 	public var autoPing(default, null):Bool;
-	public var lastLatency(default, null):Int = -1;
-	public var onPingCB:Int->Void;
+	public var lastLatency(default, null):Float = -1; // in seconds
+	public var onPingCB:Float->Void;
 	
-	public var onDestroyedCB:Void->Void;
+	/**
+		The seconds to delay listeners to simulate latency for testing.
+	**/
+	public var delay:Float = 0.05;
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
-	
 	public var destroyed(default, null):Bool = false;
+	public var onDestroyedCB:Void->Void;
 	
 	/**
 	   TCP-like channel.
@@ -104,7 +107,7 @@ class Connection {
 			Sendable.n(PONG_HEADER).send();
 		});
 		listen(PONG_HEADER, function(_) {
-			lastLatency = Math.round((Timer.stamp() - _pingTimestamp) * 1000);
+			lastLatency = Timer.stamp() - _pingTimestamp;
 			if (onPingCB != null)
 				onPingCB(lastLatency);
 			if (this.autoPing)
@@ -170,13 +173,19 @@ class Connection {
 	function onData(data:Dynamic):Void {
 		var bytes = ByteArrayTools.fromArrayBuffer(data);
 		var header = bytes.readByte();
-		if (listeners.exists(header))
-			listeners.get(header)(bytes);
-		else
+		if (listeners.exists(header)) {
+			if (delay <= 0)
+				listeners.get(header)(bytes);
+			else
+				Timer.delay(function() listeners.get(header)(bytes), Math.round(delay * 1000));
+		} else {
 			trace('Error: Received data with header $header without listener.');
+		}
 	}
 	
 	function onRClosed():Void {
+		lastLatency = -1;
+		
 		rReady = false;
 		if (!uReady)
 			destroy();

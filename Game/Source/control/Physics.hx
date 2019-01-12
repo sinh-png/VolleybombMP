@@ -8,6 +8,7 @@ import nape.geom.Vec2;
 import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.phys.Material;
+import nape.shape.Circle;
 import nape.shape.Polygon;
 import nape.space.Space;
 
@@ -23,6 +24,7 @@ class Physics {
 	public static var space(default, null):Space;
 	public static var leftPlayer(default, null):Body;
 	public static var rightPlayer(default, null):Body;
+	public static var bomb(default, null):Body;
 	
 	public static function init():Void {
 		space = new Space(Vec2.weak(0, 400));
@@ -34,6 +36,8 @@ class Physics {
 		));
 		
 		initPlayers();
+		initBall();
+		initFence();
 		initWalls();
 	}
 	
@@ -54,14 +58,32 @@ class Physics {
 	}
 	static function processPlayer(left:Bool):Void {
 		var body = left ? leftPlayer : rightPlayer;
-		var display = left ? Main.instance.gameState.tilemap.leftPlayer : Main.instance.gameState.tilemap.rightPlayer;
+		var tile = left ? Main.instance.gameState.tilemap.leftPlayer : Main.instance.gameState.tilemap.rightPlayer;
 		var material = new Material(0.75, 5, 5, 10, 0);
-		body.translateShapes(Vec2.weak( -display.originX, display.originY));
+		body.translateShapes(Vec2.weak( -tile.originX, tile.originY));
 		body.setShapeMaterials(material);
 		body.gravMass = 100;
 		body.allowRotation = false;
 		body.cbTypes.add(cbTypePassthrough);
 		body.space = space;
+	}
+	
+	static function initBall():Void {
+		bomb = new Body();
+		bomb.shapes.push(new Circle(20, null, Material.rubber()));
+		bomb.gravMass = 1;
+		bomb.allowRotation = true;
+		bomb.space = space;
+	}
+	
+	static function initFence():Void {
+		var tile = Main.instance.gameState.tilemap.fence;
+		var fence = new Body(BodyType.STATIC, new Vec2(tile.x, tile.y));
+		fence.shapes.add(new Polygon(Polygon.box(136 - 50, 218 - 40)));
+		fence.shapes.add(new Circle(45, new Vec2(0, -60)));
+		fence.setShapeMaterials(Material.rubber());
+		fence.cbTypes.add(cbTypeWall);
+		fence.space = space;
 	}
 	
 	static function initWalls():Void {
@@ -81,6 +103,9 @@ class Physics {
 		wall.space = space;
 	}
 	
-	public static inline function step(delta:Float) space.step(delta);
+	public static inline function step(delta:Float):Void {
+		var interations = Math.ceil((delta / (1 / 60)) * 10);
+		space.step(delta, interations, interations);
+	}
 	
 }

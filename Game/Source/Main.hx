@@ -1,7 +1,9 @@
 package;
 
-import control.LocalController;
 import control.Physics;
+import control.local.LocalController;
+import control.net.guest.GuestController;
+import control.net.host.HostController;
 import display.PerfDisplay;
 import display.StateBase;
 import display.game.GameState;
@@ -22,6 +24,10 @@ class Main extends Sprite {
 	public var menuState(default, null):MenuState;
 	public var gameState(default, null):GameState;
 	
+	public var localController(default, null):LocalController;
+	public var hostController(default, null):HostController;
+	public var guestController(default, null):GuestController;
+	
 	var perfDisplay:PerfDisplay;
 	
 	var prvFrameTime:Float;
@@ -41,8 +47,9 @@ class Main extends Sprite {
 		
 		Physics.init();
 		
-		var localController = new LocalController();
-		gameState.controller = localController;
+		localController = new LocalController();
+		hostController = new HostController();
+		guestController = new GuestController();
 		
 		perfDisplay = new PerfDisplay();
 		stage.addChild(perfDisplay);

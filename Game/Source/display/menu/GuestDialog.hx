@@ -78,8 +78,7 @@ class GuestDialog extends NetPlayDialog {
 	}
 	
 	function onJoinSuccess(con:Connection):Void {
-		trace('joined');
-		close();
+		Main.instance.gameState.activate(Main.instance.guestController);
 	}
 	
 	function onJoinFailed(error:String):Void {

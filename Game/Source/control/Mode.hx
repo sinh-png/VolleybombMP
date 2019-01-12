@@ -1,6 +1,6 @@
-package;
+package control;
 
-enum GameMode {
+enum Mode {
 	
 	LOCAL(vsAI:Bool);
 	ONLINE(host:Bool);

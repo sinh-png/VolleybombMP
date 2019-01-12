@@ -1,10 +1,10 @@
-package control.player;
+package control.local;
 
-import control.player.PlayerControllerBase;
+import control.PlayerController;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
 
-class LocalPlayer extends PlayerControllerBase {
+class LocalPlayer extends PlayerController {
 	
 	var keyWPressed:Bool;
 	var keyAPressed:Bool;
@@ -91,15 +91,15 @@ class LocalPlayer extends PlayerControllerBase {
 		
 		direction = {
 			if (left) {
-				if (keyAPressed && keyDPressed)  Direction.NONE;
-				else if (keyAPressed) 			 Direction.BACKWARD;
-				else if (keyDPressed) 			 Direction.FORWARD;
-				else 							 Direction.NONE;
+				if (keyAPressed && keyDPressed)  PlayerHDirection.NONE;
+				else if (keyAPressed) 			 PlayerHDirection.BACKWARD;
+				else if (keyDPressed) 			 PlayerHDirection.FORWARD;
+				else 							 PlayerHDirection.NONE;
 			} else {
-				if (leftPressed && rightPressed) Direction.NONE;
-				else if (rightPressed) 			 Direction.BACKWARD;
-				else if (leftPressed) 			 Direction.FORWARD;
-				else 							 Direction.NONE;
+				if (leftPressed && rightPressed) PlayerHDirection.NONE;
+				else if (rightPressed) 			 PlayerHDirection.BACKWARD;
+				else if (leftPressed) 			 PlayerHDirection.FORWARD;
+				else 							 PlayerHDirection.NONE;
 			}
 		}
 	}

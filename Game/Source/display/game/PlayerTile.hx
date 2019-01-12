@@ -1,6 +1,6 @@
 package display.game;
 
-class PlayerDisplay extends AnimatedTile {
+class PlayerTile extends AnimatedTile {
 
 	public var width(default, null):Float;
 	public var height(default, null):Float;
