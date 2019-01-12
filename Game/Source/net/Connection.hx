@@ -119,6 +119,10 @@ class Connection {
 		});
 		
 		this.autoPing = autoPing;
+		
+		#if (localTest && !forceRelay)
+		delay = 0.075;
+		#end
 	}
 	
 	public function signal(data:ConnectionSignal):Void {

@@ -17,6 +17,8 @@ class Room {
 		
 		#if forceRelay
 		fetchsIce = true;
+		#elseif localTest
+		fetchsIce = false;
 		#end
 		
 		var onIce = function(iceServers):Void {

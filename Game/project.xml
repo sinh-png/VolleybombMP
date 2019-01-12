@@ -18,7 +18,8 @@
 	<dependency path="node_modules/socket.io-client/dist/socket.io.js" />
 	<dependency path="Libs/simplepeer.min.js" />
 	<define name="standalone" />
-	<define name="forceRelay" />
+	<!--define name="forceRelay" /-->
+	<define name="localTest" /> <!-- Don't fetch ICEs & set connection.delay to 0.075 -->
 	
 	<haxeflag name="-resource" value="ServerURL.txt@ServerURL" />
 	
