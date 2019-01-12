@@ -43,7 +43,7 @@ class Connection {
 	/**
 		The seconds to delay listeners to simulate latency for testing.
 	**/
-	public var delay:Float = 0.05;
+	public var delay:Float = 0;
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
@@ -66,8 +66,12 @@ class Connection {
 			initiator: offer == null,
 			trickle: false
 		}
-		if (iceServers != null)
+		if (iceServers != null) {
 			baseOptions.config = { iceServers: iceServers };
+			#if forceRelay
+			baseOptions.config.iceTransportPolicy = "relay";
+			#end
+		}
 		
 		var rOptions = Reflect.copy(baseOptions);
 		rOptions.channelName = 'reliable';

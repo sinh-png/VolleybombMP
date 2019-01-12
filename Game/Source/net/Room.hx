@@ -12,8 +12,12 @@ class Room {
 	static var socket:Client;
 	static var roomID:String;
 	
-	public static function create(usesIce:Bool = true, onRoom:String->Void, onGuestJoined:Connection->Void, ?onFailed:String->Void):Void {
+	public static function create(fetchsIce:Bool = true, onRoom:String->Void, onGuestJoined:Connection->Void, ?onFailed:String->Void):Void {
 		cancel();
+		
+		#if forceRelay
+		fetchsIce = true;
+		#end
 		
 		var onIce = function(iceServers):Void {
 			http = null;
@@ -41,7 +45,7 @@ class Room {
 			);
 		}
 		
-		if (usesIce)
+		if (fetchsIce)
 			http = Connection.fetchIceServers(onIce, onFailed);
 		else
 			onIce(null);

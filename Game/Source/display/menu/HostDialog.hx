@@ -92,7 +92,7 @@ class HostDialog extends NetPlayDialog {
 	}
 
 	public function host():Void {
-		Room.create(false, onRoom, onGuestJoined, onFailed);
+		Room.create(true, onRoom, onGuestJoined, onFailed);
 		center(waitingFrame);
 		waitingFrame.visible = visible = true;
 		infoFrame.visible = false;

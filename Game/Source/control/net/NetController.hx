@@ -15,7 +15,7 @@ class NetController extends GameController {
 	var host:Bool;
 
 	public function new(host:Bool, leftPlayer:PlayerController, rightPlayer:PlayerController) {
-		super(Mode.ONLINE(host), leftPlayer, rightPlayer);
+		super(Mode.NET(host), leftPlayer, rightPlayer);
 		if (this.host = host) {
 			localPlayer = rightPlayer;
 			remotePlayer = cast leftPlayer;
