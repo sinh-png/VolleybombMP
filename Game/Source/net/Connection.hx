@@ -16,8 +16,8 @@ class Connection {
 	
 	//
 	
-	static inline var PING_REQ_HEADER = -120;
-	static inline var PING_RES_HEADER = -121;
+	static inline var PING_HEADER = -120;
+	static inline var PONG_HEADER = -121;
 	
 	public static function fetchIceServers(onSuccess:Dynamic->Void, ?onFailed:String->Void):Http {
 		var http = new Http(Resource.getString('ServerURL') +':${Port.EXPRESS}/iceServers');
@@ -38,10 +38,14 @@ class Connection {
 	
 	public var autoPing(default, null):Bool;
 	public var lastLatency(default, null):Int = -1;
-	public var onPing:Int->Void;
+	public var onPingCB:Int->Void;
+	
+	public var onDestroyedCB:Void->Void;
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
+	
+	public var destroyed(default, null):Bool = false;
 	
 	/**
 	   TCP-like channel.
@@ -85,14 +89,27 @@ class Connection {
 			});
 			u.on(PeerEvent.DATA, onData);
 			u.on(PeerEvent.CLOSE, onUClosed);
+			u.on(PeerEvent.ERROR, onUErrror);
 			if (offer != null)
 				u.signal(offer.u);
 		});
 		r.on(PeerEvent.CONNECT, function() rReady = true);
 		r.on(PeerEvent.DATA, onData);
 		r.on(PeerEvent.CLOSE, onRClosed);
+		r.on(PeerEvent.ERROR, onRError);
 		if (offer != null)
 			r.signal(offer.r);
+		
+		listen(PING_HEADER, function(_) {
+			Sendable.n(PONG_HEADER).send();
+		});
+		listen(PONG_HEADER, function(_) {
+			lastLatency = Math.round((Timer.stamp() - _pingTimestamp) * 1000);
+			if (onPingCB != null)
+				onPingCB(lastLatency);
+			if (this.autoPing)
+				ping();
+		});
 		
 		this.autoPing = autoPing;
 	}
@@ -103,8 +120,26 @@ class Connection {
 	}
 	
 	public function destroy():Void {
+		if (destroyed)
+			return;
+		
 		r.destroy();
 		u.destroy();
+		r = u = null;
+		
+		onPingCB = null;
+		for (key in listeners.keys())
+			listeners.remove(key);
+		
+		if (instance == this)
+			instance = null;
+		
+		if (onDestroyedCB != null) {
+			onDestroyedCB();
+			onDestroyedCB = null;
+		}
+		
+		destroyed = true;
 	}
 	
 	public inline function send(reliable:Bool, data:Dynamic):Void {
@@ -124,21 +159,10 @@ class Connection {
 	var _pingTimestamp:Float;
 	public function ping():Void {
 		_pingTimestamp = Timer.stamp();
-		Sendable.n(PING_REQ_HEADER).send();
+		Sendable.n(PING_HEADER).send();
 	}
 	
 	function onReady():Void {
-		listen(PING_REQ_HEADER, function(_) {
-			Sendable.n(PING_RES_HEADER).send();
-		});
-		listen(PING_RES_HEADER, function(_) {
-			lastLatency = Math.round((Timer.stamp() - _pingTimestamp) * 1000);
-			if (onPing != null)
-				onPing(lastLatency);
-			if (autoPing)
-				ping();
-		});
-		
 		if (autoPing)
 			ping();
 	}
@@ -149,19 +173,27 @@ class Connection {
 		if (listeners.exists(header))
 			listeners.get(header)(bytes);
 		else
-			trace('Received data with header $header without listener.');
+			trace('Error: Received data with header $header without listener.');
 	}
 	
 	function onRClosed():Void {
 		rReady = false;
-		if (!uReady && instance == this)
-			instance = null;
+		if (!uReady)
+			destroy();
 	}
 	
 	function onUClosed():Void {
 		uReady = false;
-		if (!rReady && instance == this)
-			instance = null;
+		if (!rReady)
+			destroy();
+	}
+	
+	function onRError(error:String):Void {
+		trace(error);
+	}
+	
+	function onUErrror(error:String):Void {
+		trace(error);
 	}
 	
 }
