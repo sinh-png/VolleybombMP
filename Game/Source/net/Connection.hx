@@ -41,9 +41,13 @@ class Connection {
 	public var onPingCB:Float->Void;
 	
 	/**
-		The seconds to delay listeners to simulate latency for testing.
+		The minimum milliseconds to delay listeners to simulate latency for testing.
 	**/
-	public var delay:Float = 0;
+	public var minDelay:Int = 0;
+	/**
+		The maximum milliseconds to delay listeners to simulate latency for testing.
+	**/
+	public var maxDelay:Int = 0;
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
@@ -121,7 +125,8 @@ class Connection {
 		this.autoPing = autoPing;
 		
 		#if (localTest && !forceRelay)
-		delay = 0.075;
+		minDelay = 75;
+		maxDelay = 100;
 		#end
 	}
 	
@@ -182,10 +187,11 @@ class Connection {
 		var bytes = ByteArrayTools.fromArrayBuffer(data);
 		var header = bytes.readByte();
 		if (listeners.exists(header)) {
+			var delay = Math.round(minDelay + Math.random() * (maxDelay - minDelay));
 			if (delay <= 0)
 				listeners.get(header)(bytes);
 			else
-				Timer.delay(function() listeners.get(header)(bytes), Math.round(delay * 1000));
+				Timer.delay(function() listeners.get(header)(bytes), delay);
 		} else {
 			trace('Error: Received data with header $header without listener.');
 		}
