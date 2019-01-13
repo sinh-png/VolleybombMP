@@ -13,6 +13,9 @@ class NetController extends GameController {
 	var localPlayer:PlayerController;
 	var remotePlayer:RemotePlayer;
 	var host:Bool;
+	
+	var lastSentPackageID:UInt;
+	var lastReceivedPackageID:UInt;
 
 	public function new(host:Bool, leftPlayer:PlayerController, rightPlayer:PlayerController) {
 		super(Mode.NET(host), leftPlayer, rightPlayer);
@@ -31,6 +34,9 @@ class NetController extends GameController {
 		con = Connection.instance;
 		con.listen(Header.PLAYER, onReceivePlayer);
 		con.listen(Header.PLAYER_BALL, onReceivePlayerAndBomb);
+		
+		lastSentPackageID = 1;
+		lastReceivedPackageID = 0;
 	}
 	
 	override function update(delta:Float):Void {
@@ -41,6 +47,7 @@ class NetController extends GameController {
 			(!host && bomb.body.position.x < Physics.SPACE_WIDTH / 2);
 		}
 		var pack = new Sendable(handlingBomb ? Header.PLAYER_BALL : Header.PLAYER);
+		pack.uint(lastSentPackageID++);
 		packBody(pack, localPlayer.body);
 		if (handlingBomb)
 			packBody(pack, bomb.body);
@@ -59,6 +66,12 @@ class NetController extends GameController {
 	}
 	
 	function onReceivePlayer(pack:ByteArray):Void {
+		var packID = pack.readUnsignedInt();
+		if (packID < lastReceivedPackageID)
+			return;
+		
+		lastReceivedPackageID = packID;
+		
 		localPlayer.body.space = null;
 		bomb.body.space = null;
 		
@@ -72,10 +85,15 @@ class NetController extends GameController {
 	}
 	
 	function onReceivePlayerAndBomb(pack:ByteArray):Void {
+		var packID = pack.readUnsignedInt();
+		if (packID < lastReceivedPackageID)
+			return;
+		
+		lastReceivedPackageID = packID;
+		
 		localPlayer.body.space = null;
 		
 		applyBody(pack, remotePlayer.body);
-		
 		var body = bomb.body;
 		var positionX = body.position.x;
 		var positionY = body.position.y;
