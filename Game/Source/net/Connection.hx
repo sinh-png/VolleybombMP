@@ -37,8 +37,9 @@ class Connection {
 	//
 	
 	public var autoPing(default, null):Bool;
-	public var lastLatency(default, null):Float = -1; // in seconds
+	public var pingTimeout:Float = 1; // in seconds
 	public var onPingCB:Float->Void;
+	public var lastLatency(default, null):Float = -1; // in seconds
 	
 	/**
 		The minimum milliseconds to delay listeners to simulate latency for testing.
@@ -111,16 +112,8 @@ class Connection {
 		if (offer != null)
 			r.signal(offer.r);
 		
-		listen(PING_HEADER, function(_) {
-			Sendable.n(PONG_HEADER).send();
-		});
-		listen(PONG_HEADER, function(_) {
-			lastLatency = Timer.stamp() - _pingTimestamp;
-			if (onPingCB != null)
-				onPingCB(lastLatency);
-			if (this.autoPing)
-				ping();
-		});
+		listen(PING_HEADER, onPing);
+		listen(PONG_HEADER, onPong);
 		
 		this.autoPing = autoPing;
 		
@@ -173,14 +166,34 @@ class Connection {
 	}
 	
 	var _pingTimestamp:Float;
+	var _pingTimer:Timer;
 	public function ping():Void {
 		_pingTimestamp = Timer.stamp();
 		Sendable.n(PING_HEADER).send();
+		_pingTimer = Timer.delay(ping, Math.round(pingTimeout * 1000));
 	}
 	
 	function onReady():Void {
 		if (autoPing)
 			ping();
+	}
+	
+	function onPing(bytes:ByteArray):Void {
+		Sendable.n(PONG_HEADER).send();
+	}
+	
+	function onPong(bytes:ByteArray):Void {
+		lastLatency = Timer.stamp() - _pingTimestamp;
+		if (onPingCB != null)
+			onPingCB(lastLatency);
+		
+		if (autoPing)
+			ping();
+		
+		if (_pingTimer != null) {
+			_pingTimer.stop();
+			_pingTimer = null;
+		}
 	}
 	
 	function onData(data:Dynamic):Void {
