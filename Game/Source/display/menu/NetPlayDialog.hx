@@ -13,13 +13,13 @@ class NetPlayDialog extends Sprite {
 	var paddingX:Float = 20;
 	var paddingY:Float = 20;
 
-	public function new() {
+	public function new(waitingMsg:String) {
 		super();
 		
 		waitingFrame = new Sprite();
 		addChild(waitingFrame);
 		
-		waitingText = createText(new TextFormat(R.defaultFont, 30, 0xFFFFFF), "CREATING GAME... PLEASE WAIT...");
+		waitingText = createText(new TextFormat(R.defaultFont, 30, 0xFFFFFF), waitingMsg);
 		waitingText.x = paddingX;
 		waitingText.y = paddingY;
 		waitingText.mouseEnabled = false;

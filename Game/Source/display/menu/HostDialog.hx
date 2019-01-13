@@ -23,7 +23,7 @@ class HostDialog extends NetPlayDialog {
 	var cancelButton:CommonButton;
 
 	public function new() {
-		super();
+		super("CREATING GAME... PLEASE WAIT...");
 		
 		var spacingSmall = 3;
 		var spacingBig = 24;

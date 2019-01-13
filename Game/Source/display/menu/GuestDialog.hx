@@ -17,7 +17,7 @@ class GuestDialog extends NetPlayDialog {
 	var cancelButton:CommonButton;
 	
 	public function new() {
-		super();
+		super("JOINING GAME... PLEASE WAIT...");
 		
 		infoFrame = new Sprite();
 		addChild(infoFrame);
@@ -75,6 +75,8 @@ class GuestDialog extends NetPlayDialog {
 	
 	public function join(roomID:String):Void {
 		Room.join(roomID, onJoinSuccess, onJoinFailed);
+		waitingFrame.visible = true;
+		infoFrame.visible = false;
 	}
 	
 	function onJoinSuccess(con:Connection):Void {

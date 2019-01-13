@@ -81,7 +81,7 @@ class Room {
 		handleSocketErrors(onFailed);
 	}
 	
-	static function createSocket():Client {
+	static inline function createSocket():Client {
 		return new Client(~/^http/i.replace(Resource.getString('LobbyURL'), 'ws'));
 	}
 	
