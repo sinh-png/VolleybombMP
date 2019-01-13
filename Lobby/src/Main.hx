@@ -1,30 +1,30 @@
 package;
 
+import js.Error;
 import js.Lib;
 import js.Node;
 
 class Main  {
 	
-	public static var ALLOWED_ORIGIN(default, never):String = Node.process.env.get('ALLOWED_ORIGIN');
-	
 	static function main() {
-		initExpress();
-		Room.init();
-	}
-	
-	static function initExpress():Void {
-		var express = Lib.require('express')();
-		
-		express.use(Lib.require('cors')({
-			origin: ALLOWED_ORIGIN,
-			optionsSuccessStatus: 200
+		var app = Lib.require('express')();
+		var whitelist = [ 'http://localhost:2000', Node.process.env.get('ALLOWED_ORIGIN') ];
+		app.use(Lib.require('cors')({
+			credentials: true,
+			origin: function(origin, callback:Dynamic) {
+				if (whitelist.indexOf(origin) > -1)
+					callback(null, true);
+				else
+					callback(new Error('Not allowed by CORS'));
+			}
 		}));
 		
-		express.get('/iceServers', IceExpress.handler);
+		app.get('/iceServers', IceExpress.handler);
 		
-		express.listen(Port.EXPRESS, function (error) {
-			trace(error != null ? 'Failed to start web server: $error' : 'Started web server on port: ${Port.EXPRESS}');
-		});
+		var server = Lib.require('http').Server(app);
+		var port = Node.process.env.exists('PORT') ? Std.parseInt(Node.process.env.get('PORT')) : 5000;
+		server.listen(port, function () trace('Started web server on port: $port'));
+		Room.init(server);
 	}
-
+	
 }

@@ -27,7 +27,7 @@ class Room {
 			var con:Connection;
 			con = new Connection(null, iceServers,
 				function(offer) {
-					socket = new Client(Resource.getString('LobbyURL') + ':' + Port.SOCKET);
+					socket = createSocket();
 					socket.on(RoomEvent.ROOM, function(id) {
 						roomID = id;
 						onRoom(roomID);
@@ -56,7 +56,7 @@ class Room {
 	public static function join(roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
 		cancel();
 		
-		socket = new Client(Resource.getString('LobbyURL') + ':' + Port.SOCKET);
+		socket = createSocket();
 		socket.on(RoomEvent.OFFER, function(offer) {
 			var con:Connection;
 			con = new Connection(offer, null,
@@ -79,6 +79,10 @@ class Room {
 		});
 		socket.emit(RoomEvent.JOIN, roomID);
 		handleSocketErrors(onFailed);
+	}
+	
+	static function createSocket():Client {
+		return new Client(~/^http/i.replace(Resource.getString('LobbyURL'), 'ws'));
 	}
 	
 	static function handleSocketErrors(handler:String->Void):Void {
