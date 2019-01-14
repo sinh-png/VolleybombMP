@@ -1,5 +1,7 @@
 package;
 
+import control.GameController;
+import control.Mode;
 import control.Physics;
 import control.local.LocalController;
 import control.net.guest.GuestController;
@@ -14,16 +16,20 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 
 @:access(display.StateBase)
+@:access(control.GameController)
 class Main extends Sprite {
 	
 	public static var instance(default, null):Main;
 	
 	//
 	
+	public var mode(default, null):Mode;
+	
 	public var state(default, set):StateBase;
 	public var menuState(default, null):MenuState;
 	public var gameState(default, null):GameState;
 	
+	public var controller(default, set):GameController;
 	public var localController(default, null):LocalController;
 	public var hostController(default, null):HostController;
 	public var guestController(default, null):GuestController;
@@ -87,6 +93,16 @@ class Main extends Sprite {
 		state.onStageResize(stage.stageWidth, stage.stageHeight);
 		
 		return state;
+	}
+	
+	function set_controller(value:GameController):GameController {
+		if (controller != null)
+			controller.onDeactivated();
+		
+		controller = value;
+		controller.onActivated();
+		
+		return controller;
 	}
 	
 }

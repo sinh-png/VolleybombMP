@@ -7,8 +7,6 @@ import openfl.display.Bitmap;
 @:access(control.GameController)
 class GameState extends StateBase {
 	
-	public var controller(default, set):GameController;
-	
 	public var tilemap(default, null):GameTilemap;
 	var transitionOverlay:Bitmap;
 	
@@ -26,7 +24,7 @@ class GameState extends StateBase {
 	}
 	
 	public function activate(controller:GameController):Void {
-		this.controller = controller;
+		Main.instance.controller = controller;
 		Main.instance.state = this;
 		Main.instance.stage.focus = this;
 	}
@@ -41,18 +39,8 @@ class GameState extends StateBase {
 	
 	override public function update(delta:Float):Void {
 		super.update(delta);
-		controller.update(delta);
+		Main.instance.controller.update(delta);
 		tilemap.update(delta);
-	}
-	
-	function set_controller(value:GameController):GameController {
-		if (controller != null)
-			controller.onDeactivated();
-		
-		controller = value;
-		controller.onActivated();
-		
-		return controller;
 	}
 	
 }
