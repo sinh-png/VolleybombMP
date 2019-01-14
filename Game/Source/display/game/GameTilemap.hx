@@ -10,7 +10,7 @@ class GameTilemap extends Tilemap {
 	
 	public var leftPlayer(default, null):PlayerTile;
 	public var rightPlayer(default, null):PlayerTile;
-	public var ball(default, null):BombTile;
+	public var bomb(default, null):BombTile;
 	public var fence(default, null):Tile;
 	
 	var atlas:Atlas;
@@ -37,8 +37,8 @@ class GameTilemap extends Tilemap {
 		
 		initPlayers();
 		
-		ball = new BombTile(atlas);
-		addTile(ball);
+		bomb = new BombTile(atlas);
+		addTile(bomb);
 		
 		fence = new Tile(atlas.getID('Fence.png'));
 		var rect = atlas.getRect(fence.id);
@@ -71,7 +71,7 @@ class GameTilemap extends Tilemap {
 		updateClouds(delta);
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
-		ball.update(delta);
+		bomb.update(delta);
 	}
 	
 	inline function updateClouds(delta:Float):Void {
