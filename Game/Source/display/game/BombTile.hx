@@ -30,6 +30,9 @@ class BombTile extends AnimatedTile {
 			tilemap.swapTiles(this, tilemap.fence);
 		play(normalFrames, 0.45);
 		updateSize();
+		originX = 40;
+		originY = 31;
+		visible = true;
 	}
 	
 	public function explode(onComplete:Void->Void):Void {
@@ -37,20 +40,23 @@ class BombTile extends AnimatedTile {
 		tilemap.swapTiles(this, tilemap.fence);
 		play(explodingFrames, 0.4);
 		updateSize();
-		rotation = 0;
+		originX = width / 2;
+		originY = height / 2;
 		scaleX = scaleY = 0.01;
+		rotation = 0;
 		Actuate
 			.tween(this, 0.45, { scaleX: 1, scaleY: 1 } )
 			.ease(new ExpoEaseOut())
-			.onComplete(onComplete);
+			.onComplete(function() {
+				visible = false;
+				onComplete();
+			});
 	}
 	
 	public function updateSize():Void {
 		var rect = tilemap.atlas.getRect(id);
 		width = rect.width;
 		height = rect.height;
-		originX = width / 2;
-		originY = height / 2;
 	}
 	
 }

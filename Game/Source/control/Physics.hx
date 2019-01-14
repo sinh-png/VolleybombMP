@@ -36,7 +36,7 @@ class Physics {
 		));
 		
 		initPlayers();
-		initBall();
+		initBomb();
 		initFence();
 		initWalls();
 	}
@@ -68,7 +68,7 @@ class Physics {
 		body.space = space;
 	}
 	
-	static function initBall():Void {
+	static function initBomb():Void {
 		bomb = new Body();
 		bomb.shapes.push(new Circle(20, null, Material.rubber()));
 		bomb.gravMass = 1;
