@@ -49,7 +49,6 @@ class PlayerController extends ObjectController<PlayerTile> {
 			} else {
 				tile.playFalling();
 			}
-			
 		}
 		
 		if (jumpRequested) {
@@ -87,7 +86,7 @@ class PlayerController extends ObjectController<PlayerTile> {
 	}
 	
 	function getMaxY():Float {
-		return Physics.GROUND_Y - tile.height / 2;
+		return Physics.GROUND_Y - tile.height / 2 + (left ? 0 : 3);
 	}
 	
 }
