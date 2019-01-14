@@ -8,7 +8,7 @@ class RemotePlayer extends PlayerController {
 	public var animState:AnimState;
 
 	override public function update(delta:Float):Void {
-		updateTilePosition();
+		updateTile();
 		
 		switch(animState) {
 			case AnimState.STANDING:
@@ -27,7 +27,7 @@ class RemotePlayer extends PlayerController {
 			tile.y = body.position.y = getMaxY();
 	}
 	
-	override function updateTilePosition():Void {
+	override function updateTile():Void {
 		tile.x = Interpolator.run(tile.x, body.position.x);
 		tile.y = Interpolator.run(tile.y, body.position.y);
 	}

@@ -9,7 +9,7 @@ import openfl.utils.ByteArray;
 
 class NetController extends GameController {
 	
-	public var host(default, null):Bool;
+	var host:Bool;
 	var con:Connection;
 	var localPlayer:LocalPlayer;
 	var remotePlayer:RemotePlayer;
@@ -60,10 +60,10 @@ class NetController extends GameController {
 			body.position.x,
 			body.position.y,
 			body.velocity.x,
-			body.velocity.y,
-			body.rotation,
-			body.angularVel,
+			body.velocity.y
 		]);
+		if (body == bomb.body)
+			pack.floats([ body.rotation, body.angularVel ]);
 	}
 	
 	function onReceivePlayer(pack:ByteArray):Void {
@@ -126,8 +126,10 @@ class NetController extends GameController {
 		body.position.y = pack.readFloat();
 		body.velocity.x = pack.readFloat();
 		body.velocity.y = pack.readFloat();
-		body.rotation   = pack.readFloat();
-		body.angularVel = pack.readFloat();
+		if (body == bomb.body) {
+			body.rotation   = pack.readFloat();
+			body.angularVel = pack.readFloat();
+		}
 	}
 	
 }

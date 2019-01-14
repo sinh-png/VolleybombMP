@@ -23,6 +23,8 @@ class BombTile extends AnimatedTile {
 		
 		playNormal();
 		updateSize();
+		
+		visible = false;
 	}
 	
 	public inline function playNormal():Void {

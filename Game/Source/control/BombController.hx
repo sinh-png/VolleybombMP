@@ -31,6 +31,11 @@ class BombController extends ObjectController<BombTile> {
 		}
 	}
 	
+	override function updateTile():Void {
+		super.updateTile();
+		tile.rotation = body.rotation * (180 / Math.PI);
+	}
+	
 	public function spawn(left:Bool):Void {
 		var spaceHalfWidth = Physics.SPACE_WIDTH / 2;
 		var padding = 30;

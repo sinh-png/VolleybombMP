@@ -25,7 +25,7 @@ class MenuDialog extends Sprite {
 		var bgWidth = 230;
 		var paddingY = 10;
 		var buttonSpacing = 5;
-		var buttonTexts = [ VS_COMP, VS_LOCAL, HOST, JOIN ];
+		var buttonTexts = [ VS_LOCAL, HOST, JOIN ];
 		var button:Button = null;
 		for (i in 0...buttonTexts.length) {
 			button = new Button(buttonTexts[i]);
@@ -65,7 +65,6 @@ class MenuDialog extends Sprite {
 	function onButtonClicked(mode:String):Void {
 		switch(mode) {
 			case VS_COMP:
-				//Main.instance.gameState.activate();
 				
 			case VS_LOCAL:
 				Main.instance.gameState.activate(Main.instance.localController);
