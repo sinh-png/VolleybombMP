@@ -9,8 +9,8 @@ class RemotePlayer extends PlayerController {
 	}
 	
 	override function updateTile():Void {
-		tile.x = Interpolator.apply(tile.x, body.position.x);
-		tile.y = Interpolator.apply(tile.y, body.position.y);
+		tile.x = Interpolator.run(tile.x, body.position.x);
+		tile.y = Interpolator.run(tile.y, body.position.y);
 	}
 	
 }

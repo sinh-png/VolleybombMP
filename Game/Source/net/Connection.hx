@@ -118,7 +118,7 @@ class Connection {
 		this.autoPing = autoPing;
 		
 		#if (localTest && !forceRelay)
-		minDelay = 75;
+		minDelay = 90;
 		maxDelay = 100;
 		#end
 	}

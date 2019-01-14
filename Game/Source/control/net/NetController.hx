@@ -9,16 +9,16 @@ import openfl.utils.ByteArray;
 
 class NetController extends GameController {
 	
+	public var host(default, null):Bool;
 	var con:Connection;
 	var localPlayer:PlayerController;
 	var remotePlayer:RemotePlayer;
-	var host:Bool;
-	
 	var lastSentPackageID:UInt;
 	var lastReceivedPackageID:UInt;
 
 	public function new(host:Bool, leftPlayer:PlayerController, rightPlayer:PlayerController) {
 		super(Mode.NET(host), leftPlayer, rightPlayer);
+		
 		if (this.host = host) {
 			localPlayer = rightPlayer;
 			remotePlayer = cast leftPlayer;
@@ -42,7 +42,7 @@ class NetController extends GameController {
 	override function update(delta:Float):Void {
 		super.update(delta);
 		
-		var handlingBomb = {
+		var handlingBomb = !bomb.active ? false : {
 			(host && bomb.body.position.x >= Physics.SPACE_WIDTH / 2) ||
 			(!host && bomb.body.position.x < Physics.SPACE_WIDTH / 2);
 		}
@@ -94,6 +94,7 @@ class NetController extends GameController {
 		localPlayer.body.space = null;
 		
 		applyBody(pack, remotePlayer.body);
+		
 		var body = bomb.body;
 		var positionX = body.position.x;
 		var positionY = body.position.y;
@@ -107,14 +108,14 @@ class NetController extends GameController {
 		if (latency >= 1 / 60)
 			Physics.step(latency);
 		
-		localPlayer.body.space = Physics.space;
+		body.position.x = Interpolator.run(positionX, body.position.x);
+		body.position.y = Interpolator.run(positionY, body.position.y);
+		body.velocity.x = Interpolator.run(velocityX, body.velocity.x);
+		body.velocity.y = Interpolator.run(velocityY, body.velocity.y);
+		body.rotation   = Interpolator.run(rotation, body.rotation);
+		body.angularVel = Interpolator.run(angularVel, body.angularVel);
 		
-		body.position.x = Interpolator.apply(positionX, body.position.x);
-		body.position.y = Interpolator.apply(positionY, body.position.y);
-		body.velocity.x = Interpolator.apply(velocityX, body.velocity.x);
-		body.velocity.y = Interpolator.apply(velocityY, body.velocity.y);
-		body.rotation   = Interpolator.apply(rotation, body.rotation);
-		body.angularVel = Interpolator.apply(angularVel, body.angularVel);
+		localPlayer.body.space = Physics.space;
 	}
 	
 	function applyBody(pack:ByteArray, body:Body):Void {

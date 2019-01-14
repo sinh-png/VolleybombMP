@@ -73,7 +73,6 @@ class Physics {
 		bomb.shapes.push(new Circle(20, null, Material.rubber()));
 		bomb.gravMass = 1;
 		bomb.allowRotation = true;
-		bomb.space = space;
 	}
 	
 	static function initFence():Void {

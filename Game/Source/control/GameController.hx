@@ -1,6 +1,7 @@
 package control;
 
 import control.PlayerController;
+import haxe.Timer;
 
 @:access(control.input.InputControllerBase)
 class GameController {
@@ -21,6 +22,8 @@ class GameController {
 		leftPlayer.activate();
 		rightPlayer.activate();
 		bomb.activate();
+		
+		Timer.delay(startGame, 1200);
 	}
 	
 	function onDeactivated():Void {
@@ -36,8 +39,8 @@ class GameController {
 		bomb.update(delta);
 	}
 	
-	function spawnBomb():Void {
-		
+	function startGame():Void {
+		bomb.spawn(false);
 	}
 	
 }
