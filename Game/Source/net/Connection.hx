@@ -206,7 +206,7 @@ class Connection {
 			else
 				Timer.delay(function() listeners.get(header)(bytes), delay);
 		} else {
-			trace('Error: Received data with header $header without listener.');
+			trace('Error: Received data with header ($header) without listener.');
 		}
 	}
 	

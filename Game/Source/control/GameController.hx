@@ -3,7 +3,6 @@ package control;
 import control.PlayerController;
 import haxe.Timer;
 
-@:access(control.input.InputControllerBase)
 class GameController {
 	
 	public var mode(default, null):Mode;

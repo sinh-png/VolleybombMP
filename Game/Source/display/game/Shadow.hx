@@ -13,7 +13,6 @@ class Shadow extends Tile {
 		var rect = atlas.getRect(id);
 		originX = rect.width / 2;
 		originY = rect.height / 2;
-		
 		y = Physics.GROUND_Y - 5;
 	}
 	

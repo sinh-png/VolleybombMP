@@ -43,9 +43,9 @@ class Physics {
 	
 	static function initPlayers():Void {
 		leftPlayer = new Body();
-		new Polygon([Vec2.weak(10, -10.5), Vec2.weak(58, -9.5), Vec2.weak(11.5, -38) ]).body = leftPlayer;
-		new Polygon([Vec2.weak(62.5, -74), Vec2.weak(43, -86.5), Vec2.weak(24, -86.5), Vec2.weak(63.5, -44), Vec2.weak(69.5, -50) ]).body = leftPlayer;
-		new Polygon([Vec2.weak(4, -43.5), Vec2.weak(11.5, -38), Vec2.weak(58, -9.5), Vec2.weak(63.5, -14), Vec2.weak(63.5, -44), Vec2.weak(24, -86.5), Vec2.weak(13.5, -80), Vec2.weak(6.5, -65) ]).body = leftPlayer;
+		new Polygon([ Vec2.weak(10, -10.5), Vec2.weak(58, -9.5), Vec2.weak(11.5, -38) ]).body = leftPlayer;
+		new Polygon([ Vec2.weak(62.5, -74), Vec2.weak(43, -86.5), Vec2.weak(24, -86.5), Vec2.weak(63.5, -44), Vec2.weak(69.5, -50) ]).body = leftPlayer;
+		new Polygon([ Vec2.weak(4, -43.5), Vec2.weak(11.5, -38), Vec2.weak(58, -9.5), Vec2.weak(63.5, -14), Vec2.weak(63.5, -44), Vec2.weak(24, -86.5), Vec2.weak(13.5, -80), Vec2.weak(6.5, -65) ]).body = leftPlayer;
 		processPlayer(true);
 		
 		rightPlayer = new Body();
