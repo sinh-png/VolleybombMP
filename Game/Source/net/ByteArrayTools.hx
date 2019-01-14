@@ -1,4 +1,4 @@
-package;
+package net;
 
 import haxe.io.Bytes;
 import js.html.ArrayBuffer;

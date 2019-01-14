@@ -1,7 +1,7 @@
 package net;
 
 import openfl.utils.ByteArray;
-using ByteArrayTools;
+using net.ByteArrayTools;
 
 abstract Sendable(ByteArray) from ByteArray to ByteArray {
 	
@@ -14,7 +14,7 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 	   @param	header	in byte
 	**/
 	public inline function new(header:Int) {
-		this = ByteArrayTools.get();
+		this = net.ByteArrayTools.get();
 		this.writeByte(header);
 	}
 	
