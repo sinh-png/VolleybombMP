@@ -1,6 +1,5 @@
 package display.game;
 
-import display.Atlas;
 import motion.Actuate;
 import motion.easing.Expo.ExpoEaseOut;
 
@@ -12,27 +11,30 @@ class BombTile extends AnimatedTile {
 	var normalFrames:Array<Int>;
 	var explodingFrames:Array<Int>;
 	
-	var atlas:Atlas;
+	var tilemap:GameTilemap;
 	
-	public function new(atlas:Atlas) {
+	public function new(tilemap:GameTilemap) {
 		super();
 		
-		this.atlas = atlas;
+		this.tilemap = tilemap;
 		
-		normalFrames = atlas.getIDs('Bomb/');
-		explodingFrames = atlas.getIDs('Explosion/');
+		normalFrames = tilemap.atlas.getIDs('Bomb/');
+		explodingFrames = tilemap.atlas.getIDs('Explosion/');
 		
 		playNormal();
 		updateSize();
 	}
 	
-	public inline function playNormal() {
+	public inline function playNormal():Void {
+		if (frameIDs == explodingFrames)
+			tilemap.swapTiles(this, tilemap.fence);
 		play(normalFrames, 0.45);
 		updateSize();
-		visible = true;
 	}
 	
 	public function explode(onComplete:Void->Void):Void {
+		tilemap.shake();
+		tilemap.swapTiles(this, tilemap.fence);
 		play(explodingFrames, 0.4);
 		updateSize();
 		rotation = 0;
@@ -40,14 +42,11 @@ class BombTile extends AnimatedTile {
 		Actuate
 			.tween(this, 0.45, { scaleX: 1, scaleY: 1 } )
 			.ease(new ExpoEaseOut())
-			.onComplete(function() {
-				visible = false;
-				onComplete();
-			});
+			.onComplete(onComplete);
 	}
 	
 	public function updateSize():Void {
-		var rect = atlas.getRect(id);
+		var rect = tilemap.atlas.getRect(id);
 		width = rect.width;
 		height = rect.height;
 		originX = width / 2;

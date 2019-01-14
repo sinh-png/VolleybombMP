@@ -8,13 +8,13 @@ import openfl.display.Tilemap;
 
 class GameTilemap extends Tilemap {
 	
+	public var atlas(default, null):Atlas;
+	
 	public var leftPlayer(default, null):PlayerTile;
 	public var rightPlayer(default, null):PlayerTile;
 	public var bomb(default, null):BombTile;
 	public var fence(default, null):Tile;
 	
-	var atlas:Atlas;
-
 	var backgroundA:Tile;
 	var backgroundB:Tile;
 	var foreground:Tile;
@@ -37,7 +37,7 @@ class GameTilemap extends Tilemap {
 		
 		initPlayers();
 		
-		bomb = new BombTile(atlas);
+		bomb = new BombTile(this);
 		addTile(bomb);
 		
 		fence = new Tile(atlas.getID('Fence.png'));
@@ -72,6 +72,7 @@ class GameTilemap extends Tilemap {
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
 		bomb.update(delta);
+		updateShake(delta);
 	}
 	
 	inline function updateClouds(delta:Float):Void {
@@ -110,5 +111,25 @@ class GameTilemap extends Tilemap {
 		}
 		return cloud;
 	}
+	
+    var _shakeIntensity:Float;
+	var _shakeDuration:Float;
+	public function shake(intensity:Float = 10, duration:Float = 0.5):Void {
+		_shakeIntensity = intensity;
+        _shakeDuration = duration;
+	}
+	
+	function updateShake(delta:Float):Void {
+		if (_shakeDuration > 0) {
+            x = 0;
+            y = 0;
+			
+            _shakeDuration -= delta;
+			if (_shakeDuration > 0) {
+				x += -_shakeIntensity + (_shakeIntensity + _shakeIntensity) * Math.random();
+                y += (-_shakeIntensity + (_shakeIntensity + _shakeIntensity) * Math.random()) * (height / width);
+			}
+		}
+    }
 	
 }
