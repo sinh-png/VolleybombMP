@@ -36,4 +36,8 @@ class GameController {
 		bomb.update(delta);
 	}
 	
+	function spawnBomb():Void {
+		
+	}
+	
 }
