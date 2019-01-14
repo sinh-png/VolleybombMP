@@ -15,6 +15,10 @@ class GameTilemap extends Tilemap {
 	public var bomb(default, null):BombTile;
 	public var fence(default, null):Tile;
 	
+	var leftPlayerShadow:Shadow;
+	var rightPlayerShadow:Shadow;
+	var bombShadow:Shadow;
+	
 	var backgroundA:Tile;
 	var backgroundB:Tile;
 	var foreground:Tile;
@@ -35,10 +39,18 @@ class GameTilemap extends Tilemap {
 		backgroundB = new Tile(atlas.getID('Backgrounds/B.png'));
 		addTile(backgroundB);
 		
+		addTile(leftPlayerShadow = new Shadow(atlas));
+		addTile(rightPlayerShadow = new Shadow(atlas));
+		addTile(bombShadow = new Shadow(atlas));
+		
 		initPlayers();
 		
 		bomb = new BombTile(this);
 		addTile(bomb);
+		
+		leftPlayerShadow.target = leftPlayer;
+		rightPlayerShadow.target = rightPlayer;
+		bombShadow.target = bomb;
 		
 		fence = new Tile(atlas.getID('Fence.png'));
 		var rect = atlas.getRect(fence.id);
@@ -69,9 +81,15 @@ class GameTilemap extends Tilemap {
 	
 	public function update(delta:Float):Void {
 		updateClouds(delta);
+		
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
 		bomb.update(delta);
+		
+		leftPlayerShadow.update();
+		rightPlayerShadow.update();
+		bombShadow.update();
+		
 		updateShake(delta);
 	}
 	
