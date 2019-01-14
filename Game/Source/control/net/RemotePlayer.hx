@@ -22,6 +22,9 @@ class RemotePlayer extends PlayerController {
 			case AnimState.FAILING:
 				tile.playFalling();
 		}
+		
+		if (body.position.y > getMaxY())
+			tile.y = body.position.y = getMaxY();
 	}
 	
 	override function updateTilePosition():Void {
