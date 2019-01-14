@@ -74,7 +74,7 @@ class GuestDialog extends NetPlayDialog {
 	}
 	
 	public function join(roomID:String):Void {
-		Room.join(roomID, onJoinSuccess, onJoinFailed);
+		Room.join(true, roomID, onJoinSuccess, onJoinFailed);
 		waitingFrame.visible = true;
 		infoFrame.visible = false;
 	}

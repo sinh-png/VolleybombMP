@@ -53,32 +53,45 @@ class Room {
 			onIce(null);
 	}
 	
-	public static function join(roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
+	public static function join(fetchsIce:Bool = true, roomID:String, onSuccess:Connection->Void, ?onFailed:String->Void):Void {
 		cancel();
 		
-		socket = createSocket();
-		socket.on(RoomEvent.OFFER, function(offer) {
-			var con:Connection;
-			con = new Connection(offer, null,
-				function(signal) {
-					var answer:RoomAnswer = { roomID: roomID, signal: signal };
-					socket.emit(RoomEvent.ANSWER, answer);
-				},
-				function() {
-					socket.disconnect();
-					socket = null;
-					onSuccess(con);
-				}
-			);
-		});
-		socket.on(RoomEvent.NOT_EXIST, function() {
-			if (onFailed != null)
-				onFailed('Room $roomID does not exist.');
-			else
-				trace('Room $roomID does not exist.');
-		});
-		socket.emit(RoomEvent.JOIN, roomID);
-		handleSocketErrors(onFailed);
+		#if forceRelay
+		fetchsIce = true;
+		#elseif localTest
+		fetchsIce = false;
+		#end
+		
+		var onIce = function(iceServers):Void {
+			socket = createSocket();
+			socket.on(RoomEvent.OFFER, function(offer) {
+				var con:Connection;
+				con = new Connection(offer, iceServers,
+					function(signal) {
+						var answer:RoomAnswer = { roomID: roomID, signal: signal };
+						socket.emit(RoomEvent.ANSWER, answer);
+					},
+					function() {
+						socket.disconnect();
+						socket = null;
+						onSuccess(con);
+					}
+				);
+			});
+			socket.on(RoomEvent.NOT_EXIST, function() {
+				if (onFailed != null)
+					onFailed('Room $roomID does not exist.');
+				else
+					trace('Room $roomID does not exist.');
+			});
+			socket.emit(RoomEvent.JOIN, roomID);
+			handleSocketErrors(onFailed);
+		}
+		
+		if (fetchsIce)
+			http = Connection.fetchIceServers(onIce, onFailed);
+		else
+			onIce(null);
 	}
 	
 	static inline function createSocket():Client {
