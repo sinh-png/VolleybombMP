@@ -33,6 +33,9 @@ class GameController {
 	}
 	
 	function update(delta:Float):Void {
+		if (delta <= 0) // weird stuff
+			return;
+		
 		Physics.step(delta);
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
