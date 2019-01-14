@@ -45,4 +45,26 @@ class PlayerTile extends AnimatedTile {
 	
 	public inline function playFalling() { stop(); id = fallingFrame; }
 	
+	public function getAnimState():AnimState {
+		if (frameIDs == movingForwardFrames)
+			return AnimState.MOVING_FORWARD;
+		if (frameIDs == movingBackwardFrames)
+			return AnimState.MOVING_BACKWARD;
+		if (id == jumpingFrame)
+			return AnimState.JUMPING;
+		if (id == fallingFrame)
+			return AnimState.FAILING;
+		return AnimState.STANDING;
+	}
+	
+}
+
+@:enum abstract AnimState(Int) from Int to Int {
+	
+	var STANDING = 0;
+	var MOVING_FORWARD = 1;
+	var MOVING_BACKWARD = 2;
+	var JUMPING = 3;
+	var FAILING = 4;
+	
 }

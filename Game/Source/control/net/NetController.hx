@@ -11,7 +11,7 @@ class NetController extends GameController {
 	
 	public var host(default, null):Bool;
 	var con:Connection;
-	var localPlayer:PlayerController;
+	var localPlayer:LocalPlayer;
 	var remotePlayer:RemotePlayer;
 	var lastSentPackageID:UInt;
 	var lastReceivedPackageID:UInt;
@@ -20,10 +20,10 @@ class NetController extends GameController {
 		super(Mode.NET(host), leftPlayer, rightPlayer);
 		
 		if (this.host = host) {
-			localPlayer = rightPlayer;
+			localPlayer = cast rightPlayer;
 			remotePlayer = cast leftPlayer;
 		} else {
-			localPlayer = leftPlayer;
+			localPlayer = cast leftPlayer;
 			remotePlayer = cast rightPlayer;
 		}
 	}
@@ -48,6 +48,7 @@ class NetController extends GameController {
 		}
 		var pack = new Sendable(handlingBomb ? Header.PLAYER_BALL : Header.PLAYER);
 		pack.uint(lastSentPackageID++);
+		pack.byte(localPlayer.tile.getAnimState());
 		packBody(pack, localPlayer.body);
 		if (handlingBomb)
 			packBody(pack, bomb.body);
@@ -75,6 +76,7 @@ class NetController extends GameController {
 		localPlayer.body.space = null;
 		bomb.body.space = null;
 		
+		remotePlayer.animState = pack.readByte();
 		applyBody(pack, remotePlayer.body);
 		var latency = con.lastLatency / 2;
 		if (latency >= 1 / 60)
@@ -93,6 +95,7 @@ class NetController extends GameController {
 		
 		localPlayer.body.space = null;
 		
+		remotePlayer.animState = pack.readByte();
 		applyBody(pack, remotePlayer.body);
 		
 		var body = bomb.body;

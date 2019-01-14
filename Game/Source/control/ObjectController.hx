@@ -23,10 +23,10 @@ class ObjectController<T:Tile> {
 	}
 	
 	function update(delta:Float):Void {
-		updateTile();
+		updateTilePosition();
 	}
 	
-	function updateTile():Void {
+	function updateTilePosition():Void {
 		tile.x = body.position.x;
 		tile.y = body.position.y;
 		tile.rotation = body.rotation;
