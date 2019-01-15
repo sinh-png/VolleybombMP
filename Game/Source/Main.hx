@@ -25,19 +25,10 @@ class Main extends Sprite {
 	//
 	
 	public var mode(default, null):Mode;
-	
 	public var state(default, set):StateBase;
-	public var menuState(default, null):MenuState;
-	public var gameState(default, null):GameState;
-	
 	public var controller(default, set):GameController;
-	public var localPVPController(default, null):PVPController;
-	public var pvcController(default, null):PVCController;
-	public var hostController(default, null):HostController;
-	public var guestController(default, null):GuestController;
 	
 	var perfDisplay:PerfDisplay;
-	
 	var prvFrameTime:Float;
 	var deltaTime:Float;
 	
@@ -47,18 +38,16 @@ class Main extends Sprite {
 		instance = this;
 		
 		R.init();
-		prvFrameTime = Timer.stamp();
-		
-		menuState = new MenuState();
-		gameState = new GameState();
-		state = menuState;
-		
+		MenuState.init();
+		GameState.init();
 		Physics.init();
+		PVPController.init();
+		PVCController.init();
+		HostController.init();
+		GuestController.init();
 		
-		localPVPController = new PVPController();
-		pvcController = new PVCController();
-		hostController = new HostController();
-		guestController = new GuestController();
+		prvFrameTime = Timer.stamp();
+		state = MenuState.instance;
 		
 		perfDisplay = new PerfDisplay();
 		stage.addChild(perfDisplay);
@@ -71,7 +60,7 @@ class Main extends Sprite {
 		var href = Browser.location.href;
 		var roomID = href.split('?')[1];
 		if (~/^[0-9]*$/i.match(roomID))
-			menuState.guestDialog.show(roomID);
+			MenuState.instance.guestDialog.show(roomID);
 	}
 	
 	function onEnterFrame(event:Event):Void {

@@ -1,9 +1,16 @@
 package control.net;
-import control.KeyboardPlayer2;
 
 class HostController extends NetController {
 	
-	public function new() {
+	public static var instance(default, null):HostController;
+	public static function init():Void {
+		if (instance == null)
+			instance = new HostController();
+	}
+	
+	//
+	
+	function new() {
 		super(true, new RemotePlayer(true), new KeyboardPlayer2(false));
 	}
 	

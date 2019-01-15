@@ -1,5 +1,7 @@
 package display.menu;
 
+import control.net.HostController;
+import display.game.GameState;
 import haxe.Timer;
 import net.Connection;
 import net.Room;
@@ -96,7 +98,7 @@ class HostDialog extends NetPlayDialog {
 		center(waitingFrame);
 		waitingFrame.visible = visible = true;
 		infoFrame.visible = false;
-		Main.instance.menuState.menu.visible = false;
+		MenuState.instance.menu.visible = false;
 	}
 	
 	function onRoom(id:String):Void {
@@ -111,7 +113,7 @@ class HostDialog extends NetPlayDialog {
 	}
 	
 	function onGuestJoined(con:Connection):Void {
-		Main.instance.gameState.activate(Main.instance.hostController);
+		GameState.instance.activate(HostController.instance);
 	}
 	
 	function onFailed(error:String):Void {

@@ -1,9 +1,16 @@
 package control.net;
-import control.KeyboardPlayer2;
 
 class GuestController extends NetController {
 	
-	public function new() {
+	public static var instance(default, null):GuestController;
+	public static function init():Void {
+		if (instance == null)
+			instance = new GuestController();
+	}
+	
+	//
+	
+	function new() {
 		super(false, new KeyboardPlayer2(true), new RemotePlayer(false));
 	}
 	

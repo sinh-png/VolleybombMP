@@ -1,6 +1,7 @@
 package control;
 
 import display.game.BombTile;
+import display.game.GameState;
 
 class BombController extends ObjectController<BombTile> {
 
@@ -8,7 +9,7 @@ class BombController extends ObjectController<BombTile> {
 	public var passthrough(default, null):Bool;
 	
 	public function new() {
-		super(Physics.bomb, Main.instance.gameState.tilemap.bomb);
+		super(Physics.bomb, GameState.instance.tilemap.bomb);
 	}
 	
 	override function activate():Void {
@@ -39,7 +40,7 @@ class BombController extends ObjectController<BombTile> {
 	public function spawn(left:Bool):Void {
 		var spaceHalfWidth = Physics.SPACE_WIDTH / 2;
 		var padding = 30;
-		var fenceHalfWidth = Main.instance.gameState.tilemap.fence.originX;
+		var fenceHalfWidth = GameState.instance.tilemap.fence.originX;
 		body.position.x = (left ? 0 : spaceHalfWidth + fenceHalfWidth) + padding + (spaceHalfWidth - fenceHalfWidth - padding) / 2;
 		body.position.y = -tile.height;
 		body.velocity.setxy(0, 0);

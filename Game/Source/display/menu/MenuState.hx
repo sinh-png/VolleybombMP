@@ -4,12 +4,20 @@ import openfl.display.Bitmap;
 
 class MenuState extends StateBase {
 	
+	public static var instance(default, null):MenuState;
+	public static function init():Void {
+		if (instance == null)
+			instance = new MenuState();
+	}
+	
+	//
+	
 	public var menu(default, null):MenuDialog;
 	public var hostDialog(default, null):HostDialog;
 	public var guestDialog(default, null):GuestDialog;
 	var background:Bitmap;
 	
-	public function new() {
+	function new() {
 		super();
 		
 		background = new Bitmap(R.getBitmapData('BlurBackground.jpg'), null, true);

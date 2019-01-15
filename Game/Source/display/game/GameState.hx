@@ -4,13 +4,20 @@ import control.GameController;
 import motion.Actuate;
 import openfl.display.Bitmap;
 
-@:access(control.GameController)
 class GameState extends StateBase {
+	
+	public static var instance(default, null):GameState;
+	public static function init():Void {
+		if (instance == null)
+			instance = new GameState();
+	}
+	
+	//
 	
 	public var tilemap(default, null):GameTilemap;
 	var transitionOverlay:Bitmap;
 	
-	public function new() {
+	function new() {
 		super();
 		
 		var overlayBitmapData = R.getBitmapData('BlurBackground.jpg');
@@ -39,7 +46,7 @@ class GameState extends StateBase {
 	
 	override public function update(delta:Float):Void {
 		super.update(delta);
-		Main.instance.controller.update(delta);
+		@:privateAccess Main.instance.controller.update(delta);
 		tilemap.update(delta);
 	}
 	

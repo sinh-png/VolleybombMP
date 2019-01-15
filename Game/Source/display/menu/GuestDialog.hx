@@ -1,5 +1,7 @@
 package display.menu;
 
+import control.net.GuestController;
+import display.game.GameState;
 import net.Connection;
 import net.Room;
 import display.common.CommonButton;
@@ -69,7 +71,7 @@ class GuestDialog extends NetPlayDialog {
 		center(infoFrame);
 		infoFrame.visible = visible = true;
 		waitingFrame.visible = false;
-		Main.instance.menuState.menu.visible = false;
+		MenuState.instance.menu.visible = false;
 		Main.instance.stage.focus = codeField;
 	}
 	
@@ -80,7 +82,7 @@ class GuestDialog extends NetPlayDialog {
 	}
 	
 	function onJoinSuccess(con:Connection):Void {
-		Main.instance.gameState.activate(Main.instance.guestController);
+		GameState.instance.activate(GuestController.instance);
 	}
 	
 	function onJoinFailed(error:String):Void {

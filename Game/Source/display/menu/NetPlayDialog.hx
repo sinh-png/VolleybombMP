@@ -45,15 +45,14 @@ class NetPlayDialog extends Sprite {
 	}
 	
 	function center(frame:Sprite):Void {
-		var state = Main.instance.menuState;
-		x = (state.baseWidth - frame.width) / 2;
-		y = (state.baseHeight - frame.height) / 2;
+		x = (MenuState.instance.baseWidth - frame.width) / 2;
+		y = (MenuState.instance.baseHeight - frame.height) / 2;
 	}
 	
 	function close():Void {
 		Room.cancel();
 		visible = false;
-		Main.instance.menuState.menu.visible = true;
+		MenuState.instance.menu.visible = true;
 	}
 	
 }

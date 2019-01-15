@@ -1,5 +1,6 @@
 package control;
 
+import display.game.GameState;
 import nape.callbacks.CbType;
 import nape.callbacks.InteractionType;
 import nape.callbacks.PreFlag;
@@ -58,7 +59,7 @@ class Physics {
 	}
 	static function processPlayer(left:Bool):Void {
 		var body = left ? leftPlayer : rightPlayer;
-		var tile = left ? Main.instance.gameState.tilemap.leftPlayer : Main.instance.gameState.tilemap.rightPlayer;
+		var tile = left ? GameState.instance.tilemap.leftPlayer : GameState.instance.tilemap.rightPlayer;
 		var material = new Material(0.75, 5, 5, 10, 0);
 		body.translateShapes(Vec2.weak( -tile.originX, tile.originY));
 		body.setShapeMaterials(material);
@@ -76,7 +77,7 @@ class Physics {
 	}
 	
 	static function initFence():Void {
-		var tile = Main.instance.gameState.tilemap.fence;
+		var tile = GameState.instance.tilemap.fence;
 		var fence = new Body(BodyType.STATIC, new Vec2(tile.x, tile.y));
 		fence.shapes.add(new Polygon(Polygon.box(136 - 50, 218 - 40)));
 		fence.shapes.add(new Circle(45, new Vec2(0, -60)));

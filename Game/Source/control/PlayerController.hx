@@ -1,6 +1,7 @@
 package control;
 
 import control.PlayerHDirection;
+import display.game.GameState;
 import display.game.PlayerTile;
 
 class PlayerController extends ObjectController<PlayerTile> {
@@ -17,9 +18,9 @@ class PlayerController extends ObjectController<PlayerTile> {
 	
 	public function new(left:Bool) {
 		if (this.left = left)
-			super(Physics.leftPlayer, Main.instance.gameState.tilemap.leftPlayer);
+			super(Physics.leftPlayer, GameState.instance.tilemap.leftPlayer);
 		else
-			super(Physics.rightPlayer, Main.instance.gameState.tilemap.rightPlayer);
+			super(Physics.rightPlayer, GameState.instance.tilemap.rightPlayer);
 	}
 	
 	override function activate():Void {
