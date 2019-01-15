@@ -59,8 +59,10 @@ class Main extends Sprite {
 		
 		var href = Browser.location.href;
 		var roomID = href.split('?')[1];
-		if (~/^[0-9]*$/i.match(roomID))
-			MenuState.instance.guestDialog.show(roomID);
+		if (~/^[0-9]*$/i.match(roomID)) {
+			MenuState.instance.guestDialog.show();
+			MenuState.instance.guestDialog.join(roomID);
+		}
 	}
 	
 	function onEnterFrame(event:Event):Void {
