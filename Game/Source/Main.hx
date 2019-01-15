@@ -65,6 +65,12 @@ class Main extends Sprite {
 		}
 	}
 	
+	public function startGame(controller:GameController):Void {
+		this.controller = controller;
+		state = GameState.instance;
+		stage.focus = GameState.instance;
+	}
+	
 	function onEnterFrame(event:Event):Void {
 		var crFrameTime = Timer.stamp();
 		deltaTime = crFrameTime - prvFrameTime;
@@ -91,10 +97,10 @@ class Main extends Sprite {
 	
 	function set_controller(value:GameController):GameController {
 		if (controller != null)
-			controller.deactivate();
+			controller.onDeactivated();
 		
 		controller = value;
-		controller.activate();
+		controller.onActivated();
 		
 		return controller;
 	}

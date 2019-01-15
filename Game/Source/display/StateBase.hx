@@ -19,14 +19,14 @@ class StateBase extends DisplayObjectContainer {
 		
 	}
 	
+	function update(delta:Float):Void {
+		
+	}
+	
 	function onStageResize(stageWidth:Float, stageHeight:Float):Void {
 		scaleX = scaleY = Math.min(stageWidth / baseWidth, stageHeight / baseHeight);
 		x = (stageWidth - width) / 2;
 		y = (stageHeight - height) / 2;
-	}
-	
-	function update(delta:Float):Void {
-		
 	}
 	
 }

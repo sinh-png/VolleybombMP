@@ -1,6 +1,5 @@
 package display.game;
 
-import control.GameController;
 import motion.Actuate;
 import openfl.display.Bitmap;
 
@@ -28,12 +27,6 @@ class GameState extends StateBase {
 		addChild(tilemap);
 		
 		transitionOverlay = new Bitmap(overlayBitmapData, null, true);
-	}
-	
-	public function activate(controller:GameController):Void {
-		Main.instance.controller = controller;
-		Main.instance.state = this;
-		Main.instance.stage.focus = this;
 	}
 	
 	override public function onActivated():Void {

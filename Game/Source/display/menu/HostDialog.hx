@@ -1,7 +1,6 @@
 package display.menu;
 
 import control.net.HostController;
-import display.game.GameState;
 import haxe.Timer;
 import net.Connection;
 import net.Room;
@@ -113,7 +112,7 @@ class HostDialog extends NetPlayDialog {
 	}
 	
 	function onGuestJoined(con:Connection):Void {
-		GameState.instance.activate(HostController.instance);
+		Main.instance.startGame(HostController.instance);
 	}
 	
 	function onFailed(error:String):Void {

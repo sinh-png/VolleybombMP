@@ -1,7 +1,6 @@
 package display.menu;
 
 import control.local.PVCController;
-import display.game.GameState;
 import motion.Actuate;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
@@ -67,10 +66,10 @@ class MenuDialog extends Sprite {
 	function onButtonClicked(mode:String):Void {
 		switch(mode) {
 			case VS_COMP:
-				GameState.instance.activate(PVCController.instance);
+				Main.instance.startGame(PVCController.instance);
 			
 			case VS_LOCAL:
-				GameState.instance.activate(PVCController.instance);
+				Main.instance.startGame(PVCController.instance);
 			
 			case HOST:
 				MenuState.instance.hostDialog.host();

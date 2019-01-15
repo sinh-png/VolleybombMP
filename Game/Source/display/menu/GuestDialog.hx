@@ -1,7 +1,6 @@
 package display.menu;
 
 import control.net.GuestController;
-import display.game.GameState;
 import net.Connection;
 import net.Room;
 import display.common.CommonButton;
@@ -82,7 +81,7 @@ class GuestDialog extends NetPlayDialog {
 	}
 	
 	function onJoinSuccess(con:Connection):Void {
-		GameState.instance.activate(GuestController.instance);
+		Main.instance.startGame(GuestController.instance);
 	}
 	
 	function onJoinFailed(error:String):Void {
