@@ -11,11 +11,12 @@ import openfl.text.TextFormat;
 class PerfDisplay extends DisplayObjectContainer {
 
 	var fpsText:TextField;
-	var latencyText:TextField;
-	
 	var currentFPS:Int;
 	var cacheCount:Int;
-	var times:Array<Float> = new Array<Float>();
+	var times:Array<Float> = [];
+	
+	var latencyText:TextField;
+	var latencies:Array<Float> = [];
 	
 	public function new() {
 		super();
@@ -62,7 +63,21 @@ class PerfDisplay extends DisplayObjectContainer {
 		
 		//
 		
-		latencyText.text = "Latency: " + (Connection.instance == null || Connection.instance.lastLatency < 0 ? "---" : Math.round(Connection.instance.lastLatency * 1000));
+		latencyText.text = "Latency: ";
+		if (Connection.instance == null || Connection.instance.lastLatency < 0) {
+			latencyText.text += '---';
+		} else {
+			latencies.push(Connection.instance.lastLatency);
+			if (latencies.length > 5)
+				latencies.shift();
+			
+			var avgLatency = 0.;
+			for (latency in latencies)
+				avgLatency += avgLatency;
+			avgLatency /= latencies.length;
+			
+			latencyText.text += Math.round(Math.abs(avgLatency) * 1000);
+		}
 	}
 	
 }
