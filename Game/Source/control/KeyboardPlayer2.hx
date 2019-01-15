@@ -1,9 +1,9 @@
-package control.net;
+package control;
 
 import control.KeyboardPlayer;
 import openfl.ui.Keyboard;
 
-class LocalPlayer extends KeyboardPlayer {
+class KeyboardPlayer2 extends KeyboardPlayer {
 
 	public function new(left:Bool) {
 		var leftKeys = [ Keyboard.A, Keyboard.LEFT ];

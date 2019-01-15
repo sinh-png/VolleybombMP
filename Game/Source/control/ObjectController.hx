@@ -6,8 +6,8 @@ import openfl.display.Tile;
 @:allow(control.GameController)
 class ObjectController<T:Tile> {
 	
-	var body:Body;
-	var tile:T;
+	public var body(default, null):Body;
+	public var tile(default, null):T;
 
 	public function new(body:Body, tile:T) {
 		this.body = body;

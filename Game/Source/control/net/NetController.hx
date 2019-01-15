@@ -1,6 +1,7 @@
 package control.net;
 
 import control.GameController;
+import control.KeyboardPlayer2;
 import control.PlayerController;
 import nape.phys.Body;
 import net.Connection;
@@ -11,7 +12,7 @@ class NetController extends GameController {
 	
 	var host:Bool;
 	var con:Connection;
-	var localPlayer:LocalPlayer;
+	var localPlayer:KeyboardPlayer2;
 	var remotePlayer:RemotePlayer;
 	var lastSentPackageID:UInt;
 	var lastReceivedPackageID:UInt;

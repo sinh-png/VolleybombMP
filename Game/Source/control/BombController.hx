@@ -5,7 +5,7 @@ import display.game.BombTile;
 class BombController extends ObjectController<BombTile> {
 
 	public var active(default, null):Bool;
-	var passthrough:Bool;
+	public var passthrough(default, null):Bool;
 	
 	public function new() {
 		super(Physics.bomb, Main.instance.gameState.tilemap.bomb);

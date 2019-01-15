@@ -1,10 +1,8 @@
 package control.local;
 
-import control.GameController;
-import control.KeyboardPlayer;
 import openfl.ui.Keyboard;
 
-class LocalPVPController extends GameController {
+class PVPController extends GameController {
 	
 	public function new() {
 		var leftPlayer = new KeyboardPlayer(true, [ Keyboard.W ], [ Keyboard.D ], [ Keyboard.A ]);

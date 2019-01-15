@@ -91,10 +91,14 @@ class KeyboardPlayer extends PlayerController {
 		super.update(delta);
 		
 		direction = {
-			if (forwardPressed && backwardPressed) 	PlayerHDirection.NONE;
-			else if (forwardPressed) 			 	PlayerHDirection.FORWARD;
-			else if (backwardPressed) 			 	PlayerHDirection.BACKWARD;
-			else 							 		PlayerHDirection.NONE;
+			if (forwardPressed && backwardPressed)
+				PlayerHDirection.NONE;
+			else if (forwardPressed)
+				PlayerHDirection.FORWARD;
+			else if (backwardPressed)
+				PlayerHDirection.BACKWARD;
+			else
+				PlayerHDirection.NONE;
 		}
 	}
 	

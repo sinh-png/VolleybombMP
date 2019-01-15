@@ -3,7 +3,8 @@ package;
 import control.GameController;
 import control.Mode;
 import control.Physics;
-import control.local.LocalPVPController;
+import control.local.PVCController;
+import control.local.PVPController;
 import control.net.GuestController;
 import control.net.HostController;
 import display.PerfDisplay;
@@ -30,7 +31,8 @@ class Main extends Sprite {
 	public var gameState(default, null):GameState;
 	
 	public var controller(default, set):GameController;
-	public var localController(default, null):LocalPVPController;
+	public var localPVPController(default, null):PVPController;
+	public var pvcController(default, null):PVCController;
 	public var hostController(default, null):HostController;
 	public var guestController(default, null):GuestController;
 	
@@ -53,7 +55,8 @@ class Main extends Sprite {
 		
 		Physics.init();
 		
-		localController = new LocalPVPController();
+		localPVPController = new PVPController();
+		pvcController = new PVCController();
 		hostController = new HostController();
 		guestController = new GuestController();
 		

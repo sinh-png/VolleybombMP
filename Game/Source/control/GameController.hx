@@ -6,9 +6,9 @@ import haxe.Timer;
 class GameController {
 	
 	public var mode(default, null):Mode;
-	var leftPlayer:PlayerController;
-	var rightPlayer:PlayerController;
-	var bomb:BombController;
+	public var leftPlayer(default, null):PlayerController;
+	public var rightPlayer(default, null):PlayerController;
+	public var bomb(default, null):BombController;
 	
 	public function new(mode:Mode, leftPlayer:PlayerController, rightPlayer:PlayerController, ?bomb:BombController) {
 		this.mode = mode;
