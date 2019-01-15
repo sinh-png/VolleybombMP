@@ -5,7 +5,7 @@ import js.Node;
 
 class IceExpress {
 	
-	static inline var TOKEN_LIFETIME = 7200;
+	static inline var TOKEN_LIFETIME = 3600;
 	
 	static var cachedTime:Float;
 	static var cachedIceServers:Dynamic;
@@ -17,9 +17,9 @@ class IceExpress {
 
 	public static function handler(req, res):Void {
 		var now = Date.now().getTime();
-		if (cachedIceServers == null || (now - cachedTime) / 1000 >= TOKEN_LIFETIME - 600) {
+		if (cachedIceServers == null || now - cachedTime >= TOKEN_LIFETIME - 1800) {
 			cachedTime = now;
-			twilio.tokens.create({ tlf: TOKEN_LIFETIME }).then(function(token) {
+			twilio.tokens.create({ ttl: TOKEN_LIFETIME }).then(function(token) {
 				cachedIceServers = token.iceServers;
 				res.json(cachedIceServers);
 			}).done();
