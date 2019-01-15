@@ -74,7 +74,7 @@ class GuestDialog extends NetPlayDialog {
 		Main.instance.stage.focus = codeField;
 	}
 	
-	public function join(roomID:String):Void {
+	public function join(roomID:String, delay:Float = 0):Void {
 		Room.join(true, roomID, onJoinSuccess, onJoinFailed);
 		waitingFrame.visible = true;
 		infoFrame.visible = false;

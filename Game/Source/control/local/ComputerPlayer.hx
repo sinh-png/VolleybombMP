@@ -131,7 +131,7 @@ class ComputerPlayer extends PlayerController {
 	
 	function setDirection(?direction:PlayerHDirection, duration:Float = 0):Void {
 		this.direction = direction != null ? direction : PlayerHDirection.NONE;
-		this.directionDuration = duration;
+		directionDuration = duration;
 	}
 	
 	inline function jump():Void {

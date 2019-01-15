@@ -67,6 +67,11 @@ class Connection {
 	var listeners:IntMap<ByteArray->Void> = new IntMap<ByteArray->Void>();
 	
 	public function new(offer:ConnectionSignal, iceServers:Dynamic, onSignalReady:ConnectionSignal->Void, onReady:Void->Void, autoPing:Bool = true) {
+		if (instance != null) {
+			instance.destroy();
+			instance = null;
+		}
+		
 		var baseOptions:PeerOptions = {
 			initiator: offer == null,
 			trickle: false
@@ -93,7 +98,7 @@ class Connection {
 			});
 			u.on(PeerEvent.CONNECT, function() {
 				uReady = true;
-				if (rReady && uReady) {
+				if (rReady) {
 					instance = this;
 					this.onReady();
 					onReady();
@@ -105,7 +110,14 @@ class Connection {
 			if (offer != null)
 				u.signal(offer.u);
 		});
-		r.on(PeerEvent.CONNECT, function() rReady = true);
+		r.on(PeerEvent.CONNECT, function() {
+			rReady = true;
+			if (uReady) {
+				instance = this;
+				this.onReady();
+				onReady();
+			}
+		});
 		r.on(PeerEvent.DATA, onData);
 		r.on(PeerEvent.CLOSE, onRClosed);
 		r.on(PeerEvent.ERROR, onRError);
