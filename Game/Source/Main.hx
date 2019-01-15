@@ -3,9 +3,9 @@ package;
 import control.GameController;
 import control.Mode;
 import control.Physics;
-import control.local.LocalController;
-import control.net.guest.GuestController;
-import control.net.host.HostController;
+import control.local.LocalPVPController;
+import control.net.GuestController;
+import control.net.HostController;
 import display.PerfDisplay;
 import display.StateBase;
 import display.game.GameState;
@@ -30,7 +30,7 @@ class Main extends Sprite {
 	public var gameState(default, null):GameState;
 	
 	public var controller(default, set):GameController;
-	public var localController(default, null):LocalController;
+	public var localController(default, null):LocalPVPController;
 	public var hostController(default, null):HostController;
 	public var guestController(default, null):GuestController;
 	
@@ -53,7 +53,7 @@ class Main extends Sprite {
 		
 		Physics.init();
 		
-		localController = new LocalController();
+		localController = new LocalPVPController();
 		hostController = new HostController();
 		guestController = new GuestController();
 		
@@ -97,10 +97,10 @@ class Main extends Sprite {
 	
 	function set_controller(value:GameController):GameController {
 		if (controller != null)
-			controller.onDeactivated();
+			controller.deactivate();
 		
 		controller = value;
-		controller.onActivated();
+		controller.activate();
 		
 		return controller;
 	}

@@ -28,8 +28,8 @@ class NetController extends GameController {
 		}
 	}
 	
-	override function onActivated():Void {
-		super.onActivated();
+	override function activate():Void {
+		super.activate();
 		
 		con = Connection.instance;
 		con.listen(Header.PLAYER, onReceivePlayer);

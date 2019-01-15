@@ -7,7 +7,7 @@ class RemotePlayer extends PlayerController {
 	
 	public var animState:AnimState;
 
-	override public function update(delta:Float):Void {
+	override function update(delta:Float):Void {
 		updateTile();
 		
 		switch(animState) {

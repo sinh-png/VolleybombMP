@@ -74,7 +74,7 @@ class Connection {
 		if (iceServers != null) {
 			baseOptions.config = { iceServers: iceServers };
 			#if forceRelay
-			baseOptions.config.iceTransportPolicy = "relay";
+			baseOptions.config.iceTransportPolicy = 'relay';
 			#end
 		}
 		

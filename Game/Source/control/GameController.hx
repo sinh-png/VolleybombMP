@@ -17,7 +17,7 @@ class GameController {
 		this.bomb = bomb != null ? bomb : new BombController();
 	}
 	
-	function onActivated():Void {
+	function activate():Void {
 		leftPlayer.activate();
 		rightPlayer.activate();
 		bomb.activate();
@@ -25,7 +25,7 @@ class GameController {
 		Timer.delay(startGame, 1200);
 	}
 	
-	function onDeactivated():Void {
+	function deactivate():Void {
 		leftPlayer.deactivate();
 		rightPlayer.deactivate();
 		bomb.deactivate();
