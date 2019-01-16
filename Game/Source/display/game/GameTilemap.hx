@@ -62,6 +62,14 @@ class GameTilemap extends Tilemap {
 		
 		foreground = new Tile(atlas.getID('Foreground.png'));
 		addTile(foreground);
+		
+		leftPlayer.scoreTile.x = 120;
+		leftPlayer.scoreTile.y = leftPlayer.scoreTile.originY + 30;
+		addTile(leftPlayer.scoreTile);
+		
+		rightPlayer.scoreTile.x = Physics.SPACE_WIDTH - leftPlayer.scoreTile.x;
+		rightPlayer.scoreTile.y = leftPlayer.scoreTile.y;
+		addTile(rightPlayer.scoreTile);
 	}
 	
 	inline function initClouds():Void {

@@ -2,6 +2,7 @@ package control;
 
 import display.game.BombTile;
 import display.game.GameState;
+import haxe.Timer;
 
 class BombController extends ObjectController<BombTile> {
 
@@ -54,13 +55,16 @@ class BombController extends ObjectController<BombTile> {
 	}
 	
 	function explode():Void {
-		tile.explode(function() onExplosionComplete(body.position.x > Physics.SPACE_WIDTH / 2));
+		var scoredPlayer = body.position.x > Physics.SPACE_WIDTH / 2 ? Main.instance.controller.leftPlayer :  Main.instance.controller.rightPlayer;
+		@:privateAccess scoredPlayer.score++;
+		
+		tile.explode(function() onExplosionComplete(scoredPlayer.left));
 		body.space = null;
 		active = false;
 	}
 	
 	function onExplosionComplete(leftScored:Bool):Void {
-		spawn(leftScored);
+		Timer.delay(function() spawn(!leftScored), 500);
 	}
 	
 }

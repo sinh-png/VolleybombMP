@@ -22,7 +22,7 @@ class GameController {
 		rightPlayer.activate();
 		bomb.activate();
 		
-		Timer.delay(startGame, 1200);
+		Timer.delay(function() bomb.spawn(false), 1200);
 	}
 	
 	function onDeactivated():Void {
@@ -39,10 +39,6 @@ class GameController {
 		leftPlayer.update(delta);
 		rightPlayer.update(delta);
 		bomb.update(delta);
-	}
-	
-	function startGame():Void {
-		bomb.spawn(false);
 	}
 	
 }

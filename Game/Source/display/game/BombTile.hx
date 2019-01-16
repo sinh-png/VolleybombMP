@@ -7,7 +7,7 @@ class BombTile extends AnimatedTile {
 	
 	public var width(default, null):Float;
 	public var height(default, null):Float;
-
+	
 	var normalFrames:Array<Int>;
 	var explodingFrames:Array<Int>;
 	
@@ -59,6 +59,11 @@ class BombTile extends AnimatedTile {
 		var rect = tilemap.atlas.getRect(id);
 		width = rect.width;
 		height = rect.height;
+	}
+	
+	override function set_visible(value:Bool):Bool {
+		@:privateAccess tilemap.bombShadow.visible = value;
+		return super.set_visible(value);
 	}
 	
 }

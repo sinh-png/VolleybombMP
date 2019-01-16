@@ -7,6 +7,8 @@ class PlayerTile extends AnimatedTile {
 	
 	public var left(default, null):Bool;
 	
+	public var scoreTile(default, null):ScoreTile;
+	
 	var standingFrames:Array<Int>;
 	var movingForwardFrames:Array<Int>;
 	var movingBackwardFrames:Array<Int>;
@@ -33,6 +35,8 @@ class PlayerTile extends AnimatedTile {
 		originY = height / 2;
 		
 		playStanding();
+		
+		scoreTile = new ScoreTile(left, atlas);
 	}
 	
 	public inline function playStanding() play(standingFrames, 0.6);
