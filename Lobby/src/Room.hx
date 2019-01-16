@@ -4,6 +4,7 @@ import haxe.ds.StringMap;
 import js.node.socketio.Server;
 import js.node.socketio.Socket;
 import room.RoomAnswer;
+import room.RoomConfig;
 import room.RoomEvent;
 
 class Room {
@@ -36,7 +37,7 @@ class Room {
 	}
 	static inline function randomRoomID():String {
 		var string = '';
-		for (i in 0...9)
+		for (i in 0...RoomConfig.ID_LENGTH)
 			string += Math.round(Math.random() * 9);
 		return string;
 	}
