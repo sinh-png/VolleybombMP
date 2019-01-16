@@ -80,6 +80,11 @@ class MenuDialog extends Sprite {
 		}
 	}
 	
+	override function set_visible(value:Bool):Bool {
+		MenuState.instance.title.visible = value;
+		return super.set_visible(value);
+	}
+	
 }
 
 class Button extends TextField {
