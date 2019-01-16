@@ -1,6 +1,7 @@
 package display;
 
 import openfl.display.DisplayObjectContainer;
+import openfl.geom.Rectangle;
 
 class StateBase extends DisplayObjectContainer {
 	
@@ -12,7 +13,8 @@ class StateBase extends DisplayObjectContainer {
 	}
 	
 	function onActivated():Void {
-		
+		if (scrollRect == null)
+			scrollRect = new Rectangle(0, 0, baseWidth, baseHeight);
 	}
 	
 	function onDeactivated():Void {

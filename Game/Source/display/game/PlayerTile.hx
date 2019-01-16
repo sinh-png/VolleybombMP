@@ -45,9 +45,22 @@ class PlayerTile extends AnimatedTile {
 	
 	public inline function playMovingBackward() play(movingBackwardFrames, 0.6);
 	
-	public inline function playJumping() { stop(); id = jumpingFrame; }
+	public function playJumping():Void {
+		if (id == jumpingFrame)
+			return;
+		
+		stop();
+		id = jumpingFrame;
+		Sound.playJump();
+	}
 	
-	public inline function playFalling() { stop(); id = fallingFrame; }
+	public function playFalling():Void {
+		if (id == fallingFrame)
+			return;
+		
+		stop();
+		id = fallingFrame;
+	}
 	
 	public function getAnimState():AnimState {
 		if (frameIDs == movingForwardFrames)

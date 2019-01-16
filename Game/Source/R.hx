@@ -6,7 +6,7 @@ import openfl.utils.Assets;
 
 class R {
 	
-	static inline var assetPath = 'Assets/';
+	public static inline var assetsPath = 'Assets/';
 
 	public static var defaultFont(default, null):String;
 	
@@ -15,15 +15,15 @@ class R {
 	}
 	
 	public static inline function getBitmapData(id:String):BitmapData {
-		return Assets.getBitmapData(assetPath + id);
+		return Assets.getBitmapData(assetsPath + id);
 	}
 	
 	public static inline function getText(id:String):String {
-		return Assets.getText(assetPath + id);
+		return Assets.getText(assetsPath + id);
 	}
 	
 	public static inline function getFont(id:String):Font {
-		return Assets.getFont(assetPath + id);
+		return Assets.getFont(assetsPath + id);
 	}
 	
 }

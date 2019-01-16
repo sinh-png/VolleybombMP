@@ -36,6 +36,7 @@ class Main extends Sprite {
 		instance = this;
 		
 		R.init();
+		Sound.init();
 		MenuState.init();
 		GameState.init();
 		Physics.init();
@@ -54,6 +55,8 @@ class Main extends Sprite {
 		stage.addEventListener(Event.RESIZE, onStageResized);
 		
 		//
+		
+		Save.load();
 		
 		var href = Browser.location.href;
 		var roomID = href.split('?')[1];

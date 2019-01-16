@@ -5,6 +5,7 @@ import control.Physics;
 import display.Atlas;
 import display.common.Button;
 import display.common.CommonButton;
+import display.common.SoundButton;
 import display.menu.MenuState;
 import motion.Actuate;
 import motion.easing.Sine.SineEaseIn;
@@ -49,8 +50,9 @@ class GameState extends StateBase {
 	var clouds:Array<Tile> = [];
 	var cloudsPool:Array<Tile> = [];
 	
-	var backButton:BackButton;
 	var playAgainButton:CommonButton;
+	var soundButton:SoundButton;
+	var backButton:BackButton;
 	
 	var disconnectionDialog:Sprite;
 	var disconnectionText:TextField;
@@ -125,26 +127,13 @@ class GameState extends StateBase {
 		playAgainButton.visible = false;
 		addChild(playAgainButton);
 		
+		soundButton = new SoundButton();
+		addChild(soundButton);
+		
 		backButton = new BackButton();
 		backButton.x = backButton.width / 2 - 15;
 		backButton.y = baseHeight - backButton.height / 2 + 20;
 		addChild(backButton);
-		
-		// hide the back button where it's not within the screen area
-		
-		var leftLetterBox = new Sprite(); 
-		leftLetterBox.graphics.beginFill();
-		leftLetterBox.graphics.drawRect( -60, height - 90, 60, 90);
-		leftLetterBox.graphics.endFill();
-		leftLetterBox.cacheAsBitmap = true;
-		addChild(leftLetterBox);
-		
-		var bottomLetterBox = new Sprite();
-		bottomLetterBox.graphics.beginFill();
-		bottomLetterBox.graphics.drawRect(0, height, 120, 60);
-		bottomLetterBox.graphics.endFill();
-		bottomLetterBox.cacheAsBitmap = true;
-		addChild(bottomLetterBox);
 		
 		//
 		

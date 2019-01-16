@@ -55,6 +55,8 @@ class BombTile extends AnimatedTile {
 				if (onComplete != null)
 					onComplete();
 			});
+		
+		Sound.playExplosion();
 	}
 	
 	public function updateSize():Void {
