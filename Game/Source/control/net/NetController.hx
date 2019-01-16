@@ -32,8 +32,8 @@ class NetController extends GameController {
 	override function onActivated():Void {
 		if (!gameEnded) {
 			con = Connection.instance;
-			con.listen(Header.PLAYER, onReceivePlayer);
-			con.listen(Header.PLAYER_BALL, onReceivePlayerAndBomb);
+			con.listen(Header.PLAYER, function(pack) onReceiveObjectData(false, pack));
+			con.listen(Header.PLAYER_BALL, function(pack) onReceiveObjectData(true, pack));
 		}
 		
 		super.onActivated();
@@ -69,18 +69,28 @@ class NetController extends GameController {
 			pack.floats([ body.rotation, body.angularVel ]);
 	}
 	
-	function onReceivePlayer(pack:ByteArray):Void {
+	function onReceiveObjectData(hasBomb:Bool, pack:ByteArray):Void {
 		var packID = pack.readUnsignedInt();
-		if (packID < lastReceivedPackageID)
+		if (
+			packID < lastReceivedPackageID ||
+			(lastReceivedPackageID == 0 && packID > 200) // left-over from previous game
+		)
 			return;
 		
 		lastReceivedPackageID = packID;
 		
+		if (hasBomb)
+			updateRemotePlayerAndBomb(pack);
+		else
+			updateRemotePlayer(pack);
+	}
+	
+	function updateRemotePlayer(pack:ByteArray):Void {
 		localPlayer.body.space = null;
 		bomb.body.space = null;
 		
 		remotePlayer.animState = pack.readByte();
-		applyBody(pack, remotePlayer.body);
+		updateBody(pack, remotePlayer.body);
 		var latency = con.lastLatency / 2;
 		if (latency >= 1 / 60)
 			Physics.step(latency);
@@ -89,17 +99,11 @@ class NetController extends GameController {
 		bomb.body.space = Physics.space;
 	}
 	
-	function onReceivePlayerAndBomb(pack:ByteArray):Void {
-		var packID = pack.readUnsignedInt();
-		if (packID < lastReceivedPackageID)
-			return;
-		
-		lastReceivedPackageID = packID;
-		
+	function updateRemotePlayerAndBomb(pack:ByteArray):Void {
 		localPlayer.body.space = null;
 		
 		remotePlayer.animState = pack.readByte();
-		applyBody(pack, remotePlayer.body);
+		updateBody(pack, remotePlayer.body);
 		
 		var body = bomb.body;
 		var positionX = body.position.x;
@@ -108,7 +112,7 @@ class NetController extends GameController {
 		var velocityY = body.velocity.y;
 		var rotation = body.rotation;
 		var angularVel = body.angularVel;
-		applyBody(pack, bomb.body);
+		updateBody(pack, bomb.body);
 		
 		var latency = con.lastLatency / 2;
 		if (latency >= 1 / 60)
@@ -124,7 +128,7 @@ class NetController extends GameController {
 		localPlayer.body.space = Physics.space;
 	}
 	
-	function applyBody(pack:ByteArray, body:Body):Void {
+	function updateBody(pack:ByteArray, body:Body):Void {
 		body.position.x = pack.readFloat();
 		body.position.y = pack.readFloat();
 		body.velocity.x = pack.readFloat();

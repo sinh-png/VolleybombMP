@@ -1,5 +1,7 @@
 package control.net;
 
+import net.Sendable;
+
 class HostController extends NetController {
 	
 	public static var instance(default, null):HostController;
@@ -12,6 +14,12 @@ class HostController extends NetController {
 	
 	function new() {
 		super(true, new RemotePlayer(true), new KeyboardPlayer2(false));
+	}
+	
+	override function onActivated():Void {
+		if (gameEnded)
+			Sendable.n(Header.NEW_GAME).send();
+		super.onActivated();
 	}
 	
 }

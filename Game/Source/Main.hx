@@ -69,6 +69,10 @@ class Main extends Sprite {
 		stage.focus = GameState.instance;
 	}
 	
+	public inline function playAgain():Void {
+		startGame(controller);
+	}
+	
 	function onEnterFrame(event:Event):Void {
 		var crFrameTime = Timer.stamp();
 		deltaTime = crFrameTime - prvFrameTime;

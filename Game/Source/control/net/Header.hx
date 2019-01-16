@@ -4,5 +4,6 @@ package control.net;
 
 	var PLAYER = 0;
 	var PLAYER_BALL = 1;
+	var NEW_GAME = 3;
 	
 }

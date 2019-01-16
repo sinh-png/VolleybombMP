@@ -44,7 +44,7 @@ class GameState extends StateBase {
 	var clouds:Array<Tile> = [];
 	var cloudsPool:Array<Tile> = [];
 	
-	var replayButton:CommonButton;
+	var playAgainButton:CommonButton;
 	var transitionOverlay:Bitmap;
 	
 	function new() {
@@ -109,21 +109,11 @@ class GameState extends StateBase {
 		
 		//
 		
-		replayButton = new CommonButton(new TextFormat(R.defaultFont, 18, 0xFFFFFF, true), "PLAY AGAIN?", 100, 40, 0x4684F1);
-		replayButton.x = (baseWidth - replayButton.width) / 2;
-		replayButton.onClickCB = function(_) {
-			Actuate
-				.tween(replayButton, 0.6, { y: baseHeight } )
-				.ease(new SineEaseIn())
-				.onComplete(function() replayButton.visible = false);
-			Actuate
-				.tween(winText, 0.6, { y: -atlas.getRect(winText.id).height } )
-				.ease(new SineEaseIn())
-				.onComplete(function() winText.visible = false);
-			Main.instance.startGame(Main.instance.controller);
-		}
-		replayButton.visible = false;
-		addChild(replayButton);
+		playAgainButton = new CommonButton(new TextFormat(R.defaultFont, 18, 0xFFFFFF, true), "PLAY AGAIN?", 100, 40, 0x4684F1);
+		playAgainButton.x = (baseWidth - playAgainButton.width) / 2;
+		playAgainButton.onClickCB = function(_) Main.instance.playAgain();
+		playAgainButton.visible = false;
+		addChild(playAgainButton);
 	}
 	
 	inline function initClouds():Void {
@@ -143,6 +133,20 @@ class GameState extends StateBase {
 	
 	override public function onActivated():Void {
 		super.onActivated();
+		
+		if (winText.visible) {
+			Actuate
+				.tween(winText, 0.6, { y: -atlas.getRect(winText.id).height } )
+				.ease(new SineEaseIn())
+				.onComplete(function() winText.visible = false);
+		}
+		
+		if (playAgainButton.visible) {
+			Actuate
+				.tween(playAgainButton, 0.6, { y: baseHeight } )
+				.ease(new SineEaseIn())
+				.onComplete(function() playAgainButton.visible = false);
+		}
 		
 		transitionOverlay.alpha = 1;
 		addChild(transitionOverlay);
@@ -234,15 +238,15 @@ class GameState extends StateBase {
 		
 		switch(Main.instance.controller.mode) {
 			case Mode.LOCAL(_):
-				replayButton.visible = true;
+				playAgainButton.visible = true;
 				
 			case Mode.NET(host):
-				replayButton.visible = host;
+				playAgainButton.visible = host;
 		}
 		
-		if (replayButton.visible) {
-			replayButton.y = baseHeight;
-			Actuate.tween(replayButton, 1.2, { y: baseHeight - replayButton.height - 100 });
+		if (playAgainButton.visible) {
+			playAgainButton.y = baseHeight;
+			Actuate.tween(playAgainButton, 1.2, { y: baseHeight - playAgainButton.height - 100 });
 		}
 	}
 	
