@@ -79,10 +79,11 @@ class Room {
 				);
 			});
 			socket.on(RoomEvent.NOT_EXIST, function() {
+				var msg = 'Could not find room $roomID.';
 				if (onFailed != null)
-					onFailed('Room $roomID does not exist.');
+					onFailed(msg);
 				else
-					trace('Room $roomID does not exist.');
+					trace(msg);
 			});
 			socket.emit(RoomEvent.JOIN, roomID);
 			handleSocketErrors(onFailed);

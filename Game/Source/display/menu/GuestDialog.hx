@@ -5,13 +5,14 @@ import net.Connection;
 import net.Room;
 import display.common.CommonButton;
 import openfl.display.Sprite;
+import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFieldType;
 import openfl.text.TextFormat;
+import room.RoomConfig;
 
 class GuestDialog extends NetPlayDialog {
 	
-	var infoFrame:Sprite;
 	var codeLabel:TextField;
 	var codeField:TextField;
 	var joinButton:CommonButton;
@@ -20,14 +21,14 @@ class GuestDialog extends NetPlayDialog {
 	public function new() {
 		super("JOINING GAME... PLEASE WAIT...");
 		
-		infoFrame = new Sprite();
-		addChild(infoFrame);
+		mainDialog = new Sprite();
+		addChild(mainDialog);
 		
 		codeLabel = createText(new TextFormat(null, 20, 0xFFFFFF, true), "Invitation code:");
 		codeLabel.x = paddingX;
 		codeLabel.y = paddingY;
 		codeLabel.mouseEnabled = false;
-		infoFrame.addChild(codeLabel);
+		mainDialog.addChild(codeLabel);
 		
 		codeField = createText(new TextFormat(null, 20, 0xFFD47F), "0");
 		codeField.type = TextFieldType.INPUT;
@@ -35,25 +36,27 @@ class GuestDialog extends NetPlayDialog {
 		codeField.x = paddingX;
 		codeField.y = codeLabel.y + codeLabel.height + 3;
 		codeField.width = 320;
-		infoFrame.addChild(codeField);
+		codeField.addEventListener(Event.CHANGE, onCodeEntered);
+		mainDialog.addChild(codeField);
 		
 		var bgWidth = codeField.x + codeField.width + paddingX;
 		
 		joinButton = new CommonButton(new TextFormat(R.defaultFont, 18, 0xFFFFFF, true), "JOIN", 70, 40, 0x4684F1);
 		joinButton.x = 50;
 		joinButton.y = (codeField.y + codeField.height) + 24;
+		joinButton.enabled = false;
 		joinButton.onClickCB = function(_) join(codeField.text);
-		infoFrame.addChild(joinButton);
+		mainDialog.addChild(joinButton);
 		
 		cancelButton = new CommonButton(joinButton.textField.defaultTextFormat, "CANCEL", joinButton.baseWidth, joinButton.baseHeight, joinButton.baseColor.toInt());
 		cancelButton.x = bgWidth - cancelButton.width - joinButton.x;
 		cancelButton.y = joinButton.y;
 		cancelButton.onClickCB = function(_) close();
-		infoFrame.addChild(cancelButton);
+		mainDialog.addChild(cancelButton);
 		
 		var bgHeight = cancelButton.y + cancelButton.height + paddingY;
 		
-		var g = infoFrame.graphics;
+		var g = mainDialog.graphics;
 		g.beginFill(0x0, 0.9);
 		g.drawRoundRect(0, 0, bgWidth, bgHeight, 8, 8);
 		
@@ -67,26 +70,26 @@ class GuestDialog extends NetPlayDialog {
 	
 	public function show(roomID:String = ''):Void {
 		codeField.text = roomID;
-		center(infoFrame);
-		infoFrame.visible = visible = true;
-		waitingFrame.visible = false;
-		MenuState.instance.menu.visible = false;
+		showMain();
 		Main.instance.stage.focus = codeField;
+		MenuState.instance.menu.visible = false;
+	}
+	
+	override function closeError():Void {
+		showMain();
 	}
 	
 	public function join(roomID:String, delay:Float = 0):Void {
-		Room.join(true, roomID, onJoinSuccess, onJoinFailed);
-		waitingFrame.visible = true;
-		infoFrame.visible = false;
+		Room.join(true, roomID, onJoinSuccess, showError);
+		showWaiting();
 	}
 	
 	function onJoinSuccess(con:Connection):Void {
 		Main.instance.startGame(GuestController.instance);
 	}
 	
-	function onJoinFailed(error:String):Void {
-		trace(error);
-		close();
+	function onCodeEntered(event:Event):Void {
+		joinButton.enabled = codeField.text.length == RoomConfig.ID_LENGTH;
 	}
 	
 }

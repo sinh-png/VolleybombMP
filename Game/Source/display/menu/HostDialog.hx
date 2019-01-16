@@ -14,7 +14,6 @@ import openfl.text.TextFormat;
 
 class HostDialog extends NetPlayDialog {
 	
-	var infoFrame:Sprite;
 	var codeLabel:TextField;
 	var codeField:TextField;
 	var codeCopyButton:CopyButton;
@@ -29,42 +28,42 @@ class HostDialog extends NetPlayDialog {
 		var spacingSmall = 3;
 		var spacingBig = 24;
 		
-		infoFrame = new Sprite();
-		addChild(infoFrame);
+		mainDialog = new Sprite();
+		addChild(mainDialog);
 		
 		codeLabel = createText(new TextFormat(null, 20, 0xFFFFFF, true), "Invitation code:");
 		codeLabel.x = paddingX;
 		codeLabel.y = paddingY;
 		codeLabel.mouseEnabled = false;
-		infoFrame.addChild(codeLabel);
+		mainDialog.addChild(codeLabel);
 		
 		codeField = createText(new TextFormat(null, 20, 0xFFD47F), "0");
 		codeField.x = paddingX;
 		codeField.y = codeLabel.y + codeLabel.height + spacingSmall;
 		codeField.width = 320;
-		infoFrame.addChild(codeField);
+		mainDialog.addChild(codeField);
 		
 		codeCopyButton = new CopyButton(codeField);
 		codeCopyButton.x = codeField.x + codeField.width + 15;
 		codeCopyButton.y = codeField.y;
-		infoFrame.addChild(codeCopyButton);
+		mainDialog.addChild(codeCopyButton);
 		
 		urlLabel = createText(codeLabel.defaultTextFormat, "Invitation URL:");
 		urlLabel.x = paddingX;
 		urlLabel.y = codeField.y + codeField.height + spacingBig;
 		urlLabel.mouseEnabled = false;
-		infoFrame.addChild(urlLabel);
+		mainDialog.addChild(urlLabel);
 		
 		urlField = createText(codeField.defaultTextFormat, "0");
 		urlField.x = paddingX;
 		urlField.y = urlLabel.y + urlLabel.height + spacingSmall;
 		urlField.width = codeField.width;
-		infoFrame.addChild(urlField);
+		mainDialog.addChild(urlField);
 		
 		urlCopyButton = new CopyButton(urlField);
 		urlCopyButton.x = codeCopyButton.x;
 		urlCopyButton.y = urlField.y;
-		infoFrame.addChild(urlCopyButton);
+		mainDialog.addChild(urlCopyButton);
 		
 		var bgWidth = codeCopyButton.x + codeCopyButton.width + paddingX;
 		
@@ -72,11 +71,11 @@ class HostDialog extends NetPlayDialog {
 		cancelButton.x = (bgWidth - cancelButton.width) / 2;
 		cancelButton.y = (urlCopyButton.y + urlCopyButton.height) + spacingBig;
 		cancelButton.onClickCB = function(_) close();
-		infoFrame.addChild(cancelButton);
+		mainDialog.addChild(cancelButton);
 		
 		var bgHeight = cancelButton.y + cancelButton.height + paddingY;
 		
-		var g = infoFrame.graphics;
+		var g = mainDialog.graphics;
 		g.beginFill(0x0, 0.9);
 		g.drawRoundRect(0, 0, bgWidth, bgHeight, 8, 8);
 		
@@ -93,10 +92,8 @@ class HostDialog extends NetPlayDialog {
 	}
 
 	public function host():Void {
-		Room.create(true, onRoom, onGuestJoined, onFailed);
-		center(waitingFrame);
-		waitingFrame.visible = visible = true;
-		infoFrame.visible = false;
+		Room.create(true, onRoom, onGuestJoined, showError);
+		showWaiting();
 		MenuState.instance.menu.visible = false;
 	}
 	
@@ -104,20 +101,11 @@ class HostDialog extends NetPlayDialog {
 		codeField.text = id;
 		var href = Browser.location.href;
 		urlField.text = href.substr(0, href.lastIndexOf('/') + 1) + '?$id';
-		
-		center(infoFrame);
-		
-		waitingFrame.visible = false;
-		infoFrame.visible = true;
+		showMain();
 	}
 	
 	function onGuestJoined(con:Connection):Void {
 		Main.instance.startGame(HostController.instance);
-	}
-	
-	function onFailed(error:String):Void {
-		trace(error);
-		close();
 	}
 	
 }
