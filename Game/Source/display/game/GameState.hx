@@ -39,7 +39,7 @@ class GameState extends StateBase {
 	var rightPlayerShadow:Shadow;
 	var bombShadow:Shadow;
 	
-	var winText:Tile;
+	var winnerText:Tile;
 	
 	var backgroundA:Tile;
 	var backgroundB:Tile;
@@ -112,10 +112,10 @@ class GameState extends StateBase {
 		rightPlayer.scoreTile.y = leftPlayer.scoreTile.y;
 		tilemap.addTile(rightPlayer.scoreTile);
 		
-		winText = new Tile();
-		winText.alpha = rightPlayer.scoreTile.alpha;
-		winText.visible = false;
-		tilemap.addTile(winText);
+		winnerText = new Tile();
+		winnerText.alpha = rightPlayer.scoreTile.alpha;
+		winnerText.visible = false;
+		tilemap.addTile(winnerText);
 		
 		//
 		
@@ -192,11 +192,11 @@ class GameState extends StateBase {
 		
 		disconnectionDialog.visible = false;
 		
-		if (winText.visible) {
+		if (winnerText.visible) {
 			Actuate
-				.tween(winText, 0.6, { y: -atlas.getRect(winText.id).height } )
+				.tween(winnerText, 0.6, { y: -atlas.getRect(winnerText.id).height } )
 				.ease(new SineEaseIn())
-				.onComplete(function() winText.visible = false);
+				.onComplete(function() winnerText.visible = false);
 		}
 		
 		if (playAgainButton.visible) {
@@ -287,12 +287,12 @@ class GameState extends StateBase {
     }
 	
 	public function showWin(leftWon:Bool):Void {
-		winText.id = atlas.getID('Win/' + (leftWon ? 'Left' : 'Right') + '.png');
-		winText.visible = true;
-		var rect = atlas.getRect(winText.id);
-		winText.x = (tilemap.width - rect.width) / 2;
-		winText.y = -rect.height;
-		Actuate.tween(winText, 1.2, { y: (tilemap.height - rect.height) / 2 } );
+		winnerText.id = atlas.getID('Win/' + (leftWon ? 'Left' : 'Right') + '.png');
+		winnerText.visible = true;
+		var rect = atlas.getRect(winnerText.id);
+		winnerText.x = (tilemap.width - rect.width) / 2;
+		winnerText.y = -rect.height;
+		Actuate.tween(winnerText, 1.2, { y: (tilemap.height - rect.height) / 2 } );
 		
 		switch(Main.instance.controller.mode) {
 			case Mode.LOCAL(_):
@@ -309,6 +309,8 @@ class GameState extends StateBase {
 	}
 	
 	public function onDisconnected():Void {
+		winnerText.visible = playAgainButton.visible = false;
+		
 		disconnectionDialog.visible = true;
 		disconnectionDialog.y = -disconnectionDialog.height;
 		Actuate.tween(disconnectionDialog, 1, { y: (baseHeight - disconnectionDialog.height) / 2 } );
