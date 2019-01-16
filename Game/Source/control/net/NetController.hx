@@ -3,6 +3,7 @@ package control.net;
 import control.GameController;
 import control.KeyboardPlayer2;
 import control.PlayerController;
+import display.game.GameState;
 import nape.phys.Body;
 import net.Connection;
 import net.Sendable;
@@ -34,6 +35,7 @@ class NetController extends GameController {
 			con = Connection.instance;
 			con.listen(Header.PLAYER, function(pack) onReceiveObjectData(false, pack));
 			con.listen(Header.PLAYER_BALL, function(pack) onReceiveObjectData(true, pack));
+			con.onDestroyedCB = onDisconnected;
 		}
 		
 		super.onActivated();
@@ -43,11 +45,12 @@ class NetController extends GameController {
 	}
 	
 	override function onDeactivated():Void {
-		if (gameEnded) {
+		super.onDeactivated();
+		
+		if (con != null) {
 			con.destroy();
 			con = null;
 		}
-		super.onDeactivated();
 	}
 	
 	override function update(delta:Float):Void {
@@ -78,6 +81,9 @@ class NetController extends GameController {
 	}
 	
 	function onReceiveObjectData(hasBomb:Bool, pack:ByteArray):Void {
+		if (con == null)
+			return;
+		
 		var packID = pack.readUnsignedInt();
 		if (
 			packID < lastReceivedPackageID ||
@@ -145,6 +151,15 @@ class NetController extends GameController {
 			body.rotation   = pack.readFloat();
 			body.angularVel = pack.readFloat();
 		}
+	}
+	
+	function onDisconnected():Void {
+		gameEnded = true;
+		if (con != null) {
+			con.destroy();
+			con = null;
+		}
+		GameState.instance.onDisconnected();
 	}
 	
 }

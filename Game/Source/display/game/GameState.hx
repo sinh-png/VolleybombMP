@@ -14,6 +14,7 @@ import openfl.display.Tile;
 import openfl.display.TileContainer;
 import openfl.display.Tilemap;
 import openfl.events.MouseEvent;
+import openfl.text.TextField;
 import openfl.text.TextFormat;
 
 class GameState extends StateBase {
@@ -50,6 +51,10 @@ class GameState extends StateBase {
 	
 	var backButton:BackButton;
 	var playAgainButton:CommonButton;
+	
+	var disconnectionDialog:Sprite;
+	var disconnectionText:TextField;
+	
 	var transitionOverlay:Bitmap;
 	
 	function new() {
@@ -140,6 +145,31 @@ class GameState extends StateBase {
 		bottomLetterBox.graphics.endFill();
 		bottomLetterBox.cacheAsBitmap = true;
 		addChild(bottomLetterBox);
+		
+		//
+		
+		disconnectionDialog = new Sprite();
+		disconnectionDialog.visible = false;
+		addChild(disconnectionDialog);
+		
+		disconnectionText = new TextField();
+		disconnectionText.defaultTextFormat = new TextFormat(R.defaultFont, 30, 0xFFFFFF);
+		disconnectionText.text = "LOST CONNECTION...";
+		disconnectionText.width = disconnectionText.textWidth + 4;
+		disconnectionText.height = disconnectionText.textHeight + 4;
+		disconnectionText.x = 10;
+		disconnectionText.y = 10;
+		disconnectionText.mouseEnabled = false;
+		disconnectionDialog.addChild(disconnectionText);
+		
+		var bgWidth = disconnectionText.width + disconnectionText.x * 2;
+		var bgHeight = disconnectionText.height + disconnectionText.y * 2;
+		var g = disconnectionDialog.graphics;
+		g.beginFill(0x0, 0.9);
+		g.drawRoundRect(0, 0, bgWidth, bgHeight, 8, 8); 
+		g.endFill();
+		
+		disconnectionDialog.x = (baseWidth - bgWidth) / 2;
 	}
 	
 	inline function initClouds():Void {
@@ -159,6 +189,8 @@ class GameState extends StateBase {
 	
 	override public function onActivated():Void {
 		super.onActivated();
+		
+		disconnectionDialog.visible = false;
 		
 		if (winText.visible) {
 			Actuate
@@ -274,6 +306,12 @@ class GameState extends StateBase {
 			playAgainButton.y = baseHeight;
 			Actuate.tween(playAgainButton, 1.2, { y: baseHeight - playAgainButton.height - 100 });
 		}
+	}
+	
+	public function onDisconnected():Void {
+		disconnectionDialog.visible = true;
+		disconnectionDialog.y = -disconnectionDialog.height;
+		Actuate.tween(disconnectionDialog, 1, { y: (baseHeight - disconnectionDialog.height) / 2 } );
 	}
 	
 }

@@ -11,6 +11,7 @@ import peer.Peer;
 import peer.PeerEvent;
 import peer.PeerOptions;
 
+@:access(peer.Peer)
 class Connection {
 	
 	public static var instance(default, null):Connection;
@@ -57,6 +58,10 @@ class Connection {
 	public var ignoresPackageIfNotReady:Bool = true;
 	
 	public var destroyed(default, null):Bool = false;
+	/**
+	   true: destroy when one of the channels is closed / disconnected. false: needs both channels to be closed / disconnected.
+	**/
+	public var destroysOnAnyClosed:Bool = true;
 	public var onDestroyedCB:Void->Void;
 	
 	/**
@@ -110,6 +115,10 @@ class Connection {
 			});
 			u.on(PeerEvent.DATA, onData);
 			u.on(PeerEvent.CLOSE, onUClosed);
+			u.on(PeerEvent.ICE_STATE_CHANGE, function() {
+				if (u._pc.iceConnectionState == 'disconnected')
+					onUClosed();
+			});
 			u.on(PeerEvent.ERROR, onUErrror);
 			if (offer != null)
 				u.signal(offer.u);
@@ -124,6 +133,10 @@ class Connection {
 		});
 		r.on(PeerEvent.DATA, onData);
 		r.on(PeerEvent.CLOSE, onRClosed);
+		r.on(PeerEvent.ICE_STATE_CHANGE, function() {
+			if (r._pc.iceConnectionState == 'disconnected')
+				onRClosed();
+		});
 		r.on(PeerEvent.ERROR, onRError);
 		if (offer != null)
 			r.signal(offer.r);
@@ -153,6 +166,8 @@ class Connection {
 		if (destroyed)
 			return;
 		
+		destroyed = true;
+		
 		r.destroy();
 		u.destroy();
 		r = u = null;
@@ -160,6 +175,7 @@ class Connection {
 		onPingCB = null;
 		for (key in listeners.keys())
 			listeners.remove(key);
+		listeners = null;
 		
 		if (instance == this)
 			instance = null;
@@ -168,8 +184,6 @@ class Connection {
 			onDestroyedCB();
 			onDestroyedCB = null;
 		}
-		
-		destroyed = true;
 	}
 	
 	public function send(reliable:Bool, data:Dynamic):Bool {
@@ -243,13 +257,13 @@ class Connection {
 		lastLatency = -1;
 		
 		rReady = false;
-		if (!uReady)
+		if (destroysOnAnyClosed || !uReady)
 			destroy();
 	}
 	
 	function onUClosed():Void {
 		uReady = false;
-		if (!rReady)
+		if (destroysOnAnyClosed || !rReady)
 			destroy();
 	}
 	

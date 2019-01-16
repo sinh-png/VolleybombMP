@@ -98,7 +98,7 @@ class Main extends Sprite {
 	}
 	
 	function set_controller(value:GameController):GameController {
-		if (controller != null)
+		if (controller != null && controller != value)
 			controller.onDeactivated();
 		
 		controller = value;
