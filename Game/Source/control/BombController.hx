@@ -14,7 +14,7 @@ class BombController extends ObjectController<BombTile> {
 	
 	override function activate():Void {
 		super.activate();
-		active = false;
+		active = tile.visible = false;
 	}
 	
 	override function update(delta:Float):Void {

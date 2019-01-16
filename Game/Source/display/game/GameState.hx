@@ -3,13 +3,17 @@ package display.game;
 import control.Mode;
 import control.Physics;
 import display.Atlas;
+import display.common.Button;
 import display.common.CommonButton;
+import display.menu.MenuState;
 import motion.Actuate;
 import motion.easing.Sine.SineEaseIn;
 import openfl.display.Bitmap;
+import openfl.display.Sprite;
 import openfl.display.Tile;
 import openfl.display.TileContainer;
 import openfl.display.Tilemap;
+import openfl.events.MouseEvent;
 import openfl.text.TextFormat;
 
 class GameState extends StateBase {
@@ -44,6 +48,7 @@ class GameState extends StateBase {
 	var clouds:Array<Tile> = [];
 	var cloudsPool:Array<Tile> = [];
 	
+	var backButton:BackButton;
 	var playAgainButton:CommonButton;
 	var transitionOverlay:Bitmap;
 	
@@ -114,6 +119,27 @@ class GameState extends StateBase {
 		playAgainButton.onClickCB = function(_) Main.instance.playAgain();
 		playAgainButton.visible = false;
 		addChild(playAgainButton);
+		
+		backButton = new BackButton();
+		backButton.x = backButton.width / 2 - 15;
+		backButton.y = baseHeight - backButton.height / 2 + 20;
+		addChild(backButton);
+		
+		// hide the back button where it's not within the screen area
+		
+		var leftLetterBox = new Sprite(); 
+		leftLetterBox.graphics.beginFill();
+		leftLetterBox.graphics.drawRect( -60, height - 90, 60, 90);
+		leftLetterBox.graphics.endFill();
+		leftLetterBox.cacheAsBitmap = true;
+		addChild(leftLetterBox);
+		
+		var bottomLetterBox = new Sprite();
+		bottomLetterBox.graphics.beginFill();
+		bottomLetterBox.graphics.drawRect(0, height, 120, 60);
+		bottomLetterBox.graphics.endFill();
+		bottomLetterBox.cacheAsBitmap = true;
+		addChild(bottomLetterBox);
 	}
 	
 	inline function initClouds():Void {
@@ -248,6 +274,45 @@ class GameState extends StateBase {
 			playAgainButton.y = baseHeight;
 			Actuate.tween(playAgainButton, 1.2, { y: baseHeight - playAgainButton.height - 100 });
 		}
+	}
+	
+}
+
+class BackButton extends Button {
+	
+	var bitmap:Bitmap;
+	
+	public function new() {
+		super();
+		
+		bitmap = new Bitmap(R.getBitmapData('BackButton.png'), true);
+		bitmap.x = -bitmap.width / 2;
+		bitmap.y = -bitmap.height / 2;
+		addChild(bitmap);
+	}
+	
+	override function onRollOver(event:MouseEvent):Void {
+		super.onRollOver(event);
+		scaleX = scaleY = 1.2;
+	}
+	
+	override function onRollOut(event:MouseEvent):Void {
+		super.onRollOut(event);
+		scaleX = scaleY = 1;
+	}
+	
+	override function onClick(event:MouseEvent):Void {
+		super.onClick(event);
+		Main.instance.controller = null;
+		Main.instance.state = MenuState.instance;
+	}
+	
+	override function get_width():Float {
+		return bitmap.width * scaleX;
+	}
+	
+	override function get_height():Float {
+		return bitmap.height * scaleY;
 	}
 	
 }

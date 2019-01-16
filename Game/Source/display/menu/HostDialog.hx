@@ -105,6 +105,7 @@ class HostDialog extends NetPlayDialog {
 	}
 	
 	function onGuestJoined(con:Connection):Void {
+		close();
 		Main.instance.startGame(HostController.instance);
 	}
 	

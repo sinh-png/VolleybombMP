@@ -42,6 +42,14 @@ class NetController extends GameController {
 		lastReceivedPackageID = 0;
 	}
 	
+	override function onDeactivated():Void {
+		if (gameEnded) {
+			con.destroy();
+			con = null;
+		}
+		super.onDeactivated();
+	}
+	
 	override function update(delta:Float):Void {
 		super.update(delta);
 		

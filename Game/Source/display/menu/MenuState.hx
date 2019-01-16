@@ -54,12 +54,4 @@ class MenuState extends StateBase {
 		Actuate.tween(menu, 0.8, { y: baseHeight - menu.height - 40 } );
 	}
 	
-	override function get_width():Float {
-		return baseWidth * scaleX;
-	}
-	
-	override function get_height():Float {
-		return baseHeight * scaleY;
-	}
-	
 }

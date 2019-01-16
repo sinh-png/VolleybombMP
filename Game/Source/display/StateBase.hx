@@ -29,4 +29,12 @@ class StateBase extends DisplayObjectContainer {
 		y = (stageHeight - height) / 2;
 	}
 	
+	override function get_width():Float {
+		return baseWidth * scaleX;
+	}
+	
+	override function get_height():Float {
+		return baseHeight * scaleY;
+	}
+	
 }

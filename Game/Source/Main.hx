@@ -102,7 +102,8 @@ class Main extends Sprite {
 			controller.onDeactivated();
 		
 		controller = value;
-		controller.onActivated();
+		if (value != null)
+			controller.onActivated();
 		
 		return controller;
 	}
