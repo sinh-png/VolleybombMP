@@ -159,6 +159,7 @@ class NetController extends GameController {
 			con.destroy();
 			con = null;
 		}
+		bomb.deactivate();
 		GameState.instance.onDisconnected();
 	}
 	
