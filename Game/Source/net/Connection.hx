@@ -5,6 +5,7 @@ import haxe.Json;
 import haxe.Resource;
 import haxe.Timer;
 import haxe.ds.IntMap;
+import js.Browser;
 import openfl.utils.ByteArray;
 import peer.Peer;
 import peer.PeerEvent;
@@ -52,6 +53,9 @@ class Connection {
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
+	public var ready(get, never):Bool;
+	public var ignoresPackageIfNotReady:Bool = true;
+	
 	public var destroyed(default, null):Bool = false;
 	public var onDestroyedCB:Void->Void;
 	
@@ -129,6 +133,11 @@ class Connection {
 		
 		this.autoPing = autoPing;
 		
+		Browser.window.onbeforeunload = function(_) {
+			destroy();
+			return null;
+		}
+		
 		#if (localTest && !forceRelay)
 		minDelay = 90;
 		maxDelay = 100;
@@ -163,8 +172,13 @@ class Connection {
 		destroyed = true;
 	}
 	
-	public inline function send(reliable:Bool, data:Dynamic):Void {
-		(reliable ? r : u).send(data);
+	public function send(reliable:Bool, data:Dynamic):Bool {
+		var channel = reliable ? r : u;
+		if (channel != null) {
+			channel.send(data);
+			return true;
+		}
+		return false;
 	}
 	
 	public function listen(header:Int, listener:ByteArray->Void):Void {
@@ -209,6 +223,9 @@ class Connection {
 	}
 	
 	function onData(data:Dynamic):Void {
+		if (ignoresPackageIfNotReady && !ready)
+			return;
+		
 		var bytes = ByteArrayTools.fromArrayBuffer(data);
 		var header = bytes.readByte();
 		if (listeners.exists(header)) {
@@ -243,5 +260,7 @@ class Connection {
 	function onUErrror(error:String):Void {
 		trace(error);
 	}
+	
+	inline function get_ready() return rReady && uReady;
 	
 }
