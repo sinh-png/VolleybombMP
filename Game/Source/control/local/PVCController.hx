@@ -1,5 +1,7 @@
 package control.local;
 
+import control.TouchPlayer;
+
 class PVCController extends GameController {
 	
 	public static var instance(default, null):PVCController;
@@ -11,7 +13,8 @@ class PVCController extends GameController {
 	//
 	
 	function new() {
-		super(Mode.LOCAL(true), new ComputerPlayer(), new KeyboardPlayer2(false));
+		var player = Main.mobile ? new TouchPlayer(false) : new KeyboardPlayer2(false);
+		super(Mode.LOCAL(true), new ComputerPlayer(), player);
 	}
 	
 }

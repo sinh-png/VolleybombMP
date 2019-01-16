@@ -13,7 +13,8 @@ class HostController extends NetController {
 	//
 	
 	function new() {
-		super(true, new RemotePlayer(true), new KeyboardPlayer2(false));
+		var player = Main.mobile ? new TouchPlayer(false) : new KeyboardPlayer2(false);
+		super(true, new RemotePlayer(true), player);
 	}
 	
 	override function onActivated():Void {

@@ -33,7 +33,7 @@ class SoundButton extends Button {
 		tilemap.addTile(tile);
 		
 		x = Physics.SPACE_WIDTH - 28;
-		y = 453;
+		y = Main.mobile ? 30 : 453;
 	}
 	
 	public inline function updateTileID():Void {

@@ -17,7 +17,8 @@
 	
 	<dependency path="node_modules/socket.io-client/dist/socket.io.js" />
 	<dependency path="Libs/simplepeer.min.js" />
-	<define name="standalone" />
+	<dependency path="Libs/mobile-detect.min.js" />
+	
 	<!--define name="forceRelay" /-->
 	<!--define name="localTest" /--> <!-- Don't fetch ICEs & set connection minDelay & maxDelay to 90 & 100 -->
 	

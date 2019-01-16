@@ -132,7 +132,7 @@ class GameState extends StateBase {
 		
 		backButton = new BackButton();
 		backButton.x = backButton.width / 2 - 15;
-		backButton.y = baseHeight - backButton.height / 2 + 20;
+		backButton.y = Main.mobile ? 30 : baseHeight - backButton.height / 2 + 20;
 		addChild(backButton);
 		
 		//

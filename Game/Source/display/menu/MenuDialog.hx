@@ -28,6 +28,8 @@ class MenuDialog extends Sprite {
 		var paddingY = 10;
 		var buttonSpacing = 5;
 		var buttonTexts = [ VS_COMP, VS_LOCAL, HOST, JOIN ];
+		if (Main.mobile)
+			buttonTexts.remove(VS_LOCAL);
 		var button:Button = null;
 		for (i in 0...buttonTexts.length) {
 			button = new Button(buttonTexts[i]);

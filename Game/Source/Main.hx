@@ -20,6 +20,7 @@ import openfl.events.Event;
 class Main extends Sprite {
 	
 	public static var instance(default, null):Main;
+	public static var mobile(default, null):Bool;
 	
 	//
 	
@@ -34,6 +35,9 @@ class Main extends Sprite {
 		super();
 		
 		instance = this;
+		
+		var md = untyped __js__('new MobileDetect(window.navigator.userAgent)');
+		mobile = md.mobile() != null;
 		
 		R.init();
 		Sound.init();
