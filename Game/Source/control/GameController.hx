@@ -1,11 +1,17 @@
 package control;
 
 import control.PlayerController;
+import display.game.GameState;
 import haxe.Timer;
 
 class GameController {
 	
+	static inline var MAX_SCORE = 5;
+	
+	//
+	
 	public var mode(default, null):Mode;
+	public var gameEnded(default, null):Bool = false;
 	public var leftPlayer(default, null):PlayerController;
 	public var rightPlayer(default, null):PlayerController;
 	public var bomb(default, null):BombController;
@@ -18,6 +24,8 @@ class GameController {
 	}
 	
 	function onActivated():Void {
+		gameEnded = false;
+		
 		leftPlayer.activate();
 		rightPlayer.activate();
 		bomb.activate();
@@ -29,6 +37,21 @@ class GameController {
 		leftPlayer.deactivate();
 		rightPlayer.deactivate();
 		bomb.deactivate();
+	}
+	
+	function onScore(left:Bool):Void {
+		var scoredPlayer = left ? leftPlayer : rightPlayer;
+		scoredPlayer.score++;
+		
+		if (scoredPlayer.score == MAX_SCORE)
+			onGameEnd(left);
+		else
+			Timer.delay(function() bomb.spawn(!left), 500);
+	}
+	
+	function onGameEnd(leftWon:Bool):Void {
+		gameEnded = true;
+		GameState.instance.showWin(leftWon);
 	}
 	
 	function update(delta:Float):Void {

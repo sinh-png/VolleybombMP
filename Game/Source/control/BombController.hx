@@ -2,7 +2,6 @@ package control;
 
 import display.game.BombTile;
 import display.game.GameState;
-import haxe.Timer;
 
 class BombController extends ObjectController<BombTile> {
 
@@ -10,7 +9,7 @@ class BombController extends ObjectController<BombTile> {
 	public var passthrough(default, null):Bool;
 	
 	public function new() {
-		super(Physics.bomb, GameState.instance.tilemap.bomb);
+		super(Physics.bomb, GameState.instance.bomb);
 	}
 	
 	override function activate():Void {
@@ -41,7 +40,7 @@ class BombController extends ObjectController<BombTile> {
 	public function spawn(left:Bool):Void {
 		var spaceHalfWidth = Physics.SPACE_WIDTH / 2;
 		var padding = 30;
-		var fenceHalfWidth = GameState.instance.tilemap.fence.originX;
+		var fenceHalfWidth = GameState.instance.fence.originX;
 		body.position.x = (left ? 0 : spaceHalfWidth + fenceHalfWidth) + padding + (spaceHalfWidth - fenceHalfWidth - padding) / 2;
 		body.position.y = -tile.height;
 		body.velocity.setxy(0, 0);
@@ -55,16 +54,10 @@ class BombController extends ObjectController<BombTile> {
 	}
 	
 	function explode():Void {
-		var scoredPlayer = body.position.x > Physics.SPACE_WIDTH / 2 ? Main.instance.controller.leftPlayer :  Main.instance.controller.rightPlayer;
-		@:privateAccess scoredPlayer.score++;
-		
-		tile.explode(function() onExplosionComplete(scoredPlayer.left));
+		@:privateAccess Main.instance.controller.onScore(body.position.x > Physics.SPACE_WIDTH / 2);
+		tile.explode();
 		body.space = null;
 		active = false;
-	}
-	
-	function onExplosionComplete(leftScored:Bool):Void {
-		Timer.delay(function() spawn(!leftScored), 500);
 	}
 	
 }

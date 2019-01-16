@@ -30,11 +30,13 @@ class NetController extends GameController {
 	}
 	
 	override function onActivated():Void {
-		super.onActivated();
+		if (!gameEnded) {
+			con = Connection.instance;
+			con.listen(Header.PLAYER, onReceivePlayer);
+			con.listen(Header.PLAYER_BALL, onReceivePlayerAndBomb);
+		}
 		
-		con = Connection.instance;
-		con.listen(Header.PLAYER, onReceivePlayer);
-		con.listen(Header.PLAYER_BALL, onReceivePlayerAndBomb);
+		super.onActivated();
 		
 		lastSentPackageID = 1;
 		lastReceivedPackageID = 0;

@@ -1,5 +1,6 @@
 package display.game;
 
+import display.Atlas;
 import motion.Actuate;
 import motion.easing.Expo.ExpoEaseOut;
 
@@ -11,15 +12,14 @@ class BombTile extends AnimatedTile {
 	var normalFrames:Array<Int>;
 	var explodingFrames:Array<Int>;
 	
-	var tilemap:GameTilemap;
+	var atlas:Atlas;
 	
-	public function new(tilemap:GameTilemap) {
+	public function new(atlas:Atlas) {
 		super();
 		
-		this.tilemap = tilemap;
-		
-		normalFrames = tilemap.atlas.getIDs('Bomb/');
-		explodingFrames = tilemap.atlas.getIDs('Explosion/');
+		this.atlas = atlas;
+		normalFrames = atlas.getIDs('Bomb/');
+		explodingFrames = atlas.getIDs('Explosion/');
 		
 		playNormal();
 		updateSize();
@@ -29,7 +29,7 @@ class BombTile extends AnimatedTile {
 	
 	public inline function playNormal():Void {
 		if (frameIDs == explodingFrames)
-			tilemap.swapTiles(this, tilemap.fence);
+			GameState.instance.tilemap.swapTiles(this, GameState.instance.fence);
 		play(normalFrames, 0.45);
 		updateSize();
 		originX = 40;
@@ -37,9 +37,10 @@ class BombTile extends AnimatedTile {
 		visible = true;
 	}
 	
-	public function explode(onComplete:Void->Void):Void {
-		tilemap.shake();
-		tilemap.swapTiles(this, tilemap.fence);
+	public function explode(?onComplete:Void->Void):Void {
+		GameState.instance.shake();
+		GameState.instance.tilemap.swapTiles(this, GameState.instance.fence);
+		
 		play(explodingFrames, 0.4);
 		updateSize();
 		originX = width / 2;
@@ -51,18 +52,20 @@ class BombTile extends AnimatedTile {
 			.ease(new ExpoEaseOut())
 			.onComplete(function() {
 				visible = false;
-				onComplete();
+				if (onComplete != null)
+					onComplete();
 			});
 	}
 	
 	public function updateSize():Void {
-		var rect = tilemap.atlas.getRect(id);
+		var rect = atlas.getRect(id);
 		width = rect.width;
 		height = rect.height;
 	}
 	
 	override function set_visible(value:Bool):Bool {
-		@:privateAccess tilemap.bombShadow.visible = value;
+		if (GameState.instance != null)
+			@:privateAccess GameState.instance.bombShadow.visible = value;
 		return super.set_visible(value);
 	}
 	

@@ -18,9 +18,9 @@ class PlayerController extends ObjectController<PlayerTile> {
 	
 	public function new(left:Bool) {
 		if (this.left = left)
-			super(Physics.leftPlayer, GameState.instance.tilemap.leftPlayer);
+			super(Physics.leftPlayer, GameState.instance.leftPlayer);
 		else
-			super(Physics.rightPlayer, GameState.instance.tilemap.rightPlayer);
+			super(Physics.rightPlayer, GameState.instance.rightPlayer);
 	}
 	
 	override function activate():Void {
@@ -89,9 +89,7 @@ class PlayerController extends ObjectController<PlayerTile> {
 		if (value < 0 || value > 9)
 			throw 'Invalid score value ($value). Score has to be between 0 and 9.';
 		
-		score = value;
-		tile.scoreTile.value = score;
-		return score;
+		return score = tile.scoreTile.value = value;
 	}
 	
 }

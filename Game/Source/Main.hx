@@ -1,7 +1,6 @@
 package;
 
 import control.GameController;
-import control.Mode;
 import control.Physics;
 import control.local.PVCController;
 import control.local.PVPController;
@@ -24,7 +23,6 @@ class Main extends Sprite {
 	
 	//
 	
-	public var mode(default, null):Mode;
 	public var state(default, set):StateBase;
 	public var controller(default, set):GameController;
 	
