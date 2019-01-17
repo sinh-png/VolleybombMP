@@ -68,7 +68,7 @@ class PerfDisplay extends DisplayObjectContainer {
 			latencyText.text += '---';
 		} else {
 			latencies.push(Connection.instance.lastLatency);
-			if (latencies.length > 5)
+			if (latencies.length > 3)
 				latencies.shift();
 			
 			var avgLatency = 0.;
