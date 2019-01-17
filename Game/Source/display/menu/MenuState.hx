@@ -77,6 +77,8 @@ class MenuState extends StateBase {
 		//
 		
 		soundButton = new SoundButton();
+		if (Main.mobile)
+			soundButton.y = 60;
 		addChild(soundButton);
 		
 		var listener:MouseEvent->Void;
