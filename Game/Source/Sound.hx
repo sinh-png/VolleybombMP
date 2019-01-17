@@ -30,8 +30,10 @@ class Sound {
 			channels.remove(musicChannel);
 		musicChannel = music.play();
 		musicChannel.soundTransform = muted ? mutedSoundTransform : defaultSoundTransform;
+		musicChannel.addEventListener(Event.SOUND_COMPLETE, onMusicComplete);
 		channels.push(musicChannel);
 	}
+	static function onMusicComplete(_):Void playMusic();
 	
 	public static inline function playJump():Void {
 		var channel = jump.play();
