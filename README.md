@@ -1,6 +1,6 @@
 ![banner](https://raw.githubusercontent.com/melonin/VolleybombMP/master/Banner.jpg "banner")
 
-Remake of an old game of mine to experiment making peer-to-peer browser game using [simple-peer](https://github.com/feross/simple-peer) / WebRTC, [OpenFL](https://www.openfl.org/) & [Haxe](https://haxe.org/).
+Remake of an old game of mine to experiment making peer-to-peer browser game using [simple-peer](https://github.com/feross/simple-peer) / WebRTC, [OpenFL](https://www.openfl.org/) & [Haxe](https://haxe.org/). You can play vs computer, 2 players on a computer or over the Internet. It supports playing on mobile / tablet.
 
 **PLAY**: https://melonin.github.io/VolleybombMP/
 
