@@ -4,6 +4,7 @@
 	<meta title="Volleybomb" package="com.sample.volleybombmp" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="Volleybomb" />
 	<window background="#000000" fps="60" />
+	<icon path="favicon.png" />
 	
 	<source path="Source" />
 	<source path="../Shared" />
