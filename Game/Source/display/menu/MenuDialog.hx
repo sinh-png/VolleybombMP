@@ -12,7 +12,7 @@ import openfl.ui.MouseCursor;
 
 class MenuDialog extends Sprite {
 	
-	static inline var VS_COMP = "Vs Comp";
+	static inline var VS_COMP = "Vs Computer";
 	static inline var VS_LOCAL = "2 Players Local";
 	static inline var HOST = "Create Online Game";
 	static inline var JOIN = "Join Online Game";

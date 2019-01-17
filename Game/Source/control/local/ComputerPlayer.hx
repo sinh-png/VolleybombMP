@@ -6,12 +6,18 @@ import control.PlayerHDirection;
 
 class ComputerPlayer extends PlayerController {
 	
+	var directionDuration:Float;
+	var directionUpdateAllowed(get, never):Bool;
+	
+	var restingPoint:Float;
+	var restingPointDuration:Float;
+	
 	var bomb:BombController;
 	var bombStuckDuration:Float; // stuck between comp and a wall or the fence
 	var bombSmallVelocityXDuration:Float;
 	var bombInHeaderRangeY(get, never):Bool;
-	var directionDuration:Float;
-	var directionUpdateAllowed(get, never):Bool;
+	var bombPredictionOffset:Float;
+	var bombPredictionOffsetDuration:Float;
 	
 	public function new() {
 		super(true);
@@ -19,9 +25,12 @@ class ComputerPlayer extends PlayerController {
 	
 	override function activate():Void {
 		super.activate();
+		directionDuration = 0;
+		restingPoint = 140;
+		restingPointDuration = 0;
 		bombStuckDuration = 0;
 		bombSmallVelocityXDuration = 0;
-		directionDuration = 0;
+		bombPredictionOffsetDuration = 0;
 		bomb = Main.instance.controller.bomb;
 	}
 	
@@ -33,10 +42,18 @@ class ComputerPlayer extends PlayerController {
 	function updateAI(delta:Float):Void {
 		if (!directionUpdateAllowed)
 			directionDuration -= delta;
+		
+		if (restingPointDuration > 0) {
+			restingPointDuration -= delta;
 			
+		} else {
+			restingPointDuration = 3 + 3 * Math.random();
+			restingPoint = 140 - 55 + 110 * Math.random();
+		}
+		
 		if (bomb.tile.x > Physics.SPACE_WIDTH / 2 && isOnGround()) {
-			if (Math.abs(tile.x - 140) > 40)
-				setDirection(tile.x < 140 ? PlayerHDirection.FORWARD : PlayerHDirection.BACKWARD);
+			if (Math.abs(tile.x - restingPoint) > 35)
+				setDirection(tile.x < restingPoint ? PlayerHDirection.FORWARD : PlayerHDirection.BACKWARD);
 			else
 				setDirection();
 			
@@ -64,33 +81,47 @@ class ComputerPlayer extends PlayerController {
 			bombStuckDuration = 0;
 		}
 		
-		var controller = Main.instance.controller;
-		controller.leftPlayer.body.space = null;
-		controller.rightPlayer.body.space = null;
-		
-		var positionX = bomb.body.position.x;
-		var positionY = bomb.body.position.y;
-		var velocityX = bomb.body.velocity.x;
-		var velocityY = bomb.body.velocity.y;
-		var rotation = bomb.body.rotation;
-		var angularVel = bomb.body.angularVel;
-		var bombOnAirDuration = 0.;
-		while (bomb.body.position.y + bomb.tile.originY < tile.y - tile.originY) {
-			Physics.space.step(1 / 60);
-			bombOnAirDuration += 1 / 60;
+		if (bombPredictionOffsetDuration > 0) {
+			bombPredictionOffsetDuration -= delta;
+			
+		} else {
+			bombPredictionOffsetDuration = 0.5 + 1.5 * Math.random();
+			bombPredictionOffset = -60 + 120 * Math.random();
 		}
+		
+		var bombOnAirDuration = 0.;
 		var bombPredictedX = bomb.body.position.x;
-		bomb.body.position.x = positionX;
-		bomb.body.position.y = positionY;
-		bomb.body.velocity.x = velocityX;
-		bomb.body.velocity.y = velocityY;
-		bomb.body.rotation = rotation;
-		bomb.body.angularVel = angularVel;
+		if (!bomb.passthrough) {
+			var controller = Main.instance.controller;
+			controller.leftPlayer.body.space = null;
+			controller.rightPlayer.body.space = null;
 		
-		controller.leftPlayer.body.space = Physics.space;
-		controller.rightPlayer.body.space = Physics.space;
+			var positionX = bomb.body.position.x;
+			var positionY = bomb.body.position.y;
+			var velocityX = bomb.body.velocity.x;
+			var velocityY = bomb.body.velocity.y;
+			var rotation = bomb.body.rotation;
+			var angularVel = bomb.body.angularVel;
+			while (bomb.body.position.y + bomb.tile.originY < tile.y - tile.originY) {
+				Physics.space.step(1 / 60);
+				bombOnAirDuration += 1 / 60;
+			}
+			bombPredictedX = bomb.body.position.x + bombPredictionOffset;
+			bomb.body.position.x = positionX;
+			bomb.body.position.y = positionY;
+			bomb.body.velocity.x = velocityX;
+			bomb.body.velocity.y = velocityY;
+			bomb.body.rotation = rotation;
+			bomb.body.angularVel = angularVel;
+			
+			controller.leftPlayer.body.space = Physics.space;
+			controller.rightPlayer.body.space = Physics.space;
+		}
 		
-		if (bombOnAirDuration > 0.5 && bomb.tile.y < tile.y - tile.originY - 30)
+		if (
+			(bombOnAirDuration > 0.5 && bomb.tile.y < tile.y - tile.originY - 30) ||
+			bombPredictedX > Physics.SPACE_WIDTH / 2
+		)
 			return;
 		
 		if (bombPredictedX > tile.x + 60) {
@@ -105,7 +136,7 @@ class ComputerPlayer extends PlayerController {
 			if (Math.abs(bomb.body.velocity.x) < 15) {
 				bombSmallVelocityXDuration += delta;
 				
-				if (bombSmallVelocityXDuration > 1) {
+				if (bombSmallVelocityXDuration > 2) {
 					bombSmallVelocityXDuration = 0;
 					
 					setDirection(
@@ -117,12 +148,14 @@ class ComputerPlayer extends PlayerController {
 				bombSmallVelocityXDuration = 0;
 			}
 			
-			if (bombInHeaderRangeY) {
+			if (bombInHeaderRangeY && Math.random() < 0.4) {
 				jump();
 				setDirection(
 					tile.x > bomb.tile.x ? PlayerHDirection.BACKWARD : PlayerHDirection.FORWARD,
 					0.1
 				);
+			} else if (isOnGround()) {
+				setDirection();
 			}
 		}
 		
