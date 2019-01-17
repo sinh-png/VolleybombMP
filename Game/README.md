@@ -1,5 +1,5 @@
 - Install my [extern](https://github.com/melonin/haxe-simple-peer) for [simple-peer](https://github.com/feross/simple-peer): `haxelib git simple-peer https://github.com/feross/simple-peer`
 - In this directory: `npm install socket.io`.
-- You may encounter missing methods from [hxsocketio](https://github.com/gogoprog/hxsocketio). You can add it into your installed hxsocketio or just untype the lines causing the errors.
-- If `localTest` is defined, the game will use the address you set in `localhost.txt` to access the lobby server. If not, the game will use the address in LobbyURL.txt.
+- You may encounter missing methods from [hxsocketio](https://github.com/gogoprog/hxsocketio). You can add them to your installed hxsocketio or just untype the lines causing the errors.
+- If `localTest` is defined, the game will use the address you set in `localhost.txt` to access the lobby server. If not, the game will use the address in `LobbyURL.txt`.
 - If `forceRelay` is defined, the game will force connection through the relay servers instead of trying to init peer-to-peer.
