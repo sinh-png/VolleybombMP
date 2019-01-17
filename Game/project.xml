@@ -11,14 +11,14 @@
 	
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="thx.color" />
-	<haxelib name="nape" />
-	<haxelib name="hxsocketio" />
-	<haxelib name="simple-peer" />
+	<haxelib name="thx.color" /> <!-- https://github.com/fponticelli/thx.core -->
+	<haxelib name="nape" /> <!-- https://github.com/deltaluca/nape -->
+	<haxelib name="hxsocketio" /> <!-- https://github.com/gogoprog/hxsocketio -->
+	<haxelib name="simple-peer" /> <!-- https://github.com/melonin/haxe-simple-peer -->
 	
 	<dependency path="node_modules/socket.io-client/dist/socket.io.js" />
 	<dependency path="Libs/simplepeer.min.js" />
-	<dependency path="Libs/mobile-detect.min.js" />
+	<dependency path="Libs/mobile-detect.min.js" /> <!-- http://hgoebl.github.io/mobile-detect.js/ -->
 	
 	<!--define name="forceRelay" /-->
 	<!--define name="localTest" /--> <!-- Don't fetch ICEs & set connection minDelay & maxDelay to 90 & 100 -->
