@@ -2,9 +2,7 @@
 
 Remake of an old game of mine to experiment making peer-to-peer browser game using [simple-peer](https://github.com/feross/simple-peer) / WebRTC, [OpenFL](https://www.openfl.org/) & [Haxe](https://haxe.org/).
 
-**PLAY**:
-
-https://melonin.github.io/VolleybombMP/
+**PLAY**: https://melonin.github.io/VolleybombMP/
 
 **LICENSE & CREDITS**:
 - The source codes are under [MIT](https://github.com/melonin/VolleybombMP/blob/master/LICENSE).
@@ -13,8 +11,6 @@ https://melonin.github.io/VolleybombMP/
 - The jumping sound effect is copyrighted by [Iwan Gabovitch](http://qubodup.net).
 - The explosion sound effect is copyrighted by [dklon](http://opengameart.org/users/dklon).
 
-**HOW TO BUILD**:
-
-See the READMEs in Game / Lobby.
+**HOW TO BUILD**: See the READMEs in [Game](https://github.com/melonin/VolleybombMP/blob/master/Game/README.md) / [Lobby](https://github.com/melonin/VolleybombMP/tree/master/Lobby).
 	
 ![screenshot](https://raw.githubusercontent.com/melonin/VolleybombMP/master/Screenshot.jpg "screenshot")
