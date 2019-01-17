@@ -30,7 +30,7 @@ class GameController {
 		rightPlayer.activate();
 		bomb.activate();
 		
-		Timer.delay(function() bomb.spawn(false), 1200);
+		Timer.delay(function() bomb.spawn(false), 3000);
 	}
 	
 	function onDeactivated():Void {

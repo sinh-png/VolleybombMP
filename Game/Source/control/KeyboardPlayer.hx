@@ -1,6 +1,8 @@
 package control;
 
+import display.game.GameState;
 import openfl.events.KeyboardEvent;
+import openfl.ui.Keyboard;
 
 class KeyboardPlayer extends PlayerController {
 	
@@ -27,6 +29,16 @@ class KeyboardPlayer extends PlayerController {
 		
 		Main.instance.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		Main.instance.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		
+		var controlDisplay = left ? GameState.instance.leftKeysDisplay : GameState.instance.rightKeysDisplay;
+		if (jumpKeys.length == 1) {
+			if (jumpKeys[0] == Keyboard.UP)
+				controlDisplay.showArrows();
+			else
+				controlDisplay.showAWD();
+		} else {
+			controlDisplay.showBoth();
+		}
 	}
 	
 	override function deactivate():Void {

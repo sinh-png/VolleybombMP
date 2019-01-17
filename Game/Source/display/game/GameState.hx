@@ -36,6 +36,9 @@ class GameState extends StateBase {
 	public var bomb(default, null):BombTile;
 	public var fence(default, null):Tile;
 	
+	public var leftKeysDisplay(default, null):KeyboardControlDisplay;
+	public var rightKeysDisplay(default, null):KeyboardControlDisplay;
+	
 	var leftPlayerShadow:Shadow;
 	var rightPlayerShadow:Shadow;
 	var bombShadow:Shadow;
@@ -114,12 +117,22 @@ class GameState extends StateBase {
 		rightPlayer.scoreTile.y = leftPlayer.scoreTile.y;
 		tilemap.addTile(rightPlayer.scoreTile);
 		
+		//
+		
+		leftKeysDisplay = new KeyboardControlDisplay(atlas);
+		leftKeysDisplay.x = 140;
+		tilemap.addTile(leftKeysDisplay);
+		
+		rightKeysDisplay = new KeyboardControlDisplay(atlas);
+		rightKeysDisplay.x = baseWidth - leftKeysDisplay.x;
+		tilemap.addTile(rightKeysDisplay);
+		
+		//
+		
 		winnerText = new Tile();
 		winnerText.alpha = rightPlayer.scoreTile.alpha;
 		winnerText.visible = false;
 		tilemap.addTile(winnerText);
-		
-		//
 		
 		playAgainButton = new CommonButton(new TextFormat(R.defaultFont, 18, 0xFFFFFF, true), "PLAY AGAIN?", 100, 40, 0x4684F1);
 		playAgainButton.x = (baseWidth - playAgainButton.width) / 2;
@@ -197,7 +210,12 @@ class GameState extends StateBase {
 		
 		transitionOverlay.alpha = 1;
 		addChild(transitionOverlay);
-		Actuate.tween(transitionOverlay, 1, { alpha: 0 } ).onComplete(removeChild, [ transitionOverlay ]);
+		Actuate
+			.tween(transitionOverlay, 1, { alpha: 0 } )
+			.onComplete(function() {
+				removeChild(transitionOverlay);
+				
+			});
 	}
 	
 	override public function update(delta:Float):Void {
