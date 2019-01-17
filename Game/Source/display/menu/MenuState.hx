@@ -9,6 +9,7 @@ import openfl.events.TextEvent;
 import openfl.net.URLRequest;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import openfl.text.TextFormatAlign;
 using StringTools;
 
 class MenuState extends StateBase {
@@ -56,16 +57,17 @@ class MenuState extends StateBase {
 		//
 		
 		var map = [
-			'Alexandr Zhelanov' => new URLRequest('https://soundcloud.com/alexandr-zhelanov/'),
-			'Iwan Gabovitch' 	=> new URLRequest('https://qubodup.github.io/'),
-			'dklon' 			=> new URLRequest('https://opengameart.org/users/dklon/')
+			'Alexandr Zhelanov' 		=> new URLRequest('https://soundcloud.com/alexandr-zhelanov/'),
+			'Iwan Gabovitch' 			=> new URLRequest('https://qubodup.github.io/'),
+			'dklon' 					=> new URLRequest('https://opengameart.org/users/dklon/'),
+			'Dinh Quoc Nam / NEBURTON' 	=> new URLRequest('https://www.behance.net/neburton')
 		];
-		var html = "Music by Alexandr Zhelanov. Sound effects by Iwan Gabovitch & dklon.";
+		var html = "Music by Alexandr Zhelanov. Sound effects by Iwan Gabovitch & dklon.\nArts by Dinh Quoc Nam / NEBURTON.";
 		for (key in map.keys())
 			html = html.replace(key, '<a href="event:$key"><font color="#46D6E6"><b><u>$key</u></b></font></a>');
 		
 		creditText = new TextField();
-		creditText.defaultTextFormat = new TextFormat(null, 17, 0xFFFFFF);
+		creditText.defaultTextFormat = new TextFormat(null, 17, 0xFFFFFF, null, null, null, null, null, TextFormatAlign.CENTER);
 		creditText.htmlText = html;
 		creditText.width = creditText.textWidth + 4;
 		creditText.height = creditText.textHeight + 4;
