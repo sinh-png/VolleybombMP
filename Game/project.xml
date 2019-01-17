@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<meta title="Volleybomb" package="com.sample.volleybombmp" version="1.0.0" company="Company Name" />
-	<app main="Main" path="Export" file="Volleybomb" />
+	<meta title="VolleybombMP" package="com.sample.volleybombmp" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="VolleybombMP" />
 	<window background="#000000" fps="60" />
 	<icon path="favicon.png" />
 	

@@ -9,6 +9,7 @@ import display.common.SoundButton;
 import display.menu.MenuState;
 import motion.Actuate;
 import motion.easing.Sine.SineEaseIn;
+import net.Connection;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.display.Tile;
@@ -306,7 +307,8 @@ class GameState extends StateBase {
 				playAgainButton.visible = true;
 				
 			case Mode.NET(host):
-				playAgainButton.visible = host;
+				if (host && Connection.instance != null)
+					playAgainButton.visible = true;
 		}
 		
 		if (playAgainButton.visible) {
