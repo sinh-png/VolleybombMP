@@ -100,7 +100,7 @@ class HostDialog extends NetPlayDialog {
 	function onRoom(id:String):Void {
 		codeField.text = id;
 		var href = Browser.location.href;
-		urlField.text = href.substr(0, href.lastIndexOf('/') + 1) + '?$id';
+		urlField.text = href.substr(0, href.lastIndexOf('/') + 1) + '?$id;';
 		showMain();
 	}
 	

@@ -14,6 +14,7 @@ import haxe.Timer;
 import js.Browser;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import room.RoomConfig;
 
 @:access(display.StateBase)
 @:access(control.GameController)
@@ -64,7 +65,9 @@ class Main extends Sprite {
 		
 		var href = Browser.location.href;
 		var roomID = href.split('?')[1];
-		if (~/^[0-9]*$/i.match(roomID)) {
+		if (roomID != null)
+			roomID = roomID.split(';')[0];
+		if (roomID.length == RoomConfig.ID_LENGTH && ~/^[0-9]*$/i.match(roomID)) {
 			MenuState.instance.guestDialog.show();
 			MenuState.instance.guestDialog.join(roomID);
 		}
