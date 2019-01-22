@@ -36,15 +36,13 @@ class Sound {
 	static function onMusicComplete(_):Void playMusic();
 	
 	public static inline function playJump():Void {
-		var channel = jump.play();
-		channel.soundTransform = muted ? mutedSoundTransform : defaultSoundTransform;
+		var channel = jump.play(0, 0, muted ? mutedSoundTransform : defaultSoundTransform);
 		channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 		channels.push(channel);
 	}
 	
 	public static inline function playExplosion():Void {
-		var channel = explosion.play();
-		channel.soundTransform = muted ? mutedSoundTransform : defaultSoundTransform;
+		var channel = explosion.play(0, 0, muted ? mutedSoundTransform : defaultSoundTransform);
 		channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 		channels.push(channel);
 	}
