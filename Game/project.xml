@@ -11,7 +11,7 @@
 	
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="thx.color" /> <!-- https://github.com/fponticelli/thx.core -->
+	<haxelib name="thx.color" /> <!-- https://github.com/fponticelli/thx.color -->
 	<haxelib name="nape" /> <!-- https://github.com/deltaluca/nape -->
 	<haxelib name="hxsocketio" /> <!-- https://github.com/gogoprog/hxsocketio -->
 	<haxelib name="simple-peer" /> <!-- https://github.com/melonin/haxe-simple-peer -->
