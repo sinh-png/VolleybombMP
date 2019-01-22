@@ -119,7 +119,7 @@ class Connection {
 				if (u._pc.iceConnectionState == 'disconnected')
 					onUClosed();
 			});
-			u.on(PeerEvent.ERROR, onUErrror);
+			u.on(PeerEvent.ERROR, onUError);
 			if (offer != null)
 				u.signal(offer.u);
 		});
@@ -271,7 +271,7 @@ class Connection {
 		trace(error);
 	}
 	
-	function onUErrror(error:String):Void {
+	function onUError(error:String):Void {
 		trace(error);
 	}
 	

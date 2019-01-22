@@ -14,7 +14,7 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 	   @param	header	in byte
 	**/
 	public inline function new(header:Int) {
-		this = net.ByteArrayTools.get();
+		this = ByteArrayTools.get();
 		this.writeByte(header);
 	}
 	
