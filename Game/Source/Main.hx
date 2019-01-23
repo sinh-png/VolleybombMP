@@ -62,12 +62,15 @@ class Main extends Sprite {
 		//
 		
 		Save.load();
-		
+		resolveInvitationURL();
+	}
+	
+	function resolveInvitationURL():Void {
 		var href = Browser.location.href;
 		var roomID = href.split('?')[1];
 		if (roomID != null)
 			roomID = roomID.split(';')[0];
-		if (roomID.length == RoomConfig.ID_LENGTH && ~/^[0-9]*$/i.match(roomID)) {
+		if (roomID != null && roomID.length == RoomConfig.ID_LENGTH && ~/^[0-9]*$/i.match(roomID)) {
 			MenuState.instance.guestDialog.show();
 			MenuState.instance.guestDialog.join(roomID);
 		}
