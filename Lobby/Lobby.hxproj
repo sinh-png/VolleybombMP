@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\app.js" />
+    <movie path="Export\app.js" />
     <movie fps="0" />
     <movie width="0" />
     <movie height="0" />
@@ -15,8 +15,8 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="src" />
     <class path="..\Shared" />
+    <class path="Source" />
   </classpaths>
   <!-- Build options -->
   <build>

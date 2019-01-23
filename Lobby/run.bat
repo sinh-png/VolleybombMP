@@ -1,4 +1,4 @@
 @echo off
-cd bin
+cd Export
 heroku local web
 pause
