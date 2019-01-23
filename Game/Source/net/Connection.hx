@@ -39,18 +39,19 @@ class Connection {
 	//
 	
 	public var autoPing(default, null):Bool;
-	public var pingTimeout:Float = 1; // in seconds
+	public var pingDelay:Float = 1; // in seconds
+	public var pingTimeout:Float = 1;
 	public var onPingCB:Float->Void;
 	public var lastLatency(default, null):Float = -1; // in seconds
 	
 	/**
 		The minimum milliseconds to delay listeners to simulate latency for testing.
 	**/
-	public var minDelay:Int = 0;
+	public var minExtraLatency:Int = 0;
 	/**
 		The maximum milliseconds to delay listeners to simulate latency for testing.
 	**/
-	public var maxDelay:Int = 0;
+	public var maxExtraLatency:Int = 0;
 	
 	public var rReady(default, null):Bool = false;
 	public var uReady(default, null):Bool = false;
@@ -151,9 +152,9 @@ class Connection {
 			return null;
 		}
 		
-		#if (localTest && !forceRelay)
-		minDelay = 90;
-		maxDelay = 100;
+		#if (localTest && latencyTest)
+		minExtraLatency = 90;
+		maxExtraLatency = 100;
 		#end
 	}
 	
@@ -208,7 +209,12 @@ class Connection {
 	var _pingTimestamp:Float;
 	var _pingTimer:Timer;
 	public function ping():Void {
-		_pingTimestamp = Timer.stamp();
+		if (_pingTimer != null) {
+			_pingTimer.stop();
+			_pingTimer = null;
+		} else {
+			_pingTimestamp = Timer.stamp();
+		}
 		Sendable.n(PING_HEADER).send();
 		_pingTimer = Timer.delay(ping, Math.round(pingTimeout * 1000));
 	}
@@ -227,13 +233,17 @@ class Connection {
 		if (onPingCB != null)
 			onPingCB(lastLatency);
 		
-		if (autoPing)
-			ping();
-		
 		if (_pingTimer != null) {
 			_pingTimer.stop();
 			_pingTimer = null;
 		}
+		
+		if (autoPing)
+			_pingTimer = Timer.delay(onNextPing, Math.round(pingDelay * 1000));
+	}
+	function onNextPing():Void {
+		_pingTimer = null;
+		ping();
 	}
 	
 	function onData(data:Dynamic):Void {
@@ -243,7 +253,7 @@ class Connection {
 		var bytes = ByteArrayTools.fromArrayBuffer(data);
 		var header = bytes.readByte();
 		if (listeners.exists(header)) {
-			var delay = Math.round(minDelay + Math.random() * (maxDelay - minDelay));
+			var delay = Math.round(minExtraLatency + Math.random() * (maxExtraLatency - minExtraLatency));
 			if (delay <= 0)
 				listeners.get(header)(bytes);
 			else

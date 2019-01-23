@@ -114,8 +114,6 @@ class NetController extends GameController {
 	}
 	
 	function updateRemotePlayerAndBomb(pack:ByteArray):Void {
-		localPlayer.body.space = null;
-		
 		remotePlayer.animState = pack.readByte();
 		updateBody(pack, remotePlayer.body);
 		
@@ -126,20 +124,22 @@ class NetController extends GameController {
 		var velocityY = body.velocity.y;
 		var rotation = body.rotation;
 		var angularVel = body.angularVel;
-		updateBody(pack, bomb.body);
+		updateBody(pack, body);
 		
 		var latency = con.lastLatency / 2;
-		if (latency >= 1 / 60)
+		trace(latency);
+		if (latency >= 1 / 60) {
+			localPlayer.body.space = null;
 			Physics.step(latency);
-		
-		body.position.x = Interpolator.run(positionX, body.position.x);
-		body.position.y = Interpolator.run(positionY, body.position.y);
-		body.velocity.x = Interpolator.run(velocityX, body.velocity.x);
-		body.velocity.y = Interpolator.run(velocityY, body.velocity.y);
-		body.rotation   = Interpolator.run(rotation, body.rotation);
-		body.angularVel = Interpolator.run(angularVel, body.angularVel);
-		
-		localPlayer.body.space = Physics.space;
+			localPlayer.body.space = Physics.space;
+			
+			body.position.x = Interpolator.run(positionX, body.position.x);
+			body.position.y = Interpolator.run(positionY, body.position.y);
+			body.velocity.x = Interpolator.run(velocityX, body.velocity.x);
+			body.velocity.y = Interpolator.run(velocityY, body.velocity.y);
+			body.rotation   = Interpolator.run(rotation, body.rotation);
+			body.angularVel = Interpolator.run(angularVel, body.angularVel);
+		}
 	}
 	
 	function updateBody(pack:ByteArray, body:Body):Void {

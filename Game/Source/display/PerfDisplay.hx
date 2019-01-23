@@ -16,7 +16,6 @@ class PerfDisplay extends DisplayObjectContainer {
 	var times:Array<Float> = [];
 	
 	var latencyText:TextField;
-	var latencies:Array<Float> = [];
 	
 	public function new() {
 		super();
@@ -64,20 +63,10 @@ class PerfDisplay extends DisplayObjectContainer {
 		//
 		
 		latencyText.text = "Latency: ";
-		if (Connection.instance == null || Connection.instance.lastLatency < 0) {
+		if (Connection.instance == null || Connection.instance.lastLatency < 0)
 			latencyText.text += '---';
-		} else {
-			latencies.push(Connection.instance.lastLatency);
-			if (latencies.length > 3)
-				latencies.shift();
-			
-			var avgLatency = 0.;
-			for (latency in latencies)
-				avgLatency += avgLatency;
-			avgLatency /= latencies.length;
-			
-			latencyText.text += Math.round(Math.abs(avgLatency) * 1000);
-		}
+		else
+			latencyText.text += Math.round(Connection.instance.lastLatency * 1000);
 	}
 	
 }

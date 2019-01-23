@@ -18,10 +18,11 @@
 	
 	<dependency path="node_modules/socket.io-client/dist/socket.io.js" />
 	<dependency path="Libs/simplepeer.min.js" />
-	<dependency path="Libs/mobile-detect.min.js" /> <!-- http://hgoebl.github.io/mobile-detect.js/ -->
+	<dependency path="Libs/mobile-detect.min.js" /> <!-- http://hgoebl.github.io/mobile-detect.js -->
 	
 	<!--define name="forceRelay" /-->
-	<define name="localTest" /> <!-- Don't fetch ICEs & set connection minDelay & maxDelay to 90 & 100 -->
+	<!--define name="localTest" /--> <!-- Don't fetch ICEs. -->
+	<!--define name="latencyTest" /--> <!-- if localTest is also defined, set connection minExtraLatency & maxExtraLatency to 90 & 100. -->
 	
 	<haxeflag name="-resource" value="LobbyURL.txt@LobbyURL" unless="localTest" />
 	<haxeflag name="-resource" value="LocalLobby.txt@LobbyURL" if="localTest" />
