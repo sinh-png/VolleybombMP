@@ -2,4 +2,5 @@ Export/
 Atlas/
 node_modules/
 LobbyURL.txt
+LocalLobby.txt
 lobby.bat
