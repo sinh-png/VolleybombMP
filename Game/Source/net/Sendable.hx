@@ -120,9 +120,7 @@ abstract Sendable(ByteArray) from ByteArray to ByteArray {
 	
 	public inline function send(reliable:Bool = true):Bool {
 		if (Connection.instance != null) {
-			this.position = 0;
 			Connection.instance.send(reliable, this.toArrayBuffer());
-			this.put();
 			return true;
 		}
 		return false;
