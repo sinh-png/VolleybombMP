@@ -1,0 +1,3 @@
+[submodule "Game/Libs/haxe-simple-peer"]
+	path = Game/Libs/haxe-simple-peer
+	url = https://github.com/melonin/haxe-simple-peer
