@@ -29,7 +29,6 @@ class ObjectController<T:Tile> {
 	function updateTile():Void {
 		tile.x = body.position.x;
 		tile.y = body.position.y;
-		tile.rotation = body.rotation;
 	}
 	
 }
