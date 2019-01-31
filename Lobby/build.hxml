@@ -1,0 +1,6 @@
+-lib hxnodejs
+-lib hxsocketio
+-cp ../Shared
+-cp Source
+-js Export/app.js
+-main Main
