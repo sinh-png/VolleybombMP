@@ -2,7 +2,7 @@ package display.game;
 
 import display.Atlas;
 import motion.Actuate;
-import motion.easing.Back.BackEaseOut;
+import motion.easing.Back;
 import openfl.display.Tile;
 
 class ScoreTile extends Tile {
@@ -29,10 +29,10 @@ class ScoreTile extends Tile {
 		
 		id = rectIDs[v];
 		if (v > 0) {
-			Actuate.tween(this, 1, { rotation: left ? -360 : 360 } ).ease(new BackEaseOut(0.5)).onComplete(function() rotation = 0);
+			Actuate.tween(this, 1, { rotation: left ? -360 : 360 } ).ease(Back.easeOutWith(0.5)).onComplete(function() rotation = 0);
 			Actuate.tween(this, 0.4, { scaleX: 0, scaleY: 0 } ).onComplete(function() {
-				Actuate.tween(this, 0.4, { scaleX: 1, scaleY: 1 } ).ease(new BackEaseOut(0.2));
-			}).ease(new BackEaseOut(0.2));
+				Actuate.tween(this, 0.4, { scaleX: 1, scaleY: 1 } ).ease(Back.easeOutWith(0.2));
+			}).ease(Back.easeOutWith(0.2));
 		}
 		return value = v;
 	}

@@ -8,7 +8,7 @@ import display.common.CommonButton;
 import display.common.SoundButton;
 import display.menu.MenuState;
 import motion.Actuate;
-import motion.easing.Sine.SineEaseIn;
+import motion.easing.Sine;
 import net.Connection;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
@@ -198,14 +198,14 @@ class GameState extends StateBase {
 		if (winnerText.visible) {
 			Actuate
 				.tween(winnerText, 0.6, { y: -atlas.getRect(winnerText.id).height } )
-				.ease(new SineEaseIn())
+				.ease(Sine.easeIn)
 				.onComplete(function() winnerText.visible = false);
 		}
 		
 		if (playAgainButton.visible) {
 			Actuate
 				.tween(playAgainButton, 0.6, { y: baseHeight } )
-				.ease(new SineEaseIn())
+				.ease(Sine.easeIn)
 				.onComplete(function() playAgainButton.visible = false);
 		}
 		

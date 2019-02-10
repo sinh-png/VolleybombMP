@@ -2,7 +2,7 @@ package display.game;
 
 import display.Atlas;
 import motion.Actuate;
-import motion.easing.Expo.ExpoEaseOut;
+import motion.easing.Expo;
 
 class BombTile extends AnimatedTile {
 	
@@ -49,7 +49,7 @@ class BombTile extends AnimatedTile {
 		rotation = 0;
 		Actuate
 			.tween(this, 0.45, { scaleX: 1, scaleY: 1 } )
-			.ease(new ExpoEaseOut())
+			.ease(Expo.easeOut)
 			.onComplete(function() {
 				visible = false;
 				if (onComplete != null)

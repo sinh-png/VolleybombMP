@@ -14,7 +14,7 @@
 	<haxelib name="thx.color" /> <!-- https://github.com/fponticelli/thx.color -->
 	<haxelib name="nape" /> <!-- https://github.com/deltaluca/nape -->
 	<haxelib name="hxsocketio" /> <!-- https://github.com/gogoprog/hxsocketio -->
-	<dependency path="node_modules/socket.io-client/dist/socket.io.js" />
+	<dependency path="Libs/socket.io.slim.js" />
 	<include path="Libs/haxe-simple-peer" /> <!-- https://github.com/melonin/haxe-simple-peer -->
 	<dependency path="Libs/mobile-detect.min.js" /> <!-- http://hgoebl.github.io/mobile-detect.js -->
 	
