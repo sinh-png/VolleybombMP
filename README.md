@@ -6,7 +6,7 @@ Remake of an old game of mine to experiment making peer-to-peer browser game usi
 
 **LICENSE & CREDITS**:
 - The source codes are under [MIT](https://github.com/melonin/VolleybombMP/blob/master/LICENSE).
-- The arts belong to [Dinh Quoc Nam / NEBURTON](https://www.behance.net/neburton). Contact him if you want permission to use them for your projects.
+- The arts were commissioned from [Dinh Quoc Nam / NEBURTON](https://www.behance.net/neburton) and the permissions to use them are not included in the project.
 - The music is "Zombies Also Love To Play The Fool" by [Alexandr Zhelanov](https://soundcloud.com/alexandr-zhelanov).
 - The jumping sound effect is copyrighted by [Iwan Gabovitch](http://qubodup.net).
 - The explosion sound effect is copyrighted by [dklon](http://opengameart.org/users/dklon).
